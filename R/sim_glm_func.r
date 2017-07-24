@@ -41,13 +41,16 @@
 #' @param contrasts An optional list that specifies the contrasts to be used 
 #'      for factor variables (i.e. those variables with .f or .c). 
 #'      See \code{\link{contrasts}} for more detail.
+#' @param outcome_type A vector specifying the type of outcome, must be either
+#'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
+#'   be counts.
 #' @param ... Not currently used.
 #' @importFrom tibble as_tibble
 #' @examples 
 #' # generating parameters for single level regression
 #' set.seed(2)
 #' fixed <- ~1 + act + diff + numCourse + act:numCourse
-#' fixed_param <- c(2, 4, 1, 3.5, 2)
+#' fixed_param <- c(0.1, -0.2, 0.15, 0.5, -0.02)
 #' cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'),
 #'    var_type = c("single", "single", "single"),
 #'    opts = list(list(mean = 0, sd = 4),
@@ -55,12 +58,13 @@
 #'    list(mean = 0, sd = 3)))
 #' n <- 150
 #' temp_single <- sim_glm(fixed = fixed, fixed_param = fixed_param, 
-#'   cov_param = cov_param, n = n, data_str = "single")
+#'   cov_param = cov_param, n = n, data_str = "single", 
+#'   outcome_type = 'logistic')
 #'   
 #' @export
 sim_glm_single <- function(fixed, fixed_param, cov_param, n, 
                            data_str, cor_vars = NULL, fact_vars = list(NULL),
-                           contrasts = NULL, ...) {
+                           contrasts = NULL, outcome_type, ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")    
   
@@ -72,7 +76,7 @@ sim_glm_single <- function(fixed, fixed_param, cov_param, n,
                'variables in design matrix'))
   }
   
-  sim_data <- data_glm_single(Xmat, fixed_param, n)
+  sim_data <- data_glm_single(Xmat, fixed_param, n, outcome_type)
   
   Xmat <- data.frame(Xmat,sim_data)
   Xmat$ID <- 1:n
@@ -151,6 +155,9 @@ sim_glm_single <- function(fixed, fixed_param, cov_param, n,
 #' @param contrasts An optional list that specifies the contrasts to be used 
 #'   for factor variables (i.e. those variables with .f or .c). 
 #'   See \code{\link{contrasts}} for more detail.
+#' @param outcome_type A vector specifying the type of outcome, must be either
+#'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
+#'   be counts.
 #' @param ... Not currently used.
 #' @importFrom tibble as_tibble
 #'      
@@ -158,7 +165,7 @@ sim_glm_single <- function(fixed, fixed_param, cov_param, n,
 #' # Longitudinal linear mixed model example
 #' fixed <- ~1 + time + diff + act + time:act
 #' random <- ~1 + time + diff
-#' fixed_param <- c(4, 2, 6, 2.3, 7)
+#' fixed_param <- c(0.1, -0.2, 0.15, 0.5, -0.02)
 #' random_param <- list(random_var = c(7, 4, 2), rand_gen = 'rnorm')
 #' cov_param <- list(dist_fun = c('rnorm', 'rnorm'),
 #'    var_type = c("level1", "level2"),
@@ -169,12 +176,13 @@ sim_glm_single <- function(fixed, fixed_param, cov_param, n,
 #' data_str <- "long"
 #' temp_long <- sim_glm(fixed, random, random3 = NULL, fixed_param, 
 #' random_param, random_param3 = NULL,
-#'  cov_param, k = NULL, n, p, data_str = data_str)
+#'  cov_param, k = NULL, n, p, data_str = data_str, outcome_type = 'logistic')
 #' @export
 sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(), 
                            cov_param, n, p, data_str, cor_vars = NULL, 
                            fact_vars = list(NULL), unbal = FALSE, 
-                           unbal_design = NULL, contrasts = NULL, ...) {
+                           unbal_design = NULL, contrasts = NULL, 
+                           outcome_type, ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")    
   rand.vars <- attr(terms(random),"term.labels")   
@@ -196,27 +204,46 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
     }
   }
   
-  rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
-  
   Xmat <- sim_fixef_nested(fixed, fixed_vars, cov_param, n, lvl1ss, 
                            data_str = data_str, cor_vars = cor_vars, 
                            fact_vars = fact_vars, contrasts = contrasts)
   
-  if(ncol(Xmat) != length(fixed_param)) {
-    stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
-               'variables in design matrix'))
-  }
+  rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
   
   reff <- do.call("cbind", lapply(1:ncol(rand_eff), function(xx) 
     rep(rand_eff[,xx], times = lvl1ss)))
   colnames(reff) <- c(unlist(lapply(1:ncol(rand_eff), function(xx) 
     paste("b", xx-1, sep = ""))))
   
-  Zmat <- model.matrix(random, data.frame(Xmat))
-
-  sim_data <- data_glm_nested(Xmat, Zmat, fixed_param, rand_eff, n, p = lvl1ss)
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+    if(ncol(Xmat$Xmat) != length(fixed_param)) {
+      stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
+                 'variables in design matrix'))
+    }
+    
+    Zmat <- model.matrix(random, data.frame(Xmat$Xmat))
+    
+    sim_data <- data_glm_nested(Xmat$Xmat, Zmat, fixed_param, rand_eff, n, 
+                                p = lvl1ss, outcome_type = outcome_type)
+    
+    Xmat <- dplyr::bind_cols(data.frame(Xmat$Xmat), 
+                             data.frame(Xmat$Omat), 
+                             data.frame(reff),
+                             data.frame(sim_data))
+  } else {
+    if(ncol(Xmat) != length(fixed_param)) {
+      stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
+                 'variables in design matrix'))
+    }
+    
+    Zmat <- model.matrix(random, data.frame(Xmat))
+    
+    sim_data <- data_glm_nested(Xmat, Zmat, fixed_param, rand_eff, n, 
+                                p = lvl1ss, outcome_type = outcome_type)
+    
+    Xmat <- data.frame(Xmat, reff, sim_data)
+  }
   
-  Xmat <- data.frame(Xmat,reff,sim_data)
   Xmat$withinID <- unlist(lapply(1:length(lvl1ss), function(xx) 1:lvl1ss[xx]))
   Xmat$clustID <- rep(1:n, times = lvl1ss)
   
@@ -314,6 +341,9 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
 #' @param contrasts An optional list that specifies the contrasts to be used 
 #'  for factor variables (i.e. those variables with .f or .c). 
 #'  See \code{\link{contrasts}} for more detail.
+#' @param outcome_type A vector specifying the type of outcome, must be either
+#'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
+#'   be counts.
 #' @param ... Not currently used.
 #' @importFrom tibble as_tibble
 #' 
@@ -322,7 +352,7 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
 #' fixed <- ~1 + time + diff + act + actClust + time:act
 #' random <- ~1 + time + diff
 #' random3 <- ~ 1 + time
-#' fixed_param <- c(4, 2, 6, 2.3, 7, 0)
+#' fixed_param <- c(0.1, -0.2, 0.15, 0.5, -0.02, 0.04)
 #' random_param <- list(random_var = c(7, 4, 2), rand_gen = 'rnorm')
 #' random_param3 <- list(random_var = c(4, 2), rand_gen = 'rnorm')
 #' cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'), 
@@ -335,7 +365,8 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
 #' p <- 10
 #' data_str <- "long"
 #' temp_three <- sim_glm(fixed, random, random3, fixed_param, random_param, 
-#'   random_param3, cov_param, k,n, p, data_str = data_str)
+#'   random_param3, cov_param, k,n, p, data_str = data_str, 
+#'   outcome_type = 'logistic')
 #'   
 #' @export 
 sim_glm_nested3 <- function(fixed, random, random3, fixed_param, 
@@ -344,7 +375,8 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
                             fact_vars = list(NULL), 
                             unbal = list("level2" = FALSE, "level3" = FALSE), 
                             unbal_design = list("level2" = NULL, "level3" = NULL),
-                            contrasts = NULL, ...) {
+                            contrasts = NULL, 
+                            outcome_type, ...) {
 
   fixed_vars <- attr(terms(fixed),"term.labels")    
   rand.vars <- attr(terms(random),"term.labels")   
@@ -399,18 +431,13 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
   lvl3ss <- sapply(lapply(1:length(beg), function(xx) 
     lvl1ss[beg[xx]:end[xx]]), sum)
   
-  rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
-  rand_eff3 <- do.call(sim_rand_eff, c(random_param3, n = k))
-  
   Xmat <- sim_fixef_nested3(fixed, fixed_vars, cov_param, k, n = lvl2ss, 
                             p = lvl1ss, data_str = data_str, 
                             cor_vars = cor_vars, 
                             fact_vars = fact_vars, contrasts = contrasts)
   
-  if(ncol(Xmat) != length(fixed_param)) {
-    stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
-               'variables in design matrix'))
-  }
+  rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
+  rand_eff3 <- do.call(sim_rand_eff, c(random_param3, n = k))
   
   reff <- do.call("cbind", lapply(1:ncol(rand_eff), function(xx) 
     rep(rand_eff[,xx], times = lvl1ss)))
@@ -422,13 +449,39 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
   colnames(reff3) <- c(unlist(lapply(1:ncol(rand_eff3), function(xx) 
     paste("b", xx-1, "_3", sep = ""))))
   
-  Zmat <- model.matrix(random, data.frame(Xmat))
-  Zmat3 <- model.matrix(random3, data.frame(Xmat))
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+    if(ncol(Xmat$Xmat) != length(fixed_param)) {
+      stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
+                 'variables in design matrix'))
+    }
+    
+    Zmat <- model.matrix(random, data.frame(Xmat$Xmat))
+    Zmat3 <- model.matrix(random3, data.frame(Xmat$Xmat))
+    
+    sim_data <- data_glm_nested3(Xmat$Xmat, Zmat, Zmat3, fixed_param, rand_eff, 
+                                 rand_eff3, k, n = lvl2ss, p = lvl1ss, 
+                                 outcome_type = outcome_type)
+    
+    Xmat <- dplyr::bind_cols(data.frame(Xmat$Xmat), 
+                             data.frame(Xmat$Omat), 
+                             data.frame(reff),
+                             data.frame(reff3),
+                             data.frame(sim_data))
+  } else {
+    if(ncol(Xmat) != length(fixed_param)) {
+      stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
+                 'variables in design matrix'))
+    }
+    Zmat <- model.matrix(random, data.frame(Xmat))
+    Zmat3 <- model.matrix(random3, data.frame(Xmat))
+    
+    sim_data <- data_glm_nested3(Xmat, Zmat, Zmat3, fixed_param, rand_eff, 
+                                 rand_eff3, k, n = lvl2ss, p = lvl1ss,
+                                 outcome_type = outcome_type)
+    
+    Xmat <- data.frame(Xmat, reff, reff3, sim_data)
+  }
   
-  sim_data <- data_glm_nested3(Xmat, Zmat, Zmat3, fixed_param, rand_eff, 
-                               rand_eff3, k, n = lvl2ss, p = lvl1ss)
-  
-  Xmat <- data.frame(Xmat, reff, reff3, sim_data)
   Xmat$withinID <- unlist(lapply(1:length(lvl1ss), function(xx) 1:lvl1ss[xx]))
   Xmat$clustID <- rep(1:n, times = lvl1ss)
   Xmat$clust3ID <- rep(1:k, times = lvl3ss)

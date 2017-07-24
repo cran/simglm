@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2017-05-25" />
+<meta name="date" content="2017-07-24" />
 
 <title>Introduction to simglm</title>
 
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Introduction to simglm</h1>
-<h4 class="date"><em>2017-05-25</em></h4>
+<h4 class="date"><em>2017-07-24</em></h4>
 
 
 
@@ -93,9 +93,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)
 cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>), 
                   <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),
-                  <span class="dt">cov_param =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),
-                                   <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>),
-                                   <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))
+                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),
+                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>),
+                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))
 n &lt;-<span class="st"> </span><span class="dv">150</span>
 error_var &lt;-<span class="st"> </span><span class="dv">3</span>
 with_err_gen =<span class="st"> 'rnorm'</span>
@@ -125,68 +125,68 @@ temp_single &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span 
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">0.0567823</td>
-<td align="right">0.7217990</td>
-<td align="right">0.4202424</td>
-<td align="right">0.0238623</td>
-<td align="right">4.4675014</td>
-<td align="right">0.5576254</td>
-<td align="right">5.025127</td>
+<td align="right">-1.0985386</td>
+<td align="right">-3.9355627</td>
+<td align="right">1.0889380</td>
+<td align="right">-1.196240</td>
+<td align="right">-4.910915</td>
+<td align="right">-2.1069451</td>
+<td align="right">-7.0178598</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="right">-0.5354215</td>
-<td align="right">0.8559695</td>
-<td align="right">-0.5261492</td>
-<td align="right">0.2817116</td>
-<td align="right">-0.5638155</td>
-<td align="right">-2.4710743</td>
-<td align="right">-3.034890</td>
+<td align="right">0.6774271</td>
+<td align="right">-2.0305060</td>
+<td align="right">4.8241254</td>
+<td align="right">3.267993</td>
+<td align="right">26.099627</td>
+<td align="right">0.4029628</td>
+<td align="right">26.5025902</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">0.9155245</td>
-<td align="right">2.0867614</td>
-<td align="right">-0.9213102</td>
-<td align="right">-0.8434821</td>
-<td align="right">2.8373099</td>
-<td align="right">-0.3095257</td>
-<td align="right">2.527784</td>
+<td align="right">2.2655754</td>
+<td align="right">-0.6536038</td>
+<td align="right">0.7631267</td>
+<td align="right">1.728921</td>
+<td align="right">16.537484</td>
+<td align="right">-2.6342575</td>
+<td align="right">13.9032263</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="right">1.1450583</td>
-<td align="right">-1.5787971</td>
-<td align="right">0.3205983</td>
-<td align="right">0.3671038</td>
-<td align="right">6.8577380</td>
-<td align="right">1.2410316</td>
-<td align="right">8.098770</td>
+<td align="right">-0.4108151</td>
+<td align="right">2.6281643</td>
+<td align="right">2.9769276</td>
+<td align="right">-1.222967</td>
+<td align="right">10.958217</td>
+<td align="right">-2.7567987</td>
+<td align="right">8.2014185</td>
 <td align="right">4</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">1.1287190</td>
-<td align="right">-0.0871536</td>
-<td align="right">-2.2324212</td>
-<td align="right">-2.5197762</td>
-<td align="right">-6.4253040</td>
-<td align="right">2.1669528</td>
-<td align="right">-4.258351</td>
+<td align="right">-5.9403641</td>
+<td align="right">-3.0379872</td>
+<td align="right">0.8461804</td>
+<td align="right">-5.026620</td>
+<td align="right">-31.891052</td>
+<td align="right">-0.6346029</td>
+<td align="right">-32.5256548</td>
 <td align="right">5</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="right">0.6143529</td>
-<td align="right">1.9298625</td>
-<td align="right">0.5372433</td>
-<td align="right">0.3300570</td>
-<td align="right">8.9277395</td>
-<td align="right">-1.8381326</td>
-<td align="right">7.089607</td>
+<td align="right">2.5504179</td>
+<td align="right">1.8621295</td>
+<td align="right">-1.9565372</td>
+<td align="right">-4.989987</td>
+<td align="right">-2.764054</td>
+<td align="right">3.6572552</td>
+<td align="right">0.8932015</td>
 <td align="right">6</td>
 </tr>
 </tbody>
@@ -201,21 +201,21 @@ temp_single &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5.4506 -1.2460  0.1424  1.4113  3.8626 
+## -3.7078 -1.0749 -0.1229  0.9598  4.0226 
 ## 
 ## Coefficients:
 ##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)     1.9674     0.1514  12.996  &lt; 2e-16 ***
-## act             3.8881     0.1678  23.165  &lt; 2e-16 ***
-## diff            1.1341     0.1438   7.887 6.84e-13 ***
-## numCourse       3.3053     0.1550  21.318  &lt; 2e-16 ***
-## act:numCourse   2.0963     0.1554  13.487  &lt; 2e-16 ***
+## (Intercept)    1.78261    0.13984   12.75   &lt;2e-16 ***
+## act            3.98417    0.03616  110.18   &lt;2e-16 ***
+## diff           1.01960    0.05029   20.27   &lt;2e-16 ***
+## numCourse      3.55489    0.05076   70.04   &lt;2e-16 ***
+## act:numCourse  1.98399    0.01328  149.36   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 1.819 on 145 degrees of freedom
-## Multiple R-squared:  0.8894, Adjusted R-squared:  0.8863 
-## F-statistic: 291.5 on 4 and 145 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 1.708 on 145 degrees of freedom
+## Multiple R-squared:  0.9969, Adjusted R-squared:  0.9968 
+## F-statistic: 1.177e+04 on 4 and 145 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div id="adding-factorcategoricalordinal-variables" class="section level4">
 <h4>Adding Factor/Categorical/Ordinal Variables</h4>
 <p>To add a factor, categorical, or ordinal variable, just append one of the following to the end of the variable name in the <code>fixed</code> object: “.f”, “.c”, “.o”, “_f“,”_c“, or”_o“. These indicate the variable is a discrete variable of some sort. By default, all variables with a”.f&quot; or “.c” will be treated as factors and expanded using dummy coding. If “.o” is used in the variable names, the variable will be discrete but treated as continuous in the simulation (i.e. only a single fixed effect variable). See below for an example.</p>
@@ -247,6 +247,8 @@ temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<spa
 <th align="right">act_o.factor.numCourse_f.3</th>
 <th align="right">act_o.factor.numCourse_f.4</th>
 <th align="right">act_o.factor.numCourse_f.5</th>
+<th align="right">act_o1</th>
+<th align="right">diff.o1</th>
 <th align="right">numCourse_f</th>
 <th align="right">Fbeta</th>
 <th align="right">err</th>
@@ -257,25 +259,67 @@ temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<spa
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">19</td>
-<td align="right">8</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">1</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">19</td>
-<td align="right">5</td>
-<td align="right">19.70</td>
-<td align="right">1.5011181</td>
-<td align="right">21.201118</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">7.10</td>
+<td align="right">1.7472168</td>
+<td align="right">8.847217</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="right">23</td>
+<td align="right">28</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">28</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">29.80</td>
+<td align="right">-1.6262381</td>
+<td align="right">28.173762</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">18</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">18</td>
+<td align="right">0</td>
+<td align="right">18</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">9.35</td>
+<td align="right">1.4339313</td>
+<td align="right">10.783931</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">13</td>
 <td align="right">6</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -285,82 +329,52 @@ temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<spa
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">13</td>
+<td align="right">6</td>
 <td align="right">1</td>
-<td align="right">25.00</td>
-<td align="right">-0.8730668</td>
-<td align="right">24.126933</td>
-<td align="right">2</td>
+<td align="right">15.00</td>
+<td align="right">0.6692646</td>
+<td align="right">15.669265</td>
+<td align="right">4</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">36</td>
+<td align="right">25</td>
 <td align="right">7</td>
 <td align="right">0</td>
-<td align="right">1</td>
 <td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">36</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">38.92</td>
-<td align="right">1.1063314</td>
-<td align="right">40.026331</td>
-<td align="right">3</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">26</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">26</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">40.70</td>
-<td align="right">-3.3941858</td>
-<td align="right">37.305814</td>
-<td align="right">4</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">3</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">3</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">4.46</td>
-<td align="right">1.1036678</td>
-<td align="right">5.563668</td>
+<td align="right">25</td>
+<td align="right">25</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">24.90</td>
+<td align="right">-2.4318929</td>
+<td align="right">22.468107</td>
 <td align="right">5</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="right">34</td>
-<td align="right">7</td>
-<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">2</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">34</td>
+<td align="right">16</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">3</td>
-<td align="right">36.88</td>
-<td align="right">4.0302988</td>
-<td align="right">40.910299</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">25.30</td>
+<td align="right">2.4205890</td>
+<td align="right">27.720589</td>
 <td align="right">6</td>
 </tr>
 </tbody>
@@ -387,8 +401,8 @@ temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<spa
                          <span class="dt">cor_vars =</span> cor_vars, <span class="dt">fact_vars =</span> fact_vars)
 <span class="kw">cor</span>(temp_single_o[, <span class="dv">2</span>:<span class="dv">3</span>])</code></pre></div>
 <pre><code>##            act      diff
-## act  1.0000000 0.5037924
-## diff 0.5037924 1.0000000</code></pre>
+## act  1.0000000 0.6378442
+## diff 0.6378442 1.0000000</code></pre>
 </div>
 <div id="editing-distributions-for-covariates." class="section level4">
 <h4>Editing distributions for covariates.</h4>
@@ -410,10 +424,10 @@ temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<spa
                          <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, 
                          <span class="dt">cor_vars =</span> cor_vars, <span class="dt">fact_vars =</span> fact_vars)
 <span class="kw">cor</span>(temp_single_o[, <span class="dv">2</span>:<span class="dv">3</span>])</code></pre></div>
-<pre><code>##            act      diff
-## act  1.0000000 0.4525685
-## diff 0.4525685 1.0000000</code></pre>
-<p>The skewness and kurtosis can be ways to ensure that these distributions are actually generated as desired. For example, the skewness and kurtosis for the <code>rt</code> distribution are: 0.0840425 and 0.1829051. Similarly done for the <code>rgamma</code> distribution: -0.0695259 and 0.6784966.</p>
+<pre><code>##           act     diff
+## act  1.000000 0.572268
+## diff 0.572268 1.000000</code></pre>
+<p>The skewness and kurtosis can be ways to ensure that these distributions are actually generated as desired. For example, the skewness and kurtosis for the <code>rt</code> distribution are: 0.1452266 and 0.6040192. Similarly done for the <code>rgamma</code> distribution: 0.7411575 and 1.7335016.</p>
 </div>
 <div id="heterogeneity" class="section level4">
 <h4>Heterogeneity</h4>
@@ -439,7 +453,7 @@ temp_single &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">ggplot</span>(temp_single, <span class="kw">aes</span>(<span class="dt">x =</span> diff, <span class="dt">y =</span> err)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>As you can see from the figure, there is an increase in the error variance in the middle of the variable “diff” and smaller amounts of variance in the tails. What was done internally was that the variable “diff” was grouped into 3 groups (based on the length of the argument <code>error_var</code>) and the variance values passed from <code>error_var</code> are used to create the heterogeneity. In many instances, heterogeneity is thought of with regard to groups. This can be shown with the following:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>act_o +<span class="st"> </span>diff.o +<span class="st"> </span>numCourse_f
 fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.15</span>, <span class="fl">0.2</span>)
@@ -457,7 +471,7 @@ temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<spa
 <p>Showing a plot of the outcome.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(temp_single_o, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(numCourse_f), <span class="dt">y =</span> err)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 <div id="nested-data" class="section level3">
@@ -510,96 +524,96 @@ temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span cl
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="right">0.4285183</td>
-<td align="right">3.106781</td>
+<td align="right">-0.7821348</td>
+<td align="right">-2.523022</td>
 <td align="right">0.000000</td>
-<td align="right">0.6694735</td>
-<td align="right">-0.7477375</td>
-<td align="right">1.496958</td>
-<td align="right">13.71671</td>
-<td align="right">1.3109473</td>
-<td align="right">3.956148</td>
-<td align="right">18.98380</td>
+<td align="right">-4.005923</td>
+<td align="right">0.7044823</td>
+<td align="right">0.6738679</td>
+<td align="right">-6.49576</td>
+<td align="right">-4.5329782</td>
+<td align="right">2.2942102</td>
+<td align="right">-8.734528</td>
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">1.6630995</td>
-<td align="right">3.106781</td>
-<td align="right">3.106781</td>
-<td align="right">0.6694735</td>
-<td align="right">-0.7477375</td>
-<td align="right">1.496958</td>
-<td align="right">44.87166</td>
-<td align="right">2.4113259</td>
-<td align="right">-2.348065</td>
-<td align="right">44.93492</td>
+<td align="right">-0.8291477</td>
+<td align="right">-2.523022</td>
+<td align="right">-2.523022</td>
+<td align="right">-4.005923</td>
+<td align="right">0.7044823</td>
+<td align="right">0.6738679</td>
+<td align="right">-22.43899</td>
+<td align="right">-3.8601763</td>
+<td align="right">-0.8418391</td>
+<td align="right">-27.141010</td>
 <td align="right">2</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">2</td>
-<td align="right">-1.9894037</td>
-<td align="right">3.106781</td>
-<td align="right">6.213563</td>
-<td align="right">0.6694735</td>
-<td align="right">-0.7477375</td>
-<td align="right">1.496958</td>
-<td align="right">46.70411</td>
-<td align="right">-3.8040548</td>
-<td align="right">1.264199</td>
-<td align="right">44.16426</td>
+<td align="right">-1.7365465</td>
+<td align="right">-2.523022</td>
+<td align="right">-5.046045</td>
+<td align="right">-4.005923</td>
+<td align="right">0.7044823</td>
+<td align="right">0.6738679</td>
+<td align="right">-43.54454</td>
+<td align="right">-3.7671610</td>
+<td align="right">-4.1160915</td>
+<td align="right">-51.427797</td>
 <td align="right">3</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">3</td>
-<td align="right">1.0224612</td>
-<td align="right">3.106781</td>
-<td align="right">9.320344</td>
-<td align="right">0.6694735</td>
-<td align="right">-0.7477375</td>
-<td align="right">1.496958</td>
-<td align="right">88.52277</td>
-<td align="right">-0.0431576</td>
-<td align="right">0.849661</td>
-<td align="right">89.32928</td>
+<td align="right">3.8435554</td>
+<td align="right">-2.523022</td>
+<td align="right">-7.569067</td>
+<td align="right">-4.005923</td>
+<td align="right">0.7044823</td>
+<td align="right">0.6738679</td>
+<td align="right">-25.72509</td>
+<td align="right">0.6975730</td>
+<td align="right">1.5511990</td>
+<td align="right">-23.476318</td>
 <td align="right">4</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">4</td>
-<td align="right">-0.4028527</td>
-<td align="right">3.106781</td>
-<td align="right">12.427126</td>
-<td align="right">0.6694735</td>
-<td align="right">-0.7477375</td>
-<td align="right">1.496958</td>
-<td align="right">103.71836</td>
-<td align="right">-2.9245298</td>
-<td align="right">-1.700699</td>
-<td align="right">99.09313</td>
+<td align="right">-2.5529179</td>
+<td align="right">-2.523022</td>
+<td align="right">-10.092090</td>
+<td align="right">-4.005923</td>
+<td align="right">0.7044823</td>
+<td align="right">0.6738679</td>
+<td align="right">-79.76509</td>
+<td align="right">-2.9083229</td>
+<td align="right">-3.3482077</td>
+<td align="right">-86.021618</td>
 <td align="right">5</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">5</td>
-<td align="right">0.1905082</td>
-<td align="right">3.106781</td>
-<td align="right">15.533907</td>
-<td align="right">0.6694735</td>
-<td align="right">-0.7477375</td>
-<td align="right">1.496958</td>
-<td align="right">131.02599</td>
-<td align="right">-2.7840310</td>
-<td align="right">-1.521821</td>
-<td align="right">126.72014</td>
+<td align="right">-0.1912119</td>
+<td align="right">-2.523022</td>
+<td align="right">-12.615112</td>
+<td align="right">-4.005923</td>
+<td align="right">0.7044823</td>
+<td align="right">0.6738679</td>
+<td align="right">-81.25601</td>
+<td align="right">-0.6123626</td>
+<td align="right">3.0414089</td>
+<td align="right">-78.826961</td>
 <td align="right">6</td>
 <td align="right">1</td>
 </tr>
@@ -614,17 +628,17 @@ temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span cl
 ## Formula: sim_data ~ 1 + time + diff + act + time:act + (1 + time + diff |  
 ##     clustID)
 ##    Data: temp_long
-## REML criterion at convergence: 21196.31
+## REML criterion at convergence: 21319.54
 ## Random effects:
 ##  Groups   Name        Std.Dev. Corr       
-##  clustID  (Intercept) 2.558               
-##           time        2.054    -0.02      
-##           diff        1.352     0.10 -0.13
-##  Residual             1.980               
+##  clustID  (Intercept) 2.663               
+##           time        2.040    -0.08      
+##           diff        1.532     0.05  0.09
+##  Residual             1.999               
 ## Number of obs: 4500, groups:  clustID, 150
 ## Fixed Effects:
 ## (Intercept)         time         diff          act     time:act  
-##       4.225        1.800        5.926        2.261        6.980</code></pre>
+##       3.682        1.843        5.854        2.264        7.032</code></pre>
 <p>One note when looking at the output is that standard deviations are given, not variances as inputted into the simulation function.</p>
 <div id="specifying-time-variable" class="section level4">
 <h4>Specifying Time Variable</h4>
@@ -671,96 +685,96 @@ temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(fixed, r
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">0.0</td>
-<td align="right">0.7391674</td>
-<td align="right">4.305687</td>
-<td align="right">0.000000</td>
-<td align="right">3.195243</td>
-<td align="right">-0.3576883</td>
-<td align="right">-0.3255342</td>
-<td align="right">18.3380834</td>
-<td align="right">2.9546191</td>
-<td align="right">-0.0655064</td>
-<td align="right">21.2271961</td>
+<td align="right">-1.7188824</td>
+<td align="right">0.159376</td>
+<td align="right">0.0000000</td>
+<td align="right">0.8494263</td>
+<td align="right">-4.498424</td>
+<td align="right">0.5109807</td>
+<td align="right">-5.946729</td>
+<td align="right">-0.0288893</td>
+<td align="right">0.9266213</td>
+<td align="right">-5.048997</td>
 <td align="right">1</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">0.5</td>
-<td align="right">0.8197427</td>
-<td align="right">4.305687</td>
-<td align="right">2.152843</td>
-<td align="right">3.195243</td>
-<td align="right">-0.3576883</td>
-<td align="right">-0.3255342</td>
-<td align="right">34.8914383</td>
-<td align="right">2.7495449</td>
-<td align="right">-3.6794216</td>
-<td align="right">33.9615617</td>
+<td align="right">-1.2687799</td>
+<td align="right">0.159376</td>
+<td align="right">0.0796880</td>
+<td align="right">0.8494263</td>
+<td align="right">-4.498424</td>
+<td align="right">0.5109807</td>
+<td align="right">-1.688299</td>
+<td align="right">-2.0481077</td>
+<td align="right">-0.8472084</td>
+<td align="right">-4.583615</td>
 <td align="right">2</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">1.0</td>
-<td align="right">0.9363701</td>
-<td align="right">4.305687</td>
-<td align="right">4.305687</td>
-<td align="right">3.195243</td>
-<td align="right">-0.3576883</td>
-<td align="right">-0.3255342</td>
-<td align="right">51.6611058</td>
-<td align="right">2.5327345</td>
-<td align="right">1.1279988</td>
-<td align="right">55.3218391</td>
+<td align="right">-1.9567695</td>
+<td align="right">0.159376</td>
+<td align="right">0.1593760</td>
+<td align="right">0.8494263</td>
+<td align="right">-4.498424</td>
+<td align="right">0.5109807</td>
+<td align="right">-4.258420</td>
+<td align="right">-4.6488692</td>
+<td align="right">-0.7841382</td>
+<td align="right">-9.691428</td>
 <td align="right">3</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">3.0</td>
-<td align="right">0.1282142</td>
-<td align="right">4.305687</td>
-<td align="right">12.917060</td>
-<td align="right">3.195243</td>
-<td align="right">-0.3576883</td>
-<td align="right">-0.3255342</td>
-<td align="right">111.0917821</td>
-<td align="right">2.0804402</td>
-<td align="right">-4.5722467</td>
-<td align="right">108.5999757</td>
+<td align="right">-1.8985741</td>
+<td align="right">0.159376</td>
+<td align="right">0.4781279</td>
+<td align="right">0.8494263</td>
+<td align="right">-4.498424</td>
+<td align="right">0.5109807</td>
+<td align="right">2.322016</td>
+<td align="right">-13.6159806</td>
+<td align="right">0.4662434</td>
+<td align="right">-10.827721</td>
 <td align="right">4</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
 <td align="right">5.0</td>
-<td align="right">0.4376307</td>
-<td align="right">4.305687</td>
-<td align="right">21.528433</td>
-<td align="right">3.195243</td>
-<td align="right">-0.3576883</td>
-<td align="right">-0.3255342</td>
-<td align="right">177.2278931</td>
-<td align="right">1.2643379</td>
-<td align="right">-0.5917422</td>
-<td align="right">177.9004888</td>
+<td align="right">0.5724842</td>
+<td align="right">0.159376</td>
+<td align="right">0.7968799</td>
+<td align="right">0.8494263</td>
+<td align="right">-4.498424</td>
+<td align="right">0.5109807</td>
+<td align="right">23.379629</td>
+<td align="right">-21.3501659</td>
+<td align="right">-0.2019267</td>
+<td align="right">1.827537</td>
 <td align="right">5</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">0.0</td>
-<td align="right">1.2520130</td>
-<td align="right">-4.899398</td>
-<td align="right">0.000000</td>
-<td align="right">-1.368486</td>
-<td align="right">3.8877168</td>
-<td align="right">0.6316319</td>
-<td align="right">0.2434627</td>
-<td align="right">-0.5776744</td>
-<td align="right">-0.6268868</td>
-<td align="right">-0.9610985</td>
+<td align="right">-0.0597113</td>
+<td align="right">-0.638310</td>
+<td align="right">0.0000000</td>
+<td align="right">-1.1975434</td>
+<td align="right">3.194817</td>
+<td align="right">-2.6332687</td>
+<td align="right">2.173619</td>
+<td align="right">-1.0403074</td>
+<td align="right">1.1843193</td>
+<td align="right">2.317631</td>
 <td align="right">1</td>
 <td align="right">2</td>
 </tr>

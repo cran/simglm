@@ -17,8 +17,8 @@ n <- 150
 
 temp_single <- sim_glm(fixed = fixed, fixed_param = fixed_param, 
                        cov_param = cov_param, 
-                       n = n, data_str = "single")
-head(temp_single)
+                       n = n, data_str = "single", outcome_type = 'logistic')
+print(temp_single, n = 5)
 
 ## ----twologistic---------------------------------------------------------
 # Longitudinal linear mixed model example
@@ -36,8 +36,8 @@ data_str <- "cross"
 temp_cross <- sim_glm(fixed, random, random3 = NULL, fixed_param,
                      random_param, random_param3 = NULL,
                      cov_param, k = NULL, n, p,
-                     data_str = data_str)
-head(temp_cross)
+                     data_str = data_str, outcome_type = 'logistic')
+print(temp_cross, n = 5)
 
 ## ----threelogistic-------------------------------------------------------
 fixed <- ~1 + diff + act + actClust
@@ -56,6 +56,21 @@ n <- 150
 p <- 30
 data_str <- "cross"
 temp_three <- sim_glm(fixed, random, random3, fixed_param, random_param,
-                      random_param3, cov_param, k, n, p, data_str = data_str)
-head(temp_three)
+                      random_param3, cov_param, k, n, p, data_str = data_str,
+                      outcome_type = 'logistic')
+print(temp_three, n = 5)
+
+## ----count_single--------------------------------------------------------
+fixed <- ~ 1 + act + diff
+fixed_param <- c(-0.5, 0.5, 0.3)
+cov_param <- list(dist_fun = c('rnorm', 'rnorm'),
+                  var_type = c("single", "single"),
+                  opts = list(list(mean = 0, sd = 4),
+                              list(mean = 0, sd = 3)))
+n <- 150
+
+temp_single <- sim_glm(fixed = fixed, fixed_param = fixed_param, 
+                       cov_param = cov_param, 
+                       n = n, data_str = "single", outcome_type = 'poisson')
+print(temp_single, n = 5)
 

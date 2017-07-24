@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2017-05-25" />
+<meta name="date" content="2017-07-24" />
 
 <title>Simulate Data from Generalized Linear Models</title>
 
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Simulate Data from Generalized Linear Models</h1>
-<h4 class="date"><em>2017-05-25</em></h4>
+<h4 class="date"><em>2017-07-24</em></h4>
 
 
 
@@ -87,77 +87,17 @@ n &lt;-<span class="st"> </span><span class="dv">150</span>
 
 temp_single &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, 
                        <span class="dt">cov_param =</span> cov_param, 
-                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>)
-<span class="kw">head</span>(temp_single)</code></pre></div>
-<table>
-<thead>
-<tr class="header">
-<th align="right">X.Intercept.</th>
-<th align="right">act</th>
-<th align="right">diff</th>
-<th align="right">Fbeta</th>
-<th align="right">logistic</th>
-<th align="right">sim_data</th>
-<th align="right">ID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">4.282338</td>
-<td align="right">-0.9615375</td>
-<td align="right">3.852708</td>
-<td align="right">0.9792188</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">-2.192208</td>
-<td align="right">4.1086612</td>
-<td align="right">2.136494</td>
-<td align="right">0.8944000</td>
-<td align="right">1</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">-4.277690</td>
-<td align="right">4.0611192</td>
-<td align="right">1.079491</td>
-<td align="right">0.7463976</td>
-<td align="right">1</td>
-<td align="right">3</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">1.124551</td>
-<td align="right">2.1269567</td>
-<td align="right">3.200363</td>
-<td align="right">0.9608479</td>
-<td align="right">1</td>
-<td align="right">4</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">3.859443</td>
-<td align="right">-2.3706550</td>
-<td align="right">3.218525</td>
-<td align="right">0.9615255</td>
-<td align="right">1</td>
-<td align="right">5</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">6.309345</td>
-<td align="right">-2.9039544</td>
-<td align="right">4.283486</td>
-<td align="right">0.9863932</td>
-<td align="right">1</td>
-<td align="right">6</td>
-</tr>
-</tbody>
-</table>
+                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">'logistic'</span>)
+<span class="kw">print</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
+<pre><code>## # A tibble: 150 x 7
+##   X.Intercept.       act       diff    Fbeta  logistic sim_data    ID
+## *        &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;int&gt;
+## 1            1 -3.505898  3.4620018 1.285651 0.7834102        1     1
+## 2            1  7.486467  3.8626606 6.902032 0.9989953        1     2
+## 3            1 -2.649272  1.9332594 1.255342 0.7782232        0     3
+## 4            1  1.543911  0.4931161 2.919890 0.9488210        1     4
+## 5            1  1.356734 -2.4919101 1.930794 0.8733373        1     5
+## # ... with 145 more rows</code></pre>
 <p>As you can see from the code above, the syntax is virtually identical to the syntax for the <code>sim_reg</code> function. The largest difference is the omission of the <code>error_var</code> and <code>rand_gen</code> commands. The returned data frame includes the response variable in the logistic function (Fbeta), the probability found by taking <span class="math inline">\(\frac{exp(Fbeta)}{1 + exp(Fbeta)}\)</span> (logistic), and the returned 0/1 variable by using the <code>rbinom</code> function using the probabilities defined above (sim_data).</p>
 <div id="multilevel-logistic-models" class="section level2">
 <h2>Multilevel logistic models</h2>
@@ -177,105 +117,18 @@ data_str &lt;-<span class="st"> &quot;cross&quot;</span>
 temp_cross &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(fixed, random, <span class="dt">random3 =</span> <span class="ot">NULL</span>, fixed_param,
                      random_param, <span class="dt">random_param3 =</span> <span class="ot">NULL</span>,
                      cov_param, <span class="dt">k =</span> <span class="ot">NULL</span>, n, p,
-                     <span class="dt">data_str =</span> data_str)
-<span class="kw">head</span>(temp_cross)</code></pre></div>
-<table>
-<thead>
-<tr class="header">
-<th align="right">X.Intercept.</th>
-<th align="right">diff</th>
-<th align="right">act</th>
-<th align="right">b0</th>
-<th align="right">Fbeta</th>
-<th align="right">randEff</th>
-<th align="right">logistic</th>
-<th align="right">prob</th>
-<th align="right">sim_data</th>
-<th align="right">withinID</th>
-<th align="right">clustID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">-0.7646240</td>
-<td align="right">1.240196</td>
-<td align="right">-1.647592</td>
-<td align="right">1.9897467</td>
-<td align="right">-1.647592</td>
-<td align="right">0.3421543</td>
-<td align="right">0.5847137</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">3.5490939</td>
-<td align="right">1.240196</td>
-<td align="right">-1.647592</td>
-<td align="right">4.1466057</td>
-<td align="right">-1.647592</td>
-<td align="right">2.4990132</td>
-<td align="right">0.9240726</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">-0.1976839</td>
-<td align="right">1.240196</td>
-<td align="right">-1.647592</td>
-<td align="right">2.2732168</td>
-<td align="right">-1.647592</td>
-<td align="right">0.6256244</td>
-<td align="right">0.6514966</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">-2.0202499</td>
-<td align="right">1.240196</td>
-<td align="right">-1.647592</td>
-<td align="right">1.3619338</td>
-<td align="right">-1.647592</td>
-<td align="right">-0.2856587</td>
-<td align="right">0.4290670</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">-0.0283942</td>
-<td align="right">1.240196</td>
-<td align="right">-1.647592</td>
-<td align="right">2.3578616</td>
-<td align="right">-1.647592</td>
-<td align="right">0.7102692</td>
-<td align="right">0.6704606</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">-3.5980288</td>
-<td align="right">1.240196</td>
-<td align="right">-1.647592</td>
-<td align="right">0.5730444</td>
-<td align="right">-1.647592</td>
-<td align="right">-1.0745481</td>
-<td align="right">0.2545391</td>
-<td align="right">0</td>
-<td align="right">6</td>
-<td align="right">1</td>
-</tr>
-</tbody>
-</table>
+                     <span class="dt">data_str =</span> data_str, <span class="dt">outcome_type =</span> <span class="st">'logistic'</span>)
+<span class="kw">print</span>(temp_cross, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
+<pre><code>## # A tibble: 4,500 x 11
+##   X.Intercept.       diff       act         b0      Fbeta    randEff
+## *        &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1            1 -1.4036140 -2.651821 -0.6863745 0.50264674 -0.6863745
+## 2            1 -2.2547237 -2.651821 -0.6863745 0.07709191 -0.6863745
+## 3            1  0.7395251 -2.651821 -0.6863745 1.57421630 -0.6863745
+## 4            1  3.8340366 -2.651821 -0.6863745 3.12147206 -0.6863745
+## 5            1 -1.7756291 -2.651821 -0.6863745 0.31663919 -0.6863745
+## # ... with 4,495 more rows, and 5 more variables: logistic &lt;dbl&gt;,
+## #   prob &lt;dbl&gt;, sim_data &lt;dbl&gt;, withinID &lt;int&gt;, clustID &lt;int&gt;</code></pre>
 </div>
 <div id="three-level-example" class="section level2">
 <h2>Three level example</h2>
@@ -296,134 +149,46 @@ n &lt;-<span class="st"> </span><span class="dv">150</span>
 p &lt;-<span class="st"> </span><span class="dv">30</span>
 data_str &lt;-<span class="st"> &quot;cross&quot;</span>
 temp_three &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(fixed, random, random3, fixed_param, random_param,
-                      random_param3, cov_param, k, n, p, <span class="dt">data_str =</span> data_str)
-<span class="kw">head</span>(temp_three)</code></pre></div>
-<table>
-<thead>
-<tr class="header">
-<th align="right">X.Intercept.</th>
-<th align="right">diff</th>
-<th align="right">act</th>
-<th align="right">actClust</th>
-<th align="right">b0_2</th>
-<th align="right">b0_3</th>
-<th align="right">Fbeta</th>
-<th align="right">randEff</th>
-<th align="right">randEff3</th>
-<th align="right">logistic</th>
-<th align="right">prob</th>
-<th align="right">sim_data</th>
-<th align="right">withinID</th>
-<th align="right">clustID</th>
-<th align="right">clust3ID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">1.8248558</td>
-<td align="right">2.085876</td>
-<td align="right">0.4319192</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">6.247877</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">9.110436</td>
-<td align="right">0.9998895</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">0.4497107</td>
-<td align="right">2.085876</td>
-<td align="right">0.4319192</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">5.147761</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">8.010320</td>
-<td align="right">0.9996681</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">-1.0289249</td>
-<td align="right">2.085876</td>
-<td align="right">0.4319192</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">3.964853</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">6.827412</td>
-<td align="right">0.9989175</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">-0.5267061</td>
-<td align="right">2.085876</td>
-<td align="right">0.4319192</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">4.366628</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">7.229187</td>
-<td align="right">0.9992754</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">-1.7213614</td>
-<td align="right">2.085876</td>
-<td align="right">0.4319192</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">3.410903</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">6.273462</td>
-<td align="right">0.9981179</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">1.2771701</td>
-<td align="right">2.085876</td>
-<td align="right">0.4319192</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">5.809729</td>
-<td align="right">1.069486</td>
-<td align="right">1.793073</td>
-<td align="right">8.672287</td>
-<td align="right">0.9998288</td>
-<td align="right">1</td>
-<td align="right">6</td>
-<td align="right">1</td>
-<td align="right">1</td>
-</tr>
-</tbody>
-</table>
+                      random_param3, cov_param, k, n, p, <span class="dt">data_str =</span> data_str,
+                      <span class="dt">outcome_type =</span> <span class="st">'logistic'</span>)
+<span class="kw">print</span>(temp_three, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
+<pre><code>## # A tibble: 45,000 x 15
+##   X.Intercept.       diff        act   actClust      b0_2      b0_3
+## *        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1            1 -3.4065510 -0.1764601 -0.4651754 -2.377952 -1.229453
+## 2            1 -0.1871581 -0.1764601 -0.4651754 -2.377952 -1.229453
+## 3            1 -1.1366189 -0.1764601 -0.4651754 -2.377952 -1.229453
+## 4            1 -1.8038968 -0.1764601 -0.4651754 -2.377952 -1.229453
+## 5            1 -1.0277931 -0.1764601 -0.4651754 -2.377952 -1.229453
+## # ... with 4.5e+04 more rows, and 9 more variables: Fbeta &lt;dbl&gt;,
+## #   randEff &lt;dbl&gt;, randEff3 &lt;dbl&gt;, logistic &lt;dbl&gt;, prob &lt;dbl&gt;,
+## #   sim_data &lt;dbl&gt;, withinID &lt;int&gt;, clustID &lt;int&gt;, clust3ID &lt;int&gt;</code></pre>
 </div>
+</div>
+<div id="count-outcomes" class="section level1">
+<h1>Count Outcomes</h1>
+<p>The package also has the ability to simulate count outcomes in addition to the 0/1 dichotomous outcomes. The syntax is the same as above, except the <code>outcome_type</code> argument is modified from <code>logistic</code> to <code>poisson</code>. As some may have realized from above, the dichotomous outcomes are assumed to follow a logistic metric where as the count outcomes follow a poisson model. Belwo is an adapted example from above.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>act +<span class="st"> </span>diff
+fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(-<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)
+cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),
+                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),
+                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),
+                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))
+n &lt;-<span class="st"> </span><span class="dv">150</span>
+
+temp_single &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, 
+                       <span class="dt">cov_param =</span> cov_param, 
+                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">'poisson'</span>)
+<span class="kw">print</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
+<pre><code>## # A tibble: 150 x 7
+##   X.Intercept.        act       diff      Fbeta    poisson sim_data    ID
+## *        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;int&gt;
+## 1            1 -0.8931976 -4.5597417 -2.3145213 0.09881348        0     1
+## 2            1 -9.6980629  2.6928798 -4.5411675 0.01066095        0     2
+## 3            1  5.5823732 -1.9424863  1.7084407 5.52034705        7     3
+## 4            1  0.6918532 -1.3531627 -0.5600222 0.57119638        1     4
+## 5            1 -5.5337912 -0.3045037 -3.3582467 0.03479621        0     5
+## # ... with 145 more rows</code></pre>
 </div>
 
 
