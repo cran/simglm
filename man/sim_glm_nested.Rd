@@ -6,7 +6,8 @@
 \usage{
 sim_glm_nested(fixed, random, fixed_param, random_param = list(), cov_param,
   n, p, data_str, cor_vars = NULL, fact_vars = list(NULL), unbal = FALSE,
-  unbal_design = NULL, contrasts = NULL, outcome_type, ...)
+  unbal_design = NULL, contrasts = NULL, outcome_type,
+  cross_class_params = NULL, knot_args = list(NULL), ...)
 }
 \arguments{
 \item{fixed}{One sided formula for fixed effects in the simulation.
@@ -86,6 +87,34 @@ See \code{\link{contrasts}} for more detail.}
 \item{outcome_type}{A vector specifying the type of outcome, must be either
 logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 be counts.}
+
+\item{cross_class_params}{A list of named parameters when cross classified 
+data structures are desired. Must include the following arguments:
+ \itemize{
+  \item num_ids: The number of cross classified clusters. These are in 
+       addition to the typical cluster ids
+  \item random_param: This argument is a list of arguments passed to 
+     \code{\link{sim_rand_eff}}. These must include:
+    \itemize{
+     \item random_var: The variance of the cross classified random effect
+     \item rand_gen: The random generating function used to generate the 
+        cross classified random effect.
+    }
+    Optional elements are:
+  \itemize{
+      \item ther: Theorectial mean and variance from rand_gen,
+      \item ther_sim: Simulate mean/variance for standardization purposes,
+      \item cor_vars: Correlation between random effects,
+      \item ...: Additional parameters needed for rand_gen function.
+  } 
+ }}
+
+\item{knot_args}{A nested list of named knot arguments. See \code{\link{sim_knot}} 
+for more details. Arguments must include:
+  \itemize{
+    \item var
+    \item knot_locations
+  }}
 
 \item{...}{Not currently used.}
 }

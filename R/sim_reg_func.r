@@ -60,9 +60,14 @@
 #'  of variance.
 #' @param heterogeneity_var Variable name as a character string to use for 
 #'  heterogeneity of variance simulation.
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param ... Not currently used.
 #' @importFrom dplyr bind_cols
-#' @importFrom tibble as_tibble
 #' @export 
 #' @examples 
 #' #' # generating parameters for single level regression
@@ -86,15 +91,17 @@ sim_reg_single <- function(fixed, fixed_param, cov_param, n, error_var,
                            cor_vars = NULL, fact_vars = list(NULL), 
                            lvl1_err_params = NULL, arima_mod = list(NULL), 
                            contrasts = NULL, homogeneity = TRUE,
-                           heterogeneity_var = NULL, ...) {
+                           heterogeneity_var = NULL, knot_args = list(NULL),
+                           ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")   
 
   Xmat <- sim_fixef_single(fixed = fixed, fixed_vars = fixed_vars, n = n, 
                            cov_param = cov_param, cor_vars = cor_vars, 
-                           fact_vars = fact_vars, contrasts = contrasts)
+                           fact_vars = fact_vars, contrasts = contrasts,
+                           knot_args = knot_args)
   
-  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$|\\.k$|_k$", fixed_vars, ignore.case = TRUE))) {
     if(ncol(Xmat$Xmat) != length(fixed_param)) {
       stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
                  'variables in design matrix'))
@@ -128,7 +135,7 @@ sim_reg_single <- function(fixed, fixed_param, cov_param, n, error_var,
   
   Xmat <- Xmat[, !duplicated(colnames(Xmat))]
   
-  tibble::as_tibble(Xmat)
+  Xmat
 }
 
 
@@ -151,8 +158,8 @@ sim_reg_single <- function(fixed, fixed_param, cov_param, n, error_var,
 #'  Must be same length as fixed.
 #' @param random_param A list of named elements that must contain: 
 #'   \itemize{
-#'      \item  random_var = variance of random parameters,
-#'      \item  rand_gen = Name of simulation function for random effects.
+#'      \item  random_var: variance of random parameters,
+#'      \item  rand_gen: Name of simulation function for random effects.
 #'   }
 #'          Optional elements are:
 #'   \itemize{
@@ -220,8 +227,34 @@ sim_reg_single <- function(fixed, fixed_param, cov_param, n, error_var,
 #'  of variance.
 #' @param heterogeneity_var Variable name as a character string to use for 
 #'  heterogeneity of variance simulation.
+#' @param cross_class_params A list of named parameters when cross classified 
+#'  data structures are desired. Must include the following arguments:
+#'   \itemize{
+#'    \item num_ids: The number of cross classified clusters. These are in 
+#'         addition to the typical cluster ids
+#'    \item random_param: This argument is a list of arguments passed to 
+#'       \code{\link{sim_rand_eff}}. These must include:
+#'      \itemize{
+#'       \item random_var: The variance of the cross classified random effect
+#'       \item rand_gen: The random generating function used to generate the 
+#'          cross classified random effect.
+#'      }
+#'      Optional elements are:
+#'    \itemize{
+#'        \item ther: Theorectial mean and variance from rand_gen,
+#'        \item ther_sim: Simulate mean/variance for standardization purposes,
+#'        \item cor_vars: Correlation between random effects,
+#'        \item ...: Additional parameters needed for rand_gen function.
+#'    } 
+#'   }
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param ... Not currently used.
-#' @importFrom tibble as_tibble
+#' @importFrom dplyr bind_cols
 #' @export 
 #' @examples 
 #' #' # Longitudinal linear mixed model example
@@ -248,7 +281,9 @@ sim_reg_nested <- function(fixed, random, fixed_param, random_param = list(),
                            fact_vars = list(NULL), unbal = FALSE, 
                            unbal_design = NULL, lvl1_err_params = NULL, 
                            arima_mod = list(NULL), contrasts = NULL, 
-                           homogeneity = TRUE, heterogeneity_var = NULL, ...) {
+                           homogeneity = TRUE, heterogeneity_var = NULL, 
+                           cross_class_params = NULL, knot_args = list(NULL),
+                           ...) {
 
   fixed_vars <- attr(terms(fixed),"term.labels")  
   rand_vars <- attr(terms(random),"term.labels")  
@@ -272,8 +307,8 @@ sim_reg_nested <- function(fixed, random, fixed_param, random_param = list(),
   Xmat <- sim_fixef_nested(fixed = fixed, fixed_vars = fixed_vars, 
                            cov_param = cov_param, n = n, p = lvl1ss, 
                             data_str = data_str, cor_vars = cor_vars, 
-                           fact_vars = fact_vars, 
-                           contrasts = contrasts)
+                           fact_vars = fact_vars, contrasts = contrasts,
+                           knot_args = knot_args)
 
   rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
 
@@ -282,7 +317,7 @@ sim_reg_nested <- function(fixed, random, fixed_param, random_param = list(),
   colnames(reff) <- c(unlist(lapply(1:ncol(rand_eff), function(xx)
     paste("b", xx-1, sep = ""))))
   
-  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$|\\.k$|_k$", fixed_vars, ignore.case = TRUE))) {
     if(ncol(Xmat$Xmat) != length(fixed_param)) {
       stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
                  'variables in design matrix'))
@@ -322,13 +357,22 @@ sim_reg_nested <- function(fixed, random, fixed_param, random_param = list(),
     
     Xmat <- data.frame(Xmat, reff, sim_data)
   }
-
- Xmat$withinID <- unlist(lapply(1:length(lvl1ss), function(xx) 1:lvl1ss[xx]))
- Xmat$clustID <- rep(1:n, times = lvl1ss)
- 
- Xmat <- Xmat[, !duplicated(colnames(Xmat))]
- 
- tibble::as_tibble(Xmat)
+  
+  Xmat$withinID <- unlist(lapply(1:length(lvl1ss), function(xx) 1:lvl1ss[xx]))
+  Xmat$clustID <- rep(1:n, times = lvl1ss)
+  
+  if(!is.null(cross_class_params)) {
+    
+    cross_eff <- cross_class(cross_class_params$num_ids, sum(lvl1ss), 
+                             cross_class_params$random_param)
+    
+    Xmat <- dplyr::bind_cols(Xmat, cross_eff)
+    Xmat$sim_data <- Xmat$sim_data + Xmat$c1
+  }
+  
+  Xmat <- Xmat[, !duplicated(colnames(Xmat))]
+  
+  Xmat
 }
 
 #' Function to simulate three level nested data
@@ -436,8 +480,33 @@ sim_reg_nested <- function(fixed, random, fixed_param, random_param = list(),
 #'  of variance.
 #' @param heterogeneity_var Variable name as a character string to use for 
 #'  heterogeneity of variance simulation.
+#' @param cross_class_params A list of named parameters when cross classified 
+#'  data structures are desired. Must include the following arguments:
+#'   \itemize{
+#'    \item num_ids: The number of cross classified clusters. These are in 
+#'         addition to the typical cluster ids
+#'    \item random_param: This argument is a list of arguments passed to 
+#'       \code{\link{sim_rand_eff}}. These must include:
+#'      \itemize{
+#'       \item random_var: The variance of the cross classified random effect
+#'       \item rand_gen: The random generating function used to generate the 
+#'          cross classified random effect.
+#'      }
+#'      Optional elements are:
+#'    \itemize{
+#'        \item ther: Theorectial mean and variance from rand_gen,
+#'        \item ther_sim: Simulate mean/variance for standardization purposes,
+#'        \item cor_vars: Correlation between random effects,
+#'        \item ...: Additional parameters needed for rand_gen function.
+#'    } 
+#'   }
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param ... Not currently used.
-#' @importFrom tibble as_tibble
 #' @export 
 #' @examples 
 #' #' # Three level example
@@ -471,7 +540,8 @@ sim_reg_nested3 <- function(fixed, random, random3, fixed_param,
                             unbal_design = list("level2" = NULL, "level3" = NULL),
                             lvl1_err_params = NULL, arima_mod = list(NULL),
                             contrasts = NULL, homogeneity = TRUE,
-                            heterogeneity_var = NULL, ...) {
+                            heterogeneity_var = NULL, cross_class_params = NULL,
+                            knot_args = list(NULL), ...) {
 
   fixed_vars <- attr(terms(fixed),"term.labels")   
   rand_vars <- attr(terms(random),"term.labels")   
@@ -529,7 +599,8 @@ sim_reg_nested3 <- function(fixed, random, random3, fixed_param,
   Xmat <- sim_fixef_nested3(fixed, fixed_vars, cov_param, k, n = lvl2ss, 
                             p = lvl1ss, data_str = data_str, 
                             cor_vars = cor_vars, 
-                            fact_vars = fact_vars, contrasts = contrasts)
+                            fact_vars = fact_vars, contrasts = contrasts,
+                            knot_args = knot_args)
 
   rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
   rand_eff3 <- do.call(sim_rand_eff, c(random_param3, n = k))
@@ -544,7 +615,7 @@ sim_reg_nested3 <- function(fixed, random, random3, fixed_param,
   colnames(reff3) <- c(unlist(lapply(1:ncol(rand_eff3), function(xx) 
     paste("b", xx-1, "_3", sep = ""))))
   
-  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$|\\.k$|_k$", fixed_vars, ignore.case = TRUE))) {
     if(ncol(Xmat$Xmat) != length(fixed_param)) {
       stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
                  'variables in design matrix'))
@@ -593,7 +664,16 @@ sim_reg_nested3 <- function(fixed, random, random3, fixed_param,
   Xmat$clustID <- rep(1:n, times = lvl1ss)
   Xmat$clust3ID <- rep(1:k, times = lvl3ss)
   
+  if(!is.null(cross_class_params)) {
+    
+    cross_eff <- cross_class(cross_class_params$num_ids, sum(lvl1ss), 
+                             cross_class_params$random_param)
+    
+    Xmat <- dplyr::bind_cols(Xmat, cross_eff)
+    Xmat$sim_data <- Xmat$sim_data + Xmat$c1
+  }
+  
   Xmat <- Xmat[, !duplicated(colnames(Xmat))]
  
-  tibble::as_tibble(Xmat)
+  Xmat
 }

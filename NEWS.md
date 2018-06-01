@@ -1,3 +1,15 @@
+# simglm 0.6.3
+* Add piecewise linear simulation.
+
+# simglm 0.6.2
+* Add cross classified model simulation
+* Add option to specify any model to fit for power analysis
+   - This brought about a change to use broom::tidy.
+
+# simglm 0.6.1
+* Generalize fact_vars code
+   - This now is similar to cov_param
+
 # simglm 0.6.0
 * Shiny Application works again!
    - Can now simulate and run power. 

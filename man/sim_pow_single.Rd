@@ -6,9 +6,11 @@
 \usage{
 sim_pow_single(fixed, fixed_param, cov_param, n, error_var, with_err_gen,
   arima = FALSE, data_str, cor_vars = NULL, fact_vars = list(NULL),
-  lvl1_err_params = NULL, arima_mod = list(NULL), missing = FALSE,
-  missing_args = list(NULL), pow_param = NULL, alpha, pow_dist = c("z",
-  "t"), pow_tail = c(1, 2), lm_fit_mod = NULL, ...)
+  lvl1_err_params = NULL, arima_mod = list(NULL), contrasts = NULL,
+  homogeneity = TRUE, heterogeneity_var = NULL, knot_args = list(NULL),
+  missing = FALSE, missing_args = list(NULL), pow_param = NULL, alpha,
+  pow_dist = c("z", "t"), pow_tail = c(1, 2), lm_fit_mod = NULL,
+  general_mod = NULL, general_extract = NULL, ...)
 }
 \arguments{
 \item{fixed}{One sided formula for fixed effects in the simulation. 
@@ -66,6 +68,24 @@ level one error generating function}
 \item{arima_mod}{A list indicating the ARIMA model to pass to arima.sim. 
 See \code{\link{arima.sim}} for examples.}
 
+\item{contrasts}{An optional list that specifies the contrasts to be used 
+for factor variables (i.e. those variables with .f or .c). 
+See \code{\link{contrasts}} for more detail.}
+
+\item{homogeneity}{Either TRUE (default) indicating homogeneity of variance
+assumption is assumed or FALSE to indicate desire to generate heterogeneity 
+of variance.}
+
+\item{heterogeneity_var}{Variable name as a character string to use for 
+heterogeneity of variance simulation.}
+
+\item{knot_args}{A nested list of named knot arguments. See \code{\link{sim_knot}} 
+for more details. Arguments must include:
+  \itemize{
+    \item var
+    \item knot_locations
+  }}
+
 \item{missing}{TRUE/FALSE flag indicating whether missing data should be 
 simulated.}
 
@@ -84,6 +104,15 @@ test, z or t?}
 \item{pow_tail}{One-tailed or two-tailed test?}
 
 \item{lm_fit_mod}{Valid lm syntax to be used for model fitting.}
+
+\item{general_mod}{Valid model syntax. This syntax can be from any R package. 
+By default, broom is used to extract model result information. Note, 
+package must be defined or loaded prior to running the sim_pow function.}
+
+\item{general_extract}{A valid function to extract model results if 
+general_mod argument is used. This argument is primarily used if extracting model
+results is not possibly using the broom package. If this is left NULL (default), 
+broom is used to collect model results.}
 
 \item{...}{Additional specification needed to pass to the random generating 
 function defined by with_err_gen.}

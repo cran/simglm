@@ -7,9 +7,11 @@
 sim_pow_glm_nested(fixed, random, fixed_param, random_param = list(),
   cov_param, n, p, data_str, cor_vars = NULL, fact_vars = list(NULL),
   unbal = list(level2 = FALSE, level3 = FALSE), unbal_design = list(level2 =
-  NULL, level3 = NULL), outcome_type, missing = FALSE,
+  NULL, level3 = NULL), contrasts = NULL, outcome_type,
+  cross_class_params = NULL, knot_args = list(NULL), missing = FALSE,
   missing_args = list(NULL), pow_param = NULL, alpha, pow_dist = c("z",
-  "t"), pow_tail = c(1, 2), lme4_fit_mod = NULL, lme4_fit_family, ...)
+  "t"), pow_tail = c(1, 2), lme4_fit_mod = NULL, lme4_fit_family,
+  general_mod = NULL, general_extract = NULL, ...)
 }
 \arguments{
 \item{fixed}{One sided formula for fixed effects in the simulation. 
@@ -84,9 +86,41 @@ as the level two or three sample size. These are specified as a named list in wh
 level two sample size is controlled via "level2" and level three sample size is 
 controlled via "level3".}
 
+\item{contrasts}{An optional list that specifies the contrasts to be used 
+for factor variables (i.e. those variables with .f or .c). 
+See \code{\link{contrasts}} for more detail.}
+
 \item{outcome_type}{A vector specifying the type of outcome, must be either
 logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 be counts.}
+
+\item{cross_class_params}{A list of named parameters when cross classified 
+data structures are desired. Must include the following arguments:
+ \itemize{
+  \item num_ids: The number of cross classified clusters. These are in 
+       addition to the typical cluster ids
+  \item random_param: This argument is a list of arguments passed to 
+     \code{\link{sim_rand_eff}}. These must include:
+    \itemize{
+     \item random_var: The variance of the cross classified random effect
+     \item rand_gen: The random generating function used to generate the 
+        cross classified random effect.
+    }
+    Optional elements are:
+  \itemize{
+      \item ther: Theorectial mean and variance from rand_gen,
+      \item ther_sim: Simulate mean/variance for standardization purposes,
+      \item cor_vars: Correlation between random effects,
+      \item ...: Additional parameters needed for rand_gen function.
+  } 
+ }}
+
+\item{knot_args}{A nested list of named knot arguments. See \code{\link{sim_knot}} 
+for more details. Arguments must include:
+  \itemize{
+    \item var
+    \item knot_locations
+  }}
 
 \item{missing}{TRUE/FALSE flag indicating whether missing data should be 
 simulated.}
@@ -108,6 +142,15 @@ test, z or t?}
 \item{lme4_fit_mod}{Valid lme4 formula syntax to be used for model fitting.}
 
 \item{lme4_fit_family}{Valid lme4 family specification passed to glmer.}
+
+\item{general_mod}{Valid model syntax. This syntax can be from any R package. 
+By default, broom is used to extract model result information. Note, 
+package must be defined or loaded prior to running the sim_pow function.}
+
+\item{general_extract}{A valid function to extract model results if 
+general_mod argument is used. This argument is primarily used if extracting model
+results is not possibly using the broom package. If this is left NULL (default), 
+broom is used to collect model results.}
 
 \item{...}{Not currently used.}
 }

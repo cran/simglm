@@ -9,7 +9,8 @@ sim_reg(fixed, random, random3, fixed_param, random_param = list(),
   arima = FALSE, data_str, cor_vars = NULL, fact_vars = list(NULL),
   unbal = list(level2 = FALSE, level3 = FALSE), unbal_design = list(level2 =
   NULL, level3 = NULL), lvl1_err_params = NULL, arima_mod = list(NULL),
-  contrasts = NULL, homogeneity = TRUE, heterogeneity_var = NULL, ...)
+  contrasts = NULL, homogeneity = TRUE, heterogeneity_var = NULL,
+  cross_class_params = NULL, knot_args = list(NULL), ...)
 }
 \arguments{
 \item{fixed}{One sided formula for fixed effects in the simulation.
@@ -128,6 +129,34 @@ of variance.}
 
 \item{heterogeneity_var}{Variable name as a character string to use for 
 heterogeneity of variance simulation.}
+
+\item{cross_class_params}{A list of named parameters when cross classified 
+data structures are desired. Must include the following arguments:
+ \itemize{
+  \item num_ids: The number of cross classified clusters. These are in 
+       addition to the typical cluster ids
+  \item random_param: This argument is a list of arguments passed to 
+     \code{\link{sim_rand_eff}}. These must include:
+    \itemize{
+     \item random_var: The variance of the cross classified random effect
+     \item rand_gen: The random generating function used to generate the 
+        cross classified random effect.
+    }
+    Optional elements are:
+  \itemize{
+      \item ther: Theorectial mean and variance from rand_gen,
+      \item ther_sim: Simulate mean/variance for standardization purposes,
+      \item cor_vars: Correlation between random effects,
+      \item ...: Additional parameters needed for rand_gen function.
+  } 
+ }}
+
+\item{knot_args}{A nested list of named knot arguments. See \code{\link{sim_knot}} 
+for more details. Arguments must include:
+  \itemize{
+    \item var
+    \item knot_locations
+  }}
 
 \item{...}{Not currently used.}
 }

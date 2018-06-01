@@ -44,8 +44,13 @@
 #' @param outcome_type A vector specifying the type of outcome, must be either
 #'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 #'   be counts.
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param ... Not currently used.
-#' @importFrom tibble as_tibble
 #' @examples 
 #' # generating parameters for single level regression
 #' set.seed(2)
@@ -64,12 +69,13 @@
 #' @export
 sim_glm_single <- function(fixed, fixed_param, cov_param, n, 
                            data_str, cor_vars = NULL, fact_vars = list(NULL),
-                           contrasts = NULL, outcome_type, ...) {
+                           contrasts = NULL, outcome_type, 
+                           knot_args = list(NULL), ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")    
   
   Xmat <- sim_fixef_single(fixed, fixed_vars, n, cov_param, cor_vars, 
-                           fact_vars, contrasts)
+                           fact_vars, contrasts, knot_args = knot_args)
   
   if(ncol(Xmat) != length(fixed_param)) {
     stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
@@ -83,7 +89,7 @@ sim_glm_single <- function(fixed, fixed_param, cov_param, n,
   
   Xmat <- Xmat[, !duplicated(colnames(Xmat))]
   
-  tibble::as_tibble(Xmat)
+  Xmat
 }
 
 #' Simulate two level logistic regression model
@@ -158,8 +164,33 @@ sim_glm_single <- function(fixed, fixed_param, cov_param, n,
 #' @param outcome_type A vector specifying the type of outcome, must be either
 #'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 #'   be counts.
+#' @param cross_class_params A list of named parameters when cross classified 
+#'  data structures are desired. Must include the following arguments:
+#'   \itemize{
+#'    \item num_ids: The number of cross classified clusters. These are in 
+#'         addition to the typical cluster ids
+#'    \item random_param: This argument is a list of arguments passed to 
+#'       \code{\link{sim_rand_eff}}. These must include:
+#'      \itemize{
+#'       \item random_var: The variance of the cross classified random effect
+#'       \item rand_gen: The random generating function used to generate the 
+#'          cross classified random effect.
+#'      }
+#'      Optional elements are:
+#'    \itemize{
+#'        \item ther: Theorectial mean and variance from rand_gen,
+#'        \item ther_sim: Simulate mean/variance for standardization purposes,
+#'        \item cor_vars: Correlation between random effects,
+#'        \item ...: Additional parameters needed for rand_gen function.
+#'    } 
+#'   }
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param ... Not currently used.
-#' @importFrom tibble as_tibble
 #'      
 #' @examples
 #' # Longitudinal linear mixed model example
@@ -182,7 +213,8 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
                            cov_param, n, p, data_str, cor_vars = NULL, 
                            fact_vars = list(NULL), unbal = FALSE, 
                            unbal_design = NULL, contrasts = NULL, 
-                           outcome_type, ...) {
+                           outcome_type, cross_class_params = NULL, 
+                           knot_args = list(NULL), ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")    
   rand.vars <- attr(terms(random),"term.labels")   
@@ -206,7 +238,8 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
   
   Xmat <- sim_fixef_nested(fixed, fixed_vars, cov_param, n, lvl1ss, 
                            data_str = data_str, cor_vars = cor_vars, 
-                           fact_vars = fact_vars, contrasts = contrasts)
+                           fact_vars = fact_vars, contrasts = contrasts,
+                           knot_args = knot_args)
   
   rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
   
@@ -215,7 +248,7 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
   colnames(reff) <- c(unlist(lapply(1:ncol(rand_eff), function(xx) 
     paste("b", xx-1, sep = ""))))
   
-  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$|\\.k$|_k$", fixed_vars, ignore.case = TRUE))) {
     if(ncol(Xmat$Xmat) != length(fixed_param)) {
       stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
                  'variables in design matrix'))
@@ -247,9 +280,18 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
   Xmat$withinID <- unlist(lapply(1:length(lvl1ss), function(xx) 1:lvl1ss[xx]))
   Xmat$clustID <- rep(1:n, times = lvl1ss)
   
+  if(!is.null(cross_class_params)) {
+    
+    cross_eff <- cross_class(cross_class_params$num_ids, sum(lvl1ss), 
+                             cross_class_params$random_param)
+    
+    Xmat <- dplyr::bind_cols(Xmat, cross_eff)
+    Xmat$sim_data <- Xmat$sim_data + Xmat$c1
+  }
+  
   Xmat <- Xmat[, !duplicated(colnames(Xmat))]
   
-  tibble::as_tibble(Xmat)
+  Xmat
 }
 
 #' Function to simulate three level nested data
@@ -344,8 +386,33 @@ sim_glm_nested <- function(fixed, random, fixed_param, random_param = list(),
 #' @param outcome_type A vector specifying the type of outcome, must be either
 #'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 #'   be counts.
+#' @param cross_class_params A list of named parameters when cross classified 
+#'  data structures are desired. Must include the following arguments:
+#'   \itemize{
+#'    \item num_ids: The number of cross classified clusters. These are in 
+#'         addition to the typical cluster ids
+#'    \item random_param: This argument is a list of arguments passed to 
+#'       \code{\link{sim_rand_eff}}. These must include:
+#'      \itemize{
+#'       \item random_var: The variance of the cross classified random effect
+#'       \item rand_gen: The random generating function used to generate the 
+#'          cross classified random effect.
+#'      }
+#'      Optional elements are:
+#'    \itemize{
+#'        \item ther: Theorectial mean and variance from rand_gen,
+#'        \item ther_sim: Simulate mean/variance for standardization purposes,
+#'        \item cor_vars: Correlation between random effects,
+#'        \item ...: Additional parameters needed for rand_gen function.
+#'    } 
+#'   }
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param ... Not currently used.
-#' @importFrom tibble as_tibble
 #' 
 #' @examples 
 #' # Three level example
@@ -376,7 +443,8 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
                             unbal = list("level2" = FALSE, "level3" = FALSE), 
                             unbal_design = list("level2" = NULL, "level3" = NULL),
                             contrasts = NULL, 
-                            outcome_type, ...) {
+                            outcome_type, cross_class_params = NULL, 
+                            knot_args = list(NULL), ...) {
 
   fixed_vars <- attr(terms(fixed),"term.labels")    
   rand.vars <- attr(terms(random),"term.labels")   
@@ -434,7 +502,8 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
   Xmat <- sim_fixef_nested3(fixed, fixed_vars, cov_param, k, n = lvl2ss, 
                             p = lvl1ss, data_str = data_str, 
                             cor_vars = cor_vars, 
-                            fact_vars = fact_vars, contrasts = contrasts)
+                            fact_vars = fact_vars, contrasts = contrasts,
+                            knot_args = knot_args)
   
   rand_eff <- do.call(sim_rand_eff, c(random_param, n = n))
   rand_eff3 <- do.call(sim_rand_eff, c(random_param3, n = k))
@@ -449,7 +518,7 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
   colnames(reff3) <- c(unlist(lapply(1:ncol(rand_eff3), function(xx) 
     paste("b", xx-1, "_3", sep = ""))))
   
-  if(any(grepl("\\.f$|\\.c$|_f$|_c$", fixed_vars, ignore.case = TRUE))) {
+  if(any(grepl("\\.f$|\\.c$|_f$|_c$|\\.k$|_k$", fixed_vars, ignore.case = TRUE))) {
     if(ncol(Xmat$Xmat) != length(fixed_param)) {
       stop(paste(length(fixed_param), 'parameters specified for', ncol(Xmat), 
                  'variables in design matrix'))
@@ -486,7 +555,16 @@ sim_glm_nested3 <- function(fixed, random, random3, fixed_param,
   Xmat$clustID <- rep(1:n, times = lvl1ss)
   Xmat$clust3ID <- rep(1:k, times = lvl3ss)
   
+  if(!is.null(cross_class_params)) {
+    
+    cross_eff <- cross_class(cross_class_params$num_ids, sum(lvl1ss), 
+                             cross_class_params$random_param)
+    
+    Xmat <- dplyr::bind_cols(Xmat, cross_eff)
+    Xmat$sim_data <- Xmat$sim_data + Xmat$c1
+  }
+  
   Xmat <- Xmat[, !duplicated(colnames(Xmat))]
   
-  tibble::as_tibble(Xmat)
+  Xmat
 }

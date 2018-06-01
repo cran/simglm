@@ -84,9 +84,38 @@
 #'  as the level two or three sample size. These are specified as a named list in which
 #'  level two sample size is controlled via "level2" and level three sample size is 
 #'  controlled via "level3".
+#' @param contrasts An optional list that specifies the contrasts to be used 
+#'  for factor variables (i.e. those variables with .f or .c). 
+#'  See \code{\link{contrasts}} for more detail.
 #' @param outcome_type A vector specifying the type of outcome, must be either
 #'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 #'   be counts.
+#' @param cross_class_params A list of named parameters when cross classified 
+#'  data structures are desired. Must include the following arguments:
+#'   \itemize{
+#'    \item num_ids: The number of cross classified clusters. These are in 
+#'         addition to the typical cluster ids
+#'    \item random_param: This argument is a list of arguments passed to 
+#'       \code{\link{sim_rand_eff}}. These must include:
+#'      \itemize{
+#'       \item random_var: The variance of the cross classified random effect
+#'       \item rand_gen: The random generating function used to generate the 
+#'          cross classified random effect.
+#'      }
+#'      Optional elements are:
+#'    \itemize{
+#'        \item ther: Theorectial mean and variance from rand_gen,
+#'        \item ther_sim: Simulate mean/variance for standardization purposes,
+#'        \item cor_vars: Correlation between random effects,
+#'        \item ...: Additional parameters needed for rand_gen function.
+#'    } 
+#'   }
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param missing TRUE/FALSE flag indicating whether missing data should be 
 #'  simulated.
 #' @param missing_args Additional missing arguments to pass to the missing_data 
@@ -100,6 +129,13 @@
 #' @param pow_tail One-tailed or two-tailed test?
 #' @param lme4_fit_mod Valid lme4 formula syntax to be used for model fitting.
 #' @param lme4_fit_family Valid lme4 family specification passed to glmer.
+#' @param general_mod Valid model syntax. This syntax can be from any R package. 
+#'   By default, broom is used to extract model result information. Note, 
+#'   package must be defined or loaded prior to running the sim_pow function.
+#' @param general_extract A valid function to extract model results if 
+#'   general_mod argument is used. This argument is primarily used if extracting model
+#'   results is not possibly using the broom package. If this is left NULL (default), 
+#'   broom is used to collect model results.
 #' @param ... Not currently used.
 #' @export 
 sim_pow_glm_nested3 <- function(fixed, random, random3, fixed_param, 
@@ -108,11 +144,14 @@ sim_pow_glm_nested3 <- function(fixed, random, random3, fixed_param,
                                 fact_vars = list(NULL), 
                                 unbal = list("level2" = FALSE, "level3" = FALSE), 
                                 unbal_design = list("level2" = NULL, "level3" = NULL),
-                                outcome_type, 
+                                contrasts = NULL,
+                                outcome_type, cross_class_params = NULL,
+                                knot_args = list(NULL),
                                 missing = FALSE, missing_args = list(NULL),
                                 pow_param = NULL, alpha, pow_dist = c("z", "t"), 
                                 pow_tail = c(1, 2), 
-                                lme4_fit_mod = NULL, lme4_fit_family, ...) {
+                                lme4_fit_mod = NULL, lme4_fit_family, 
+                                general_mod = NULL, general_extract = NULL, ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")  
   rand_vars <- attr(terms(random),"term.labels")
@@ -125,13 +164,13 @@ sim_pow_glm_nested3 <- function(fixed, random, random3, fixed_param,
     stop('pow_param must be a subset of fixed')
   }
   
-  temp_nest <- sim_glm_nested3(fixed, random, random3, fixed_param, random_param, 
+  data <- sim_glm_nested3(fixed, random, random3, fixed_param, random_param, 
                                random_param3, cov_param, k, n, p, 
                                data_str, cor_vars, fact_vars, 
-                               unbal, unbal_design, outcome_type = outcome_type, 
-                               ...)
+                               unbal, unbal_design, contrasts, outcome_type, 
+                               cross_class_params, knot_args, ...)
   if(missing) {
-    temp_nest <- do.call(missing_data, c(list(sim_data = temp_nest), 
+    data <- do.call(missing_data, c(list(sim_data = data), 
                                          missing_args))
   }
   
@@ -139,45 +178,47 @@ sim_pow_glm_nested3 <- function(fixed, random, random3, fixed_param,
     if(!purrr::is_formula(lme4_fit_mod)) {
       stop('lme4_fit_mod must be a formula to pass to glmer')
     }
-    temp_mod <- lme4::glmer(lme4_fit_mod, data = temp_nest, 
+    temp_mod <- lme4::glmer(lme4_fit_mod, data = data, 
                             family = lme4_fit_family)
-    test_stat <- data.frame(abs(summary(temp_mod)$coefficients[, 3]))
   } else {
-    fix1 <- paste("sim_data ~", paste(fixed_vars, collapse = "+"))
-    if(missing) {
-      fix1 <- gsub('sim_data', 'sim_data2', fix1)
-    }
-    ran1 <- paste("(", paste(rand_vars, collapse = "+"), "| clustID)", sep = "")
-    if(length(rand_vars3) == 0) {
-      ran2 <- '(1 | clust3ID)'
+    if(!is.null(general_mod)) {
+      temp_mod <- eval(parse(text = general_mod))
     } else {
-      ran2 <- paste('(', paste(rand_vars3, collapse = "+"), "| clust3ID)", 
-                    sep = "")
+      fix1 <- paste("sim_data ~", paste(fixed_vars, collapse = "+"))
+      if(missing) {
+        fix1 <- gsub('sim_data', 'sim_data2', fix1)
+      }
+      ran1 <- paste("(", paste(rand_vars, collapse = "+"), "| clustID)", sep = "")
+      if(length(rand_vars3) == 0) {
+        ran2 <- '(1 | clust3ID)'
+      } else {
+        ran2 <- paste('(', paste(rand_vars3, collapse = "+"), "| clust3ID)", 
+                      sep = "")
+      }
+      fm1 <- as.formula(paste(fix1, ran1, ran2, sep = "+ "))
+      
+      if(outcome_type == 'logistic') {
+        temp_mod <- lme4::glmer(fm1, data = data, family = binomial)
+      } else {
+        temp_mod <- lme4::glmer(fm1, data = data, family = poisson)
+      }
     }
-    fm1 <- as.formula(paste(fix1, ran1, ran2, sep = "+ "))
-    
-    if(outcome_type == 'logistic') {
-      temp_mod <- lme4::glmer(fm1, data = temp_nest, family = binomial)
-    } else {
-      temp_mod <- lme4::glmer(fm1, data = temp_nest, family = poisson)
-    }
-    
-    test_stat <- data.frame(abs(summary(temp_mod)$coefficients[, 3]))
+  }
+  if(!is.null(general_extract)) {
+    test_stat <- do.call(general_extract, temp_mod)
+  } else{
+    test_stat <- broom::tidy(temp_mod, effects = 'fixed')
   }
   
   crit <- qnorm(alpha/pow_tail, lower.tail = FALSE)
   
-  if(is.null(pow_param)) {
-    pow_param <- rownames(test_stat)
-  } else {
-    test_stat <- test_stat[pow_param, ]
+  if(!is.null(pow_param)) {
+    test_stat <- dplyr::filter(test_stat, term %in% pow_param)
   }
   
-  reject <- data.frame(var = pow_param,
-                       test_stat = test_stat)
-  reject$reject <- ifelse(test_stat >= crit, 1, 0)
+  test_stat$reject <- ifelse(test_stat['estimate'] >= crit, 1, 0)
   
-  reject
+  test_stat
 }
 
 #' Power simulation for nested designs
@@ -251,9 +292,38 @@ sim_pow_glm_nested3 <- function(fixed, random, random3, fixed_param,
 #'  as the level two or three sample size. These are specified as a named list in which
 #'  level two sample size is controlled via "level2" and level three sample size is 
 #'  controlled via "level3".
+#' @param contrasts An optional list that specifies the contrasts to be used 
+#'  for factor variables (i.e. those variables with .f or .c). 
+#'  See \code{\link{contrasts}} for more detail.
 #' @param outcome_type A vector specifying the type of outcome, must be either
 #'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 #'   be counts.
+#' @param cross_class_params A list of named parameters when cross classified 
+#'  data structures are desired. Must include the following arguments:
+#'   \itemize{
+#'    \item num_ids: The number of cross classified clusters. These are in 
+#'         addition to the typical cluster ids
+#'    \item random_param: This argument is a list of arguments passed to 
+#'       \code{\link{sim_rand_eff}}. These must include:
+#'      \itemize{
+#'       \item random_var: The variance of the cross classified random effect
+#'       \item rand_gen: The random generating function used to generate the 
+#'          cross classified random effect.
+#'      }
+#'      Optional elements are:
+#'    \itemize{
+#'        \item ther: Theorectial mean and variance from rand_gen,
+#'        \item ther_sim: Simulate mean/variance for standardization purposes,
+#'        \item cor_vars: Correlation between random effects,
+#'        \item ...: Additional parameters needed for rand_gen function.
+#'    } 
+#'   }
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param missing TRUE/FALSE flag indicating whether missing data should be 
 #'  simulated.
 #' @param missing_args Additional missing arguments to pass to the missing_data 
@@ -267,6 +337,13 @@ sim_pow_glm_nested3 <- function(fixed, random, random3, fixed_param,
 #' @param pow_tail One-tailed or two-tailed test?
 #' @param lme4_fit_mod Valid lme4 formula syntax to be used for model fitting.
 #' @param lme4_fit_family Valid lme4 family specification passed to glmer.
+#' @param general_mod Valid model syntax. This syntax can be from any R package. 
+#'   By default, broom is used to extract model result information. Note, 
+#'   package must be defined or loaded prior to running the sim_pow function.
+#' @param general_extract A valid function to extract model results if 
+#'   general_mod argument is used. This argument is primarily used if extracting model
+#'   results is not possibly using the broom package. If this is left NULL (default), 
+#'   broom is used to collect model results.
 #' @param ... Not currently used.
 #' @export 
 sim_pow_glm_nested <- function(fixed, random, fixed_param, 
@@ -274,10 +351,13 @@ sim_pow_glm_nested <- function(fixed, random, fixed_param,
                           cor_vars = NULL, fact_vars = list(NULL),
                           unbal = list("level2" = FALSE, "level3" = FALSE), 
                           unbal_design = list("level2" = NULL, "level3" = NULL),
-                          outcome_type, missing = FALSE, 
+                          contrasts = NULL,
+                          outcome_type, cross_class_params = NULL, 
+                          knot_args = list(NULL), missing = FALSE, 
                           missing_args = list(NULL), pow_param = NULL, 
                           alpha, pow_dist = c("z", "t"), pow_tail = c(1, 2), 
-                          lme4_fit_mod = NULL, lme4_fit_family, ...) {
+                          lme4_fit_mod = NULL, lme4_fit_family, 
+                          general_mod = NULL, general_extract = NULL, ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")    
   rand_vars <- attr(terms(random),"term.labels")
@@ -289,11 +369,12 @@ sim_pow_glm_nested <- function(fixed, random, fixed_param,
     stop('pow_param must be a subset of fixed')
   }
 
-  temp_nest <- sim_glm_nested(fixed, random, fixed_param, random_param, 
+  data <- sim_glm_nested(fixed, random, fixed_param, random_param, 
                               cov_param, n, p, data_str, cor_vars, fact_vars, 
-                              unbal, unbal_design, outcome_type = outcome_type, ...)
+                              unbal, unbal_design, contrasts, outcome_type = outcome_type, 
+                              cross_class_params, knot_args, ...)
   if(missing) {
-    temp_nest <- do.call(missing_data, c(list(sim_data = temp_nest), 
+    data <- do.call(missing_data, c(list(sim_data = data), 
                                          missing_args))
   }
   
@@ -301,39 +382,42 @@ sim_pow_glm_nested <- function(fixed, random, fixed_param,
     if(!purrr::is_formula(lme4_fit_mod)) {
       stop('lme4_fit_mod must be a formula to pass to glmer')
     }
-    temp_mod <- lme4::glmer(lme4_fit_mod, data = temp_nest, 
+    temp_mod <- lme4::glmer(lme4_fit_mod, data = data, 
                             family = lme4_fit_family)
-    test_stat <- data.frame(abs(summary(temp_mod)$coefficients[, 3]))
   } else {
-    fix1 <- paste("sim_data ~", paste(fixed_vars, collapse = "+"))
-    if(missing) {
-      fix1 <- gsub('sim_data', 'sim_data2', fix1)
+    if(!is.null(general_mod)) {
+      temp_mod <- eval(parse(text = general_mod))
+    } else {
+      fix1 <- paste("sim_data ~", paste(fixed_vars, collapse = "+"))
+      if(missing) {
+        fix1 <- gsub('sim_data', 'sim_data2', fix1)
+      }
+      ran1 <- paste("(", paste(rand_vars, collapse = "+"), "|clustID)", sep = "")
+      fm1 <- as.formula(paste(fix1, ran1, sep = "+ "))
+      
+      if(outcome_type == 'logistic') {
+        temp_mod <- lme4::glmer(fm1, data = data, family = binomial)
+      } else 
+      {
+        temp_mod <- lme4::glmer(fm1, data = data, family = poisson)
+      }
     }
-    ran1 <- paste("(", paste(rand_vars, collapse = "+"), "|clustID)", sep = "")
-    fm1 <- as.formula(paste(fix1, ran1, sep = "+ "))
-    
-    if(outcome_type == 'logistic') {
-      temp_mod <- lme4::glmer(fm1, data = temp_nest, family = binomial)
-    } else 
-    {
-      temp_mod <- lme4::glmer(fm1, data = temp_nest, family = poisson)
-    }
-    
-    test_stat <- data.frame(abs(summary(temp_mod)$coefficients[, 3]))
   }
+  if(!is.null(general_extract)) {
+    test_stat <- do.call(general_extract, temp_mod)
+  } else{
+    test_stat <- broom::tidy(temp_mod, effects = 'fixed')
+  }
+  
   crit <- qnorm(alpha/pow_tail, lower.tail = FALSE)
   
-  if(is.null(pow_param)) {
-    pow_param <- rownames(test_stat)
-  } else {
-    test_stat <- test_stat[pow_param, ]
+  if(!is.null(pow_param)) {
+    test_stat <- dplyr::filter(test_stat, term %in% pow_param)
   }
   
-  reject <- data.frame(var = pow_param,
-                       test_stat = test_stat)
-  reject$reject <- ifelse(test_stat >= crit, 1, 0)
+  test_stat$reject <- ifelse(test_stat['estimate'] >= crit, 1, 0)
   
-  reject
+  test_stat
 }
 
 
@@ -381,9 +465,18 @@ sim_pow_glm_nested <- function(fixed, random, fixed_param,
 #'        \item value.labels
 #'    }
 #'     See also \code{\link{sample}} for use of these optional arguments.
+#' @param contrasts An optional list that specifies the contrasts to be used 
+#'  for factor variables (i.e. those variables with .f or .c). 
+#'  See \code{\link{contrasts}} for more detail.
 #' @param outcome_type A vector specifying the type of outcome, must be either
 #'   logistic or poisson. Logitstic outcome will be 0/1 and poisson outcome will
 #'   be counts.
+#' @param knot_args A nested list of named knot arguments. See \code{\link{sim_knot}} 
+#'  for more details. Arguments must include:
+#'    \itemize{
+#'      \item var
+#'      \item knot_locations
+#'    }
 #' @param missing TRUE/FALSE flag indicating whether missing data should be 
 #'  simulated.
 #' @param missing_args Additional missing arguments to pass to the missing_data 
@@ -397,16 +490,25 @@ sim_pow_glm_nested <- function(fixed, random, fixed_param,
 #' @param pow_tail One-tailed or two-tailed test?
 #' @param glm_fit_mod Valid glm syntax to be used for model fitting.
 #' @param glm_fit_family Valid family syntax to pass to the glm function.
+#' @param general_mod Valid model syntax. This syntax can be from any R package. 
+#'   By default, broom is used to extract model result information. Note, 
+#'   package must be defined or loaded prior to running the sim_pow function.
+#' @param general_extract A valid function to extract model results if 
+#'   general_mod argument is used. This argument is primarily used if extracting model
+#'   results is not possibly using the broom package. If this is left NULL (default), 
+#'   broom is used to collect model results.
 #' @param ... Additional specification needed to pass to the random generating 
 #'             function defined by with_err_gen.
 #' @export 
 sim_pow_glm_single <- function(fixed, fixed_param, cov_param, n, data_str, 
                            cor_vars = NULL, fact_vars = list(NULL),
-                           outcome_type,
+                           contrasts = NULL,
+                           outcome_type, knot_args = list(NULL),
                            missing = FALSE, missing_args = list(NULL),
                            pow_param = NULL, alpha, pow_dist = c("z", "t"), 
                            pow_tail = c(1, 2), glm_fit_mod = NULL, 
-                           glm_fit_family, ...) {
+                           glm_fit_family, general_mod = NULL, 
+                           general_extract = NULL, ...) {
   
   fixed_vars <- attr(terms(fixed),"term.labels")
   
@@ -414,45 +516,51 @@ sim_pow_glm_single <- function(fixed, fixed_param, cov_param, n, data_str,
     stop('pow_param must be a subset of fixed')
   }
   
-  temp_single <- sim_glm_single(fixed, fixed_param, cov_param, n, data_str, 
-                                cor_vars, fact_vars, outcome_type = outcome_type, 
-                                ...)
+  data <- sim_glm_single(fixed, fixed_param, cov_param, n, data_str, 
+                         cor_vars, fact_vars, contrasts, outcome_type, 
+                         knot_args, ...)
+  if(missing) {
+    data <- do.call(missing_data, c(list(sim_data = data), 
+                                    missing_args))
+  }
+  
   if(!is.null(glm_fit_mod)) {
     if(!purrr::is_formula(glm_fit_mod)) {
       stop('glm_fit_mod must be a formula to pass to glm')
     }
-    temp_lm <- glm(glm_fit_mod, data = temp_single, 
+    temp_lm <- glm(glm_fit_mod, data = data, 
                    family = glm_fit_family)
   } else {
-    fm1 <- as.formula(paste("sim_data ~", paste(fixed_vars, collapse = "+")))
-    if(missing) {
-      temp_single <- do.call(missing_data, c(list(sim_data = temp_single), 
-                                             missing_args))
-      fm1 <- as.formula(paste("sim_data2 ~", paste(fixed_vars, collapse = "+")))
-    }
-    
-    if(outcome_type == 'logistic') {
-      temp_lm <- glm(fm1, data = temp_single, family = binomial)
+    if(!is.null(general_mod)) {
+      temp_lm <- eval(parse(text = general_mod))
     } else {
-      temp_lm <- glm(fm1, data = temp_single, family = poisson)
+      fm1 <- as.formula(paste("sim_data ~", paste(fixed_vars, collapse = "+")))
+      if(missing) {
+        fm1 <- as.formula(paste("sim_data2 ~", paste(fixed_vars, collapse = "+")))
+      }
+      
+      if(outcome_type == 'logistic') {
+        temp_lm <- glm(fm1, data = data, family = binomial)
+      } else {
+        temp_lm <- glm(fm1, data = data, family = poisson)
+      }
     }
-    
+  }
+  if(!is.null(general_extract)) {
+    test_stat <- do.call(general_extract, temp_lm)
+  } else{
+    test_stat <- broom::tidy(temp_lm)
   }
   
   crit <- ifelse(pow_dist == "z", qnorm(alpha/pow_tail, lower.tail = FALSE), 
-                qt(alpha/pow_tail, df = nrow(temp_single) - length(fixed_param),
+                qt(alpha/pow_tail, df = nrow(data) - length(fixed_param),
                    lower.tail = FALSE))
-  test_stat <- data.frame(abs(coefficients(summary(temp_lm))[, 3]))
 
-  if(is.null(pow_param)) {
-    pow_param <- rownames(test_stat)
-  } else {
-    test_stat <- test_stat[pow_param, ]
+  if(!is.null(pow_param)) {
+    test_stat <- dplyr::filter(test_stat, term %in% pow_param)
   }
   
-  reject <- data.frame(var = pow_param,
-                       test_stat = test_stat)
-  reject$reject <- ifelse(test_stat >= crit, 1, 0)
+  test_stat$reject <- ifelse(test_stat['estimate'] >= crit, 1, 0)
   
-  reject
+  test_stat
 }

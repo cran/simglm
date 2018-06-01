@@ -1,0 +1,3059 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2018-06-01" />
+
+<title>Simulation Arguments Details for simglm</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.bn { color: #40a070; } /* BaseN */
+code span.fl { color: #40a070; } /* Float */
+code span.ch { color: #4070a0; } /* Char */
+code span.st { color: #4070a0; } /* String */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.ot { color: #007020; } /* Other */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.fu { color: #06287e; } /* Function */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code span.cn { color: #880000; } /* Constant */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { color: #19177c; } /* Variable */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.op { color: #666666; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.at { color: #7d9029; } /* Attribute */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Simulation Arguments Details for <code>simglm</code></h1>
+<h4 class="date"><em>2018-06-01</em></h4>
+
+
+
+<p>The tidy simulation framework uses simulation arguments as the basis for specifying the models to be simulated. The goal of this vignette is to document more thoroughly the various arguments that are possible within each function. It is recommended that new users start with the “Tidy Simulation with <code>simglm</code>” vignette prior to working through this vignette.</p>
+<section id="fixed-arguments" class="level1">
+<h1>Fixed Arguments</h1>
+<p>Arguments associated with the fixed portion of the model are needed for each fixed variable that needs to be simulated. The fixed variables specified come from the formula argument. Interactions or the intercept are not included in the fixed arguments as these are generated automatically. Let’s start with an example.</p>
+<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(simglm)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># To-DO: Add knot variable and debug</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">fixed_data &lt;-<span class="st"> </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="kw">head</span>(fixed_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">190.4310</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">190.4310</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">224.5378</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">224.5378</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">185.6498</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">185.6498</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">253.2978</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">253.2978</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">145.3968</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">145.3968</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">155.8598</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">155.8598</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">193.6821</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">193.6821</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">192.6100</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">192.6100</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">197.3275</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">197.3275</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">193.3907</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">193.3907</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p>The following example shows the five types of variables that can be generated. These types are specified with the <code>var_type</code> argument and can be one of the following five types:</p>
+<ul>
+<li>‘time’: This type of variable is used for a time metric variable</li>
+<li>‘continuous’: This is a continuous distribution, default is to use the <code>rnorm</code> distribution function for generation.</li>
+<li>‘ordinal’: This generates ordinal data and is generated using the <code>sample</code> function.</li>
+<li>‘factor’: This is a categorical or factor variable specification representing groups or categories.</li>
+<li>‘knot’: This type of variable is generated based on another variable and represents a knot category variable.</li>
+</ul>
+<p>Each variable type will be explored in more detail.</p>
+<p>Finally, another common argument for all fixed variable types is the argument <code>var_level</code>. This defaults to <code>var_level = 1</code> which would be a variable defined at the level 1 of the model (i.e. unique value for each row in the data). These can be changed to reflect the data level that is desired. For example, <code>var_level = 2</code> would repeat values for each level 2 cluster found in the data and <code>var_level = 3</code> would do the same for each level 3 cluster. Therefore for variables that are at level 2 or level 3, there will be fewer unique values in the data compared to level 1 variables.</p>
+<section id="time-variable" class="level2">
+<h2>Time Variable</h2>
+<p>For time variables used in longitudinal or repeated measures designs, the default metric is 0 to level1 sample size minus 1. This can be seen above in the output. To change the time variable metric the <code>time_levels</code> argument can be used. A vector of values to specify for the time variable can be given directly. For example, the following could be passed to alter the metric of the time variable: <code>time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)</code> where now the time variable would increment in 0.5 units for the first 7 measurements and 1 unit increments for the last three measurements. This could represent a case when the measurements are collected every 6 months for the first 7 measurements and yearly after that.</p>
+<p>Below is the output including the manual time variable specification. The only requirement is that the length of the <code>time_levels</code> argument must match the level1 sample size.</p>
+<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># To-DO: Add knot variable and debug</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>,</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">                           <span class="dt">time_levels =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)),</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">)</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">fixed_data &lt;-<span class="st"> </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="kw">head</span>(fixed_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">190.4310</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">190.4310</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">224.5378</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">224.5378</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">185.6498</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">185.6498</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">253.2978</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">253.2978</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">145.3968</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">145.3968</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">155.8598</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">155.8598</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">193.6821</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">193.6821</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">192.6100</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">192.6100</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">197.3275</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">197.3275</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">193.3907</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">193.3907</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="continuous-variable" class="level2">
+<h2>Continuous Variable</h2>
+<p>Continuous variables are generating using distribution functions (i.e. <code>rnorm</code>). Any distribution function found within R, or user written distribution functions can be used, however the default used in <code>rnorm</code>. To change the distribution function used, the argument <code>dist</code> can be specified. For example, if the Gamma distribution is desired for the weight variable, the following code would achieve this:</p>
+<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>,</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">                           <span class="dt">time_levels =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)),</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">dist =</span> <span class="st">'rgamma'</span>, </a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">                             <span class="dt">shape =</span> <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">)</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">fixed_data &lt;-<span class="st"> </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="kw">head</span>(fixed_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">5.922362</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">5.922362</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">1.500918</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">1.500918</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">1.894797</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">1.894797</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">2.307843</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">2.307843</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">1.975996</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">1.975996</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">2.882207</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">2.882207</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">3.064936</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">3.064936</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">1.703499</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">1.703499</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">7.518809</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">7.518809</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">2.442868</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">2.442868</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">7.855513</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">7.855513</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">1.008858</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">1.008858</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">3.452912</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">3.452912</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">7.881209</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">7.881209</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">2.262056</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">2.262056</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">3.255559</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">3.255559</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">4.160648</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">4.160648</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">2.333586</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">2.333586</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">1.900442</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">1.900442</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">1.445119</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">1.445119</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p>This would be the resulting distribution of the weight variable generated.</p>
+<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">ggplot</span>(fixed_data, <span class="kw">aes</span>(<span class="dt">x =</span> weight)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">theme_bw</span>()</a></code></pre>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAwFBMVEUAAAAAADoAAGYAOpAAZmYAZrYzMzM6AAA6ADo6AGY6Ojo6OpA6kNtNTU1NTW5NTY5NbqtNjshmAABmADpmAGZmtttmtv9uTU1uTW5uTY5ubqtuq+SOTU2OTW6OTY6OyP+QOgCQOjqQZgCQkGaQtpCQ2/+rbk2rbm6rbo6ryKur5P+2ZgC22/+2///Ijk3I///bkDrb/7bb///kq27k///r6+v/tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///+Otkj0AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAJZ0lEQVR4nO2dC1vbNhSGBSyl3ZK2Y1vo1m7Jxui2stD0QmCBoP//ryb5JsmSfORLjB1939Ondfr56BxeZMVWhGAcqhR76gKGLgAiBECEAIgQABEiAD28m73+mhzdzmavPvZQ0NBUDejx/YJ/+V4ebX/+mB1JPYtAQYAefvuYoEmljp75Am68TfXkdNZYGKDtL1/5w68fsldpD0rw3hy8wgDdvlaAtucvc1LoQbnMHqSOACiTOQbx60Upum0V3Ts9A3p8/zYbefSLDYCU0vug5D1+NsMYFCwAIgRAhIIAMa/jj2ntjAcQY/IPUUX3zmgApXCYw/HHdOGMB1C5eQAychVXFys7/phOnNEAyv+jIAVAei6tVQBy5dJbZRVVdO+MA5DRKADZucxGmb+K7p0xAkpfApCWC4CqAVltMl8VKqYrZ6SAGADpuew2AUjP5WgSgPRcriYZAKlcziYZABW5AKgJoIpEAEQkig2Qp8UbbyYASh0AynL5AHlTAVDmABCvBlTh+Fur6wwfUEU/ASDqQnJ7AFRUEREg/+JHVrEwssobmp6kB7nNg+xB/lwApEc7clXf7bjcuAARDxQABEBGtJ0LgIxoOxf1zO7wAUivAoCoKuwTogJET6wCEFEFABFVABBVhXUKAJlVABBVRfkcACpVAUBEFQBEVBEzoKA1HABEVcG8jj8m1AEgwgEgwjkIQKWkAGRVES2g0LWsAERUAUBUFczr+GPCHAAiHAAiHAAinAMBZKQFIEcVAERUcTCA1E6c2/PZbFGOLik+QGonTrl/2fZN9R5mNX5s7lAAqV3wbiUmYhe8Oj9XyLyOPybE6RmQax9F/06cddZoDn49ZxggY3NAuWdgCa+pyHvQw7uCTweAtMRjBqTtxLk9X9jRpiIEpHbiNPgAUKFiJ84vM6lFKdoQq1cF8zr+GNoZ8p00ANnRhgDIjjYEQHa0IQCyow0BkB1tqCagIjUAeaoAIKIKAKKqYF7HH0M5AEQ4AwbEalcBQEQVAERUMTpA92dHl95WnNG66gPKko8HEOdXjJ189jZkR+uKApDsRYxNvU2Vo3VFAihFdLzytmZE64oE0JqxibjUiAvNAajRF9sAKuHsF9BuydhcHmyILhQpoPsz6tIqR2uKA1BQ9+EABEAuQGJ4zjTxNlWO1tTsHan2Ay7l9NGDAhQpoHDFCEh0H3mLKNXfGFTz4+oA59B6EABVVzE2QOllFnC3aANqOrczLkBXE74+Xq2bvM1HAUh0oN1y0uxGsfHsYMe/L2HfgO7PpkGArDWPjRdlDnU1pwvQbjndHF3KC40EZP1PFD2I352KxwxqLkiPVooDULA6BNTxb9wYKqAWn7OPCZC4xBo+asQBSL7HhylSQC2mO9osZfFf5UMDtFsCUCHnGBRwi2hGF4oDUIv5oFarxbyEhgYoXABEKFpAa8bm6yaPGpEAujr5lM54UIoUUDLdMW8yH9Ry1byPEABlzlgA8bW8xOScGaWOAfkIDQ4Q38jbIJpPvIBCBUCEYgSUP2c0etRoC8hDaFCApNYSTcikRwmQauSwATVeQAVAvmirkcb1OQkNDVB+idW+D4oGUHofFDCtGC2gUAEQIROQ1kbz+lyFAJDmABDhABDlOCoBIN0BIMqxSxkBILUTJ883M9OjrTZiA6R24uT8dvYKgMrSdsG7fvkPepAlYyfOjJS9E2dX6zAHtZ4zDJCxE6dvDNKbaPUNtGoZZw/So60m2tVXLmb4gLQxCIBcUjtxcgByqtiJk/cBqFzNCAB5BECEdEBGCwBkRlsttK2PeZ3A1gCIcACIcA4dUOvWAIhwDh5Q25sGACIcACKc4QFq/b5TdtpNvwEQ4UQAqN0n/QBEOFEAarPicXCA2j9/2w4AUQ7zOmRrAEQ4kQBijVuLAxAHIMphTVsDIKK1WACl7QKQ30nGaQCqcACIchgAEU6jzbtiAlTaWSj7aT8iJipA2nO9QsOqh++4AN2kNBSdNGXV6BQZIJ73GEOsYnQaCqBireOTLLxkPWQdTQ9yy1v2UHpQcfREgLw7xgBQ7ngKB6DcscfubtOMHpCndABSjrMPAZDmuAgBkO44CAGQ4diEAMh0LEIAVHLKhACo7JQIAZDlmI/7AORwdEQA5HQC5mLjBpRUoqmDNIcHSDOciADIMFrfQh46oNZ3SIcPqIwIgGzDGIsAyGU0v0OKBJCGCIB8Bmu0XC0iQNlYBEBVhkAEQESI5wnEFxMfoJvyKpHqmBgBSbkgAZDpmE/8zFRxesSAUmlENAeACAeACKc2ILUTp74nJwDlUjtx6ntyAlAhtQuesR8eAOVS+yiqI3MnTnZgqrmIU+3EaezJaezd4ftmPI3TWWPNe5Aevb/6mjo9A6LHoH3V19TpGZDaidPYkxOACqmdOD33Qfuqr6nTNyCPAIgQABECIEIAROhZBGoFqAnTfmI6TwNAANQupjdAYxUAEQIgQgBECIAI7R3Q9nw2WyRHX2Yz7TdwVUmdacwhEBFZnuA0yfSW52MbpX0DkrOQ2zfJTOT1IjSoONP8LIXQbfr1haZJfl+a72MbpX0DupU5k5of//pAnJtLnWnOY1YrmxAOTZP+vjTflKlSH2NQWrrowvnFRp1fnGnOhFcr+/aHp5E4fJPuSj0AkrO1sgJxoYV9e9WZ5mcplcpPq5FGAPJ9bKO0f0AP796qFzXHoRo96FYfYYPSDKQHbc8X2quagGqMQddv9RchabaDGIMUH/ktfvw75ItVZ5qfpVSpuKrC00gcvo9tlPYNKLtBkcWIw5eB421ypvVZSpWy66ROGu0+qCIV7qQJARAhACIEQIQAiBAAEQIgQgBEaBSA7p5fWof//dtP7lEA0pQD0pjtVwBEaHCAdssp5xs25/xqIl4wdrxKaNyfsaM/X6zunl8wxuZ3p4xNe6lncID4+uQzv/p2KuDMd8tJ8loAuj+bCkbHq7tTYa/Fv9H2IH73YrX7/UJQebHaiN4jsMwFjeRQgjmdJ9dXxIBEz7n77tOPK9Fz1unq96mgIfuVZJeAiRuQGHs2k93yJzEWJVR4AgSAlDYnf8z5+psfLvnmqHjLSi6xzTEAcTnoCC4bJrrMbin+EpT0QToDJEamfqoZICB+JbBIIDx5mxe08rf5CwWIX7FJL8UMEZBXm2xM6lNjASSHo+S2qG+NBRCXb/lPwGc8gJ5KAEQIgAgBECEAIgRAhACI0P9eYylISS2T3QAAAABJRU5ErkJggg==" /><!-- --></p>
+</section>
+<section id="ordinal-variable" class="level2">
+<h2>Ordinal Variable</h2>
+<p>Ordinal variable specification uses the <code>sample</code> function within R to generate ordinal variables that are whole integers. The required argument for these types of variables is <code>levels</code>. The <code>levels</code> argument takes a range or vector of integer values to be passed to the <code>sample</code> function within R. For example, these three specifications for the <code>levels</code> argument are valid: <code>3:60</code>, <code>seq(4, 60, 2)</code>, <code>c(3, 10, 18, 24, 54, 60)</code>.</p>
+<p>An additional optional argument is <code>replace</code>. The <code>replace</code> argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set <code>replace = FALSE</code>. See <code>sample</code> for more details on this argument.</p>
+<p>Finally, the probability of selecting each value specified to the <code>levels</code> argument is also able to be specified through the <code>prob</code> argument. If <code>prob</code> is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with <code>levels</code> to be equally likely to be sampled.</p>
+</section>
+<section id="factor-variable" class="level2">
+<h2>Factor Variable</h2>
+<p>Factor variables are generated similarly to ordinal variables with the <code>sample</code> function, however factor variables allow the generation of text or categorical variables in addition to numeric grouping variables. Therefore the only needed argument for factor variables is a vector of numeric or text strings representing the different groups to be generated. For example, both of these specifications are equivalent: <code>c(1, 2, 3, 4)</code> and <code>c('Freshman', 'Sophomore', 'Junior', 'Senior')</code>. Both of these specifications would generate data for these four groups, the difference is that the text labels will be used when text strings are specified.</p>
+<p>An additional optional argument is <code>replace</code>. The <code>replace</code> argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set <code>replace = FALSE</code>. See <code>sample</code> for more details on this argument.</p>
+<p>Finally, the probability of selecting each value specified to the <code>levels</code> argument is also able to be specified through the <code>prob</code> argument. If <code>prob</code> is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with <code>levels</code> to be equally likely to be sampled.</p>
+</section>
+<section id="knot-variable" class="level2">
+<h2>Knot Variable</h2>
+<p>To come…</p>
+</section>
+</section>
+<section id="random-error-arguments" class="level1">
+<h1>Random Error Arguments</h1>
+<p>By default, the random error is generated as random normal with a mean of 0 and standard deviation of 1. If this is the desired behavior, no additional simulation arguments need to be specified in the simulation arguments. For example, the code below generates random error using the fixed arguments already shown above.</p>
+<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">)</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">error_data &lt;-<span class="st"> </span><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw">head</span>(error_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">error</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.7049032</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.7120386</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.2779849</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.1196490</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.1239606</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.2681838</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.7268415</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.2331354</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.3391139</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.5519147</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.3477014</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1.4845918</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.1883255</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2.4432598</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-1.1534395</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.8046717</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.4560691</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.4203326</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.5775845</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.4463561</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<section id="optional-arguments-for-random-error" class="level2">
+<h2>Optional Arguments for Random Error</h2>
+<p>The two main optional arguments for the random error component include a <code>dist</code> and <code>variance</code> that represent the error generating function and variance of the random error respectively. For example, if a t-distribution is desired for simulation of random error, <code>dist = 'rt'</code> can be used to specify the t-distribution as the generating distribution. When distributions other than random normal are specified, it is common that additional arguments will need to be specified for the generating distribution function (i.e. <code>rt</code>). In the <code>rt</code> example, the <code>df</code> argument is needed to specify the degrees of freedom for the t-distribution. Below is an example using a t-distribution.</p>
+<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">dist =</span> <span class="st">'rt'</span>, <span class="dt">df =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">error_data &lt;-<span class="st"> </span><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="kw">head</span>(error_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">error</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2.7754417</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.6105358</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.2388096</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.2364648</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.5580779</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1.5918703</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5.3320327</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.3197329</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.1541429</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.7929619</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-1.4292669</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.6045961</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-1.0007634</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.5413444</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.1818689</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.7195087</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.2629315</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.8104919</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.2150117</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2.1937363</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p>Finally, the variance of the random error can also be specified to be something other than the default 1. For example, if the variance is desired to be 10, then the argument <code>variance = 10</code> will set this variance. This variance works with any distribution function. For example, the following will generate data as a t-distribution with a variance of 10.</p>
+<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">dist =</span> <span class="st">'rt'</span>, <span class="dt">df =</span> <span class="dv">4</span>, <span class="dt">variance =</span> <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">error_data &lt;-<span class="st"> </span><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="kw">var</span>(error_data<span class="op">$</span>error)</a></code></pre>
+<pre><code>## [1] 19.36487</code></pre>
+<p>Note that the variance does not actually equal 10 here. This is due to the generating distribution specified (i.e. t-distribution with 4 degrees of freedom) has a theoretical variance of 2. In cases when the random error has a variance other than 1, the variable needs to be standardized prior to converting to the desired variance value. The standardization can be done in two ways. One, an empirical mean and standard deviation of the generating distribution can be obtained by setting the argument <code>ther_sim = TRUE</code>. For example:</p>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">dist =</span> <span class="st">'rt'</span>, <span class="dt">df =</span> <span class="dv">4</span>, <span class="dt">variance =</span> <span class="dv">10</span>, <span class="dt">ther_sim =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">error_data &lt;-<span class="st"> </span><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="kw">var</span>(error_data<span class="op">$</span>error)</a></code></pre>
+<pre><code>## [1] 6.893405</code></pre>
+<p>This simulation takes longer to run as the generated empirical mean and standard deviation for the standardization draws a large number of random values from the specified distribution. To speed up this process, the theoretical values can be specified directly within the <code>ther_val</code> argument as a vector with the mean specified first followed by the standard deviation. This is shown below:</p>
+<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">dist =</span> <span class="st">'rt'</span>, <span class="dt">df =</span> <span class="dv">4</span>, <span class="dt">variance =</span> <span class="dv">10</span>, <span class="dt">ther_val =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">sqrt</span>(<span class="dv">2</span>))),</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15">error_data &lt;-<span class="st"> </span><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="kw">var</span>(error_data<span class="op">$</span>error)</a></code></pre>
+<pre><code>## [1] 9.682433</code></pre>
+</section>
+<section id="heterogeneity-of-variance" class="level2">
+<h2>Heterogeneity of Variance</h2>
+<p>It is also possible to generate heterogeneity of variance for the random error.</p>
+</section>
+</section>
+<section id="random-effect-arguments" class="level1">
+<h1>Random Effect Arguments</h1>
+<p>The random effect arguments are passed through a named element of the list to the simulation arguments called ‘randomeffect’. Within this element, each random effect specified in the formula must be specified as a named list. The named list allows the user to specify the names that will be used in the data simulation for the random effects. The default behavior of these random effects is to be simulated from a random normal distribution with mean 0 and variance of 1.</p>
+<p>Many of the same arguments that have been discussed with the error simulation are possible for the random effect simulation arguments. These include: <code>dist</code>, <code>variance</code>, <code>ther_sim</code>, <code>ther_val</code> and other arguments that are needed to pass on the data generating function. In addition, the argument <code>var_level</code> first introduced with the fixed effects are present here indicating which level of the data structure the random effect should be generated at. These arguments will not be discussed in more detail here, but readers can see examples of these arguments within the fixed effects and random error sections above.</p>
+<p>Below is an example that simulated two random effects in a two-level nested model and specifies the variance of 8 and 3 for the two random effects respectively. Finally, you will notice in the final output, the names of the random effect columns are specified by the names included in the list associated with the “randomeffect” portion of the simulation arguments.</p>
+<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb13-9" data-line-number="9">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12">                <span class="dt">time_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">3</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb13-13" data-line-number="13">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb13-14" data-line-number="14">)</a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16">random_data &lt;-<span class="st"> </span><span class="kw">simulate_randomeffect</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="kw">head</span>(random_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">int_id</th>
+<th style="text-align: right;">time_id</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<section id="cross-classified-random-effects" class="level2">
+<h2>Cross-Classified Random Effects</h2>
+<p>If cross-classified random effects are desired, these can be specified directly within the formula syntax as you would with lme4. For example, <code>y ~ 1 + time + weight + age + treat + (1 + time| id) + (1 | neighborhood_id)</code>. When documenting the simulation arguments for the additional cross-classified random effect (i.e. <code>(1 | neighborhood_id)</code>), specifying <code>cross_class = TRUE</code> with that random effect to identify that this is indeed a cross-classified random effect. Secondly, you can also specify directly the number of clusters that are associated with this cross-classified factor, this can be different than those specified in the <code>sample_size</code> argument. This can be done with the <code>num_ids</code> argument. Below is an example with a single cross-classified random effect representing neighborhoods individuals belong in</p>
+<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">    </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>neighborhood_id),</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb14-11" data-line-number="11">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">                <span class="dt">time_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">3</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14">                <span class="dt">int_nid =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">5</span>, <span class="dt">var_level =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">                               <span class="dt">cross_class =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb14-16" data-line-number="16">                               <span class="dt">num_ids =</span> <span class="dv">12</span>)),</a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb14-18" data-line-number="18">)</a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20">random_data &lt;-<span class="st"> </span><span class="kw">simulate_randomeffect</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="kw">head</span>(random_data, <span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">int_id</th>
+<th style="text-align: right;">time_id</th>
+<th style="text-align: right;">int_nid</th>
+<th style="text-align: right;">neighborhood_id</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">-0.5269349</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">0.8972466</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">-6.1054441</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">1.9702697</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">3.8171861</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">-0.1530702</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">3.8171861</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">-2.0036117</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">-2.0036117</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.822195</td>
+<td style="text-align: right;">1.588733</td>
+<td style="text-align: right;">3.8171861</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">3.8171861</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">0.8972466</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">3.8171861</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">1.9702697</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">-2.0036117</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">-6.1054441</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">-0.8219536</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">-0.8219536</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">0.8972466</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-2.013949</td>
+<td style="text-align: right;">-0.185436</td>
+<td style="text-align: right;">1.3721717</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="missing-data-arguments" class="level1">
+<h1>Missing Data Arguments</h1>
+<p>Missing data is the standard rather than the exception in real world data. Therefore, generating data that include missing is important for generating data that are representative of real world data. In the power analysis context, most power analyses do not include missing data in the power computations (particularly if these are closed form solutions), but power can be negatively affected by missing data.</p>
+<p>Fortunatly, the simglm package contains many useful frameworks for generating missing data. To generate missing data, the <code>generate_missing</code> function can be used for this. This function is called after the complete data are generated. This means that the complete data and missing data will be generated. Currently three types of missing data are supported, dropout, random, and mar (missing at random). The specification of missing data arguments is done using a named element to the simulation argument list called “missing_data”.</p>
+<section id="random-missing-data" class="level2">
+<h2>Random Missing Data</h2>
+<p>First, lets explore random missing data. This structure is equivalent to the missing completely at random framework if you are familiar with Rubin’s missing data classifications. To generate random missing data the <code>type = 'random'</code> is specified. Two additional arguments are needed to generate the missing data, first the missing proportion needs to be specified with <code>miss_prop</code> and the name of the new response variable with missing data needs to be specified with <code>new_outcome</code>. Below is an example generating data with random missing data.</p>
+<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">0</span>, <span class="fl">0.33</span>),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb15-13" data-line-number="13">                      <span class="dt">time_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">3</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb15-14" data-line-number="14">  <span class="dt">missing_data =</span> <span class="kw">list</span>(<span class="dt">miss_prop =</span> <span class="fl">.25</span>, <span class="dt">new_outcome =</span> <span class="st">'y_missing'</span>,</a>
+<a class="sourceLine" id="cb15-15" data-line-number="15">                      <span class="dt">type =</span> <span class="st">'random'</span>),</a>
+<a class="sourceLine" id="cb15-16" data-line-number="16">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb15-17" data-line-number="17">)</a>
+<a class="sourceLine" id="cb15-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb15-19" data-line-number="19">data_w_missing &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-21" data-line-number="21"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-23" data-line-number="23"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-24" data-line-number="24"><span class="st">  </span><span class="kw">generate_missing</span>(sim_arguments)</a>
+<a class="sourceLine" id="cb15-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb15-26" data-line-number="26"><span class="kw">head</span>(data_w_missing, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">int_id</th>
+<th style="text-align: right;">time_id</th>
+<th style="text-align: right;">error</th>
+<th style="text-align: right;">fixed_outcome</th>
+<th style="text-align: right;">random_effects</th>
+<th style="text-align: right;">y</th>
+<th style="text-align: right;">miss_prob</th>
+<th style="text-align: right;">missing</th>
+<th style="text-align: right;">y_missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">2.3826970</td>
+<td style="text-align: right;">177.6903</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">180.2974</td>
+<td style="text-align: right;">0.646</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">180.2974</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3191794</td>
+<td style="text-align: right;">123.8091</td>
+<td style="text-align: right;">2.7579779</td>
+<td style="text-align: right;">126.2479</td>
+<td style="text-align: right;">0.088</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.7167563</td>
+<td style="text-align: right;">134.0753</td>
+<td style="text-align: right;">5.2915315</td>
+<td style="text-align: right;">140.0836</td>
+<td style="text-align: right;">0.534</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140.0836</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3144774</td>
+<td style="text-align: right;">138.1379</td>
+<td style="text-align: right;">7.8250850</td>
+<td style="text-align: right;">145.6485</td>
+<td style="text-align: right;">0.560</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">145.6485</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3251463</td>
+<td style="text-align: right;">138.5409</td>
+<td style="text-align: right;">10.3586386</td>
+<td style="text-align: right;">148.5744</td>
+<td style="text-align: right;">0.119</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.0060782</td>
+<td style="text-align: right;">147.8641</td>
+<td style="text-align: right;">12.8921922</td>
+<td style="text-align: right;">160.7624</td>
+<td style="text-align: right;">0.415</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">160.7624</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.2868034</td>
+<td style="text-align: right;">158.6839</td>
+<td style="text-align: right;">15.4257457</td>
+<td style="text-align: right;">175.3965</td>
+<td style="text-align: right;">0.718</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">175.3965</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-1.0393871</td>
+<td style="text-align: right;">148.0755</td>
+<td style="text-align: right;">17.9592993</td>
+<td style="text-align: right;">164.9955</td>
+<td style="text-align: right;">0.697</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">164.9955</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.3857991</td>
+<td style="text-align: right;">150.9601</td>
+<td style="text-align: right;">20.4928529</td>
+<td style="text-align: right;">171.8387</td>
+<td style="text-align: right;">0.928</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">171.8387</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.9275765</td>
+<td style="text-align: right;">131.4119</td>
+<td style="text-align: right;">23.0264064</td>
+<td style="text-align: right;">156.3659</td>
+<td style="text-align: right;">0.829</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">156.3659</td>
+</tr>
+</tbody>
+</table>
+<p>We can look at the amount of missing data:</p>
+<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">prop.table</span>(<span class="kw">table</span>(<span class="kw">is.na</span>(data_w_missing<span class="op">$</span>y_missing)))</a></code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+## 0.735 0.265</code></pre>
+</section>
+<section id="mar-missing-data" class="level2">
+<h2>MAR Missing Data</h2>
+<p>Data that are missing at random (MAR) can be generated as well.</p>
+<pre class="sourceCode r" id="cb18"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">0</span>, <span class="fl">0.33</span>),</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">                             <span class="dt">var_level =</span> <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb18-9" data-line-number="9">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb18-10" data-line-number="10">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb18-11" data-line-number="11">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb18-12" data-line-number="12">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb18-13" data-line-number="13">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb18-14" data-line-number="14">                      <span class="dt">time_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">3</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb18-15" data-line-number="15">  <span class="dt">missing_data =</span> <span class="kw">list</span>(<span class="dt">new_outcome =</span> <span class="st">'y_missing'</span>, <span class="dt">miss_cov =</span> <span class="st">'weight'</span>, </a>
+<a class="sourceLine" id="cb18-16" data-line-number="16">                      <span class="dt">mar_prop =</span> <span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">0</span>, <span class="dt">to =</span> <span class="fl">.9</span>, <span class="dt">length.out =</span> <span class="dv">200</span>),</a>
+<a class="sourceLine" id="cb18-17" data-line-number="17">                      <span class="dt">type =</span> <span class="st">'mar'</span>),</a>
+<a class="sourceLine" id="cb18-18" data-line-number="18">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb18-19" data-line-number="19">)</a>
+<a class="sourceLine" id="cb18-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb18-21" data-line-number="21">data_w_missing &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-22" data-line-number="22"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-23" data-line-number="23"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-24" data-line-number="24"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-25" data-line-number="25"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-26" data-line-number="26"><span class="st">  </span><span class="kw">generate_missing</span>(sim_arguments)</a>
+<a class="sourceLine" id="cb18-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb18-28" data-line-number="28"><span class="kw">head</span>(data_w_missing, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">int_id</th>
+<th style="text-align: right;">time_id</th>
+<th style="text-align: right;">error</th>
+<th style="text-align: right;">fixed_outcome</th>
+<th style="text-align: right;">random_effects</th>
+<th style="text-align: right;">y</th>
+<th style="text-align: right;">miss_prop</th>
+<th style="text-align: right;">miss_prob</th>
+<th style="text-align: right;">missing</th>
+<th style="text-align: right;">y_missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">2.3826970</td>
+<td style="text-align: right;">177.6903</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">180.2974</td>
+<td style="text-align: right;">0.8683417</td>
+<td style="text-align: right;">0.4186856</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3191794</td>
+<td style="text-align: right;">123.8091</td>
+<td style="text-align: right;">2.7579779</td>
+<td style="text-align: right;">126.2479</td>
+<td style="text-align: right;">0.2035176</td>
+<td style="text-align: right;">0.7042782</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">126.2479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.7167563</td>
+<td style="text-align: right;">134.0753</td>
+<td style="text-align: right;">5.2915315</td>
+<td style="text-align: right;">140.0836</td>
+<td style="text-align: right;">0.3165829</td>
+<td style="text-align: right;">0.8222003</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140.0836</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3144774</td>
+<td style="text-align: right;">138.1379</td>
+<td style="text-align: right;">7.8250850</td>
+<td style="text-align: right;">145.6485</td>
+<td style="text-align: right;">0.3844221</td>
+<td style="text-align: right;">0.7070236</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">145.6485</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3251463</td>
+<td style="text-align: right;">138.5409</td>
+<td style="text-align: right;">10.3586386</td>
+<td style="text-align: right;">148.5744</td>
+<td style="text-align: right;">0.3798995</td>
+<td style="text-align: right;">0.1005621</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.0060782</td>
+<td style="text-align: right;">147.8641</td>
+<td style="text-align: right;">12.8921922</td>
+<td style="text-align: right;">160.7624</td>
+<td style="text-align: right;">0.5562814</td>
+<td style="text-align: right;">0.2103423</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.2868034</td>
+<td style="text-align: right;">158.6839</td>
+<td style="text-align: right;">15.4257457</td>
+<td style="text-align: right;">175.3965</td>
+<td style="text-align: right;">0.7236181</td>
+<td style="text-align: right;">0.3023945</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-1.0393871</td>
+<td style="text-align: right;">148.0755</td>
+<td style="text-align: right;">17.9592993</td>
+<td style="text-align: right;">164.9955</td>
+<td style="text-align: right;">0.5201005</td>
+<td style="text-align: right;">0.6374396</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">164.9955</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.3857991</td>
+<td style="text-align: right;">150.9601</td>
+<td style="text-align: right;">20.4928529</td>
+<td style="text-align: right;">171.8387</td>
+<td style="text-align: right;">0.5743719</td>
+<td style="text-align: right;">0.6387437</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">171.8387</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.9275765</td>
+<td style="text-align: right;">131.4119</td>
+<td style="text-align: right;">23.0264064</td>
+<td style="text-align: right;">156.3659</td>
+<td style="text-align: right;">0.2442211</td>
+<td style="text-align: right;">0.8129966</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">156.3659</td>
+</tr>
+</tbody>
+</table>
+<p>We can look at the amount of missing data:</p>
+<pre class="sourceCode r" id="cb19"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">prop.table</span>(<span class="kw">table</span>(<span class="kw">is.na</span>(data_w_missing<span class="op">$</span>y_missing)))</a></code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+## 0.555 0.445</code></pre>
+</section>
+<section id="dropout-missing-data" class="level2">
+<h2>Dropout Missing Data</h2>
+<p>Dropout missing data is possible when simulating data from a longitudinal design. When requesting dropout missing data, observations are removed after a specific point in the time cycle. For example, perhaps an individual stops being a part of the study after the third measurement. To request this type of missing data, the <code>type = 'dropout'</code> can be specified. In addition, one new argument is needed, <code>clust_var</code>. This argument represents the id associated with the clusters with longitudinal data. Below is an example:</p>
+<pre class="sourceCode r" id="cb21"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">0</span>, <span class="fl">0.33</span>),</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb21-12" data-line-number="12">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb21-13" data-line-number="13">                      <span class="dt">time_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">3</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb21-14" data-line-number="14">  <span class="dt">missing_data =</span> <span class="kw">list</span>(<span class="dt">miss_prop =</span> <span class="fl">.25</span>, <span class="dt">new_outcome =</span> <span class="st">'y_missing'</span>,</a>
+<a class="sourceLine" id="cb21-15" data-line-number="15">                      <span class="dt">clust_var =</span> <span class="st">'id'</span>, <span class="dt">type =</span> <span class="st">'dropout'</span>),</a>
+<a class="sourceLine" id="cb21-16" data-line-number="16">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb21-17" data-line-number="17">)</a>
+<a class="sourceLine" id="cb21-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb21-19" data-line-number="19">data_w_missing &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-20" data-line-number="20"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-21" data-line-number="21"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-22" data-line-number="22"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-23" data-line-number="23"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-24" data-line-number="24"><span class="st">  </span><span class="kw">generate_missing</span>(sim_arguments)</a>
+<a class="sourceLine" id="cb21-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb21-26" data-line-number="26"><span class="kw">head</span>(data_w_missing, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">int_id</th>
+<th style="text-align: right;">time_id</th>
+<th style="text-align: right;">error</th>
+<th style="text-align: right;">fixed_outcome</th>
+<th style="text-align: right;">random_effects</th>
+<th style="text-align: right;">y</th>
+<th style="text-align: right;">missing</th>
+<th style="text-align: right;">y_missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">2.3826970</td>
+<td style="text-align: right;">177.6903</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">180.2974</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">180.2974</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3191794</td>
+<td style="text-align: right;">123.8091</td>
+<td style="text-align: right;">2.7579779</td>
+<td style="text-align: right;">126.2479</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">126.2479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.7167563</td>
+<td style="text-align: right;">134.0753</td>
+<td style="text-align: right;">5.2915315</td>
+<td style="text-align: right;">140.0836</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140.0836</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3144774</td>
+<td style="text-align: right;">138.1379</td>
+<td style="text-align: right;">7.8250850</td>
+<td style="text-align: right;">145.6485</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">145.6485</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3251463</td>
+<td style="text-align: right;">138.5409</td>
+<td style="text-align: right;">10.3586386</td>
+<td style="text-align: right;">148.5744</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">148.5744</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.0060782</td>
+<td style="text-align: right;">147.8641</td>
+<td style="text-align: right;">12.8921922</td>
+<td style="text-align: right;">160.7624</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">160.7624</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.2868034</td>
+<td style="text-align: right;">158.6839</td>
+<td style="text-align: right;">15.4257457</td>
+<td style="text-align: right;">175.3965</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">175.3965</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-1.0393871</td>
+<td style="text-align: right;">148.0755</td>
+<td style="text-align: right;">17.9592993</td>
+<td style="text-align: right;">164.9955</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">164.9955</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.3857991</td>
+<td style="text-align: right;">150.9601</td>
+<td style="text-align: right;">20.4928529</td>
+<td style="text-align: right;">171.8387</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">171.8387</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.9275765</td>
+<td style="text-align: right;">131.4119</td>
+<td style="text-align: right;">23.0264064</td>
+<td style="text-align: right;">156.3659</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+<p>We can look at the amount of missing data:</p>
+<pre class="sourceCode r" id="cb22"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">prop.table</span>(<span class="kw">table</span>(<span class="kw">is.na</span>(data_w_missing<span class="op">$</span>y_missing)))</a></code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+##  0.74  0.26</code></pre>
+<p>We can also look now at the amount of missing by the time variable.</p>
+<pre class="sourceCode r" id="cb24"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">prop.table</span>(<span class="kw">table</span>(<span class="kw">is.na</span>(data_w_missing<span class="op">$</span>y_missing), data_w_missing<span class="op">$</span>time))</a></code></pre>
+<pre><code>##        
+##            0    1    2    3    4    5    6    7    8    9
+##   FALSE 0.10 0.10 0.10 0.10 0.10 0.09 0.07 0.06 0.02 0.00
+##   TRUE  0.00 0.00 0.00 0.00 0.00 0.01 0.03 0.04 0.08 0.10</code></pre>
+<section id="specify-location-of-dropout" class="level3">
+<h3>Specify location of dropout</h3>
+<p>If additional control is desired, specifying the location of the dropout is possible. In this situation, a vector is passed to <code>dropout_location</code> that specifies for each individual (more generally each level 2 unit) where the dropout occurs. Below is an example of this.</p>
+<pre class="sourceCode r" id="cb26"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time<span class="op">|</span><span class="st"> </span>id),</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">0</span>, <span class="fl">0.33</span>),</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">time =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'time'</span>),</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">               <span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9">               <span class="dt">treat =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, </a>
+<a class="sourceLine" id="cb26-10" data-line-number="10">                            <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'Treatment'</span>, <span class="st">'Control'</span>),</a>
+<a class="sourceLine" id="cb26-11" data-line-number="11">                            <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb26-12" data-line-number="12">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb26-13" data-line-number="13">                      <span class="dt">time_id =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">3</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb26-14" data-line-number="14">  <span class="dt">missing_data =</span> <span class="kw">list</span>(<span class="dt">new_outcome =</span> <span class="st">'y_missing'</span>,</a>
+<a class="sourceLine" id="cb26-15" data-line-number="15">      <span class="dt">dropout_location =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">9</span>, <span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, </a>
+<a class="sourceLine" id="cb26-16" data-line-number="16">                           <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">9</span>),</a>
+<a class="sourceLine" id="cb26-17" data-line-number="17">                      <span class="dt">clust_var =</span> <span class="st">'id'</span>, <span class="dt">type =</span> <span class="st">'dropout'</span>),</a>
+<a class="sourceLine" id="cb26-18" data-line-number="18">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb26-19" data-line-number="19">)</a>
+<a class="sourceLine" id="cb26-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb26-21" data-line-number="21">data_w_missing &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-22" data-line-number="22"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-23" data-line-number="23"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-24" data-line-number="24"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-25" data-line-number="25"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-26" data-line-number="26"><span class="st">  </span><span class="kw">generate_missing</span>(sim_arguments)</a>
+<a class="sourceLine" id="cb26-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb26-28" data-line-number="28"><span class="kw">head</span>(data_w_missing, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">X.Intercept.</th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">weight</th>
+<th style="text-align: right;">age</th>
+<th style="text-align: right;">treat</th>
+<th style="text-align: right;">time1</th>
+<th style="text-align: right;">weight1</th>
+<th style="text-align: right;">age1</th>
+<th style="text-align: left;">treat1</th>
+<th style="text-align: right;">level1_id</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">int_id</th>
+<th style="text-align: right;">time_id</th>
+<th style="text-align: right;">error</th>
+<th style="text-align: right;">fixed_outcome</th>
+<th style="text-align: right;">random_effects</th>
+<th style="text-align: right;">y</th>
+<th style="text-align: right;">missing</th>
+<th style="text-align: right;">y_missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">231.1471</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">2.3826970</td>
+<td style="text-align: right;">177.6903</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">180.2974</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">180.2974</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">158.6388</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3191794</td>
+<td style="text-align: right;">123.8091</td>
+<td style="text-align: right;">2.7579779</td>
+<td style="text-align: right;">126.2479</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">126.2479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171.6605</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.7167563</td>
+<td style="text-align: right;">134.0753</td>
+<td style="text-align: right;">5.2915315</td>
+<td style="text-align: right;">140.0836</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140.0836</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">176.4105</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3144774</td>
+<td style="text-align: right;">138.1379</td>
+<td style="text-align: right;">7.8250850</td>
+<td style="text-align: right;">145.6485</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">176.2812</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-0.3251463</td>
+<td style="text-align: right;">138.5409</td>
+<td style="text-align: right;">10.3586386</td>
+<td style="text-align: right;">148.5744</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">188.0455</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.0060782</td>
+<td style="text-align: right;">147.8641</td>
+<td style="text-align: right;">12.8921922</td>
+<td style="text-align: right;">160.7624</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">201.8052</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.2868034</td>
+<td style="text-align: right;">158.6839</td>
+<td style="text-align: right;">15.4257457</td>
+<td style="text-align: right;">175.3965</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">186.9941</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">-1.0393871</td>
+<td style="text-align: right;">148.0755</td>
+<td style="text-align: right;">17.9592993</td>
+<td style="text-align: right;">164.9955</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">190.1734</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">0.3857991</td>
+<td style="text-align: right;">150.9601</td>
+<td style="text-align: right;">20.4928529</td>
+<td style="text-align: right;">171.8387</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">163.4426</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Treatment</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2244243</td>
+<td style="text-align: right;">2.533554</td>
+<td style="text-align: right;">1.9275765</td>
+<td style="text-align: right;">131.4119</td>
+<td style="text-align: right;">23.0264064</td>
+<td style="text-align: right;">156.3659</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+<p>We can look at the amount of missing data:</p>
+<pre class="sourceCode r" id="cb27"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">prop.table</span>(<span class="kw">table</span>(<span class="kw">is.na</span>(data_w_missing<span class="op">$</span>y_missing)))</a></code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+##  0.58  0.42</code></pre>
+<p>We can also look now at the amount of missing by the time variable.</p>
+<pre class="sourceCode r" id="cb29"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">prop.table</span>(<span class="kw">table</span>(<span class="kw">is.na</span>(data_w_missing<span class="op">$</span>y_missing), data_w_missing<span class="op">$</span>time))</a></code></pre>
+<pre><code>##        
+##             0     1     2     3     4     5     6     7     8     9
+##   FALSE 0.100 0.095 0.085 0.080 0.070 0.060 0.040 0.030 0.020 0.000
+##   TRUE  0.000 0.005 0.015 0.020 0.030 0.040 0.060 0.070 0.080 0.100</code></pre>
+</section>
+</section>
+</section>
+<section id="model-fit-arguments" class="level1">
+<h1>Model Fit Arguments</h1>
+<p>The default behavior when fitting models to the generated data is to fit a model with the same formula as the generated data (i.e. <code>formula</code> simulation arguments). Secondly, the default model functions are <code>lm</code>/<code>glm</code> for single level simulation and <code>lmer</code>/<code>glmer</code> for multilevel simulation. Finally, the default regression weights specified in <code>reg_weights</code> are to compute statistics for power, type I error rates, and precision.</p>
+<p>These defaults can be overriden by specifying simulation arguments through the named list called <code>model_fit</code>. Some examples were given in the Tidy Simulation vignette and the options that are able to be specified will depend on the type of model fitting function specified. A few examples are given for various model types, however, the user is directed to the documentation of the modeling functions specified through the <code>model_function</code> argument.</p>
+<section id="changing-family-argument" class="level2">
+<h2>Changing Family Argument</h2>
+</section>
+<section id="adding-serial-correlation" class="level2">
+<h2>Adding Serial Correlation</h2>
+</section>
+<section id="marginal-models" class="level2">
+<h2>Marginal Models</h2>
+</section>
+</section>
+<section id="power-arguments" class="level1">
+<h1>Power Arguments</h1>
+</section>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

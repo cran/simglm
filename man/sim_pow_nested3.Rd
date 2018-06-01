@@ -9,9 +9,11 @@ sim_pow_nested3(fixed, random, random3, fixed_param, random_param = list(),
   arima = FALSE, data_str, cor_vars = NULL, fact_vars = list(NULL),
   unbal = list(level2 = FALSE, level3 = FALSE), unbal_design = list(level2 =
   NULL, level3 = NULL), lvl1_err_params = NULL, arima_mod = list(NULL),
-  missing = FALSE, missing_args = list(NULL), pow_param = NULL, alpha,
-  pow_dist = c("z", "t"), pow_tail = c(1, 2), lme4_fit_mod = NULL,
-  nlme_fit_mod = NULL, arima_fit_mod = NULL, ...)
+  contrasts = NULL, homogeneity = TRUE, heterogeneity_var = NULL,
+  cross_class_params = NULL, knot_args = list(NULL), missing = FALSE,
+  missing_args = list(NULL), pow_param = NULL, alpha, pow_dist = c("z",
+  "t"), pow_tail = c(1, 2), lme4_fit_mod = NULL, nlme_fit_mod = NULL,
+  arima_fit_mod = NULL, general_mod = NULL, general_extract = NULL, ...)
 }
 \arguments{
 \item{fixed}{One sided formula for fixed effects in the simulation. 
@@ -120,6 +122,45 @@ level one error generating function}
 \item{arima_mod}{A list indicating the ARIMA model to pass to arima.sim. 
 See \code{\link{arima.sim}} for examples.}
 
+\item{contrasts}{An optional list that specifies the contrasts to be used 
+for factor variables (i.e. those variables with .f or .c). 
+See \code{\link{contrasts}} for more detail.}
+
+\item{homogeneity}{Either TRUE (default) indicating homogeneity of variance
+assumption is assumed or FALSE to indicate desire to generate heterogeneity 
+of variance.}
+
+\item{heterogeneity_var}{Variable name as a character string to use for 
+heterogeneity of variance simulation.}
+
+\item{cross_class_params}{A list of named parameters when cross classified 
+data structures are desired. Must include the following arguments:
+ \itemize{
+  \item num_ids: The number of cross classified clusters. These are in 
+       addition to the typical cluster ids
+  \item random_param: This argument is a list of arguments passed to 
+     \code{\link{sim_rand_eff}}. These must include:
+    \itemize{
+     \item random_var: The variance of the cross classified random effect
+     \item rand_gen: The random generating function used to generate the 
+        cross classified random effect.
+    }
+    Optional elements are:
+  \itemize{
+      \item ther: Theorectial mean and variance from rand_gen,
+      \item ther_sim: Simulate mean/variance for standardization purposes,
+      \item cor_vars: Correlation between random effects,
+      \item ...: Additional parameters needed for rand_gen function.
+  } 
+ }}
+
+\item{knot_args}{A nested list of named knot arguments. See \code{\link{sim_knot}} 
+for more details. Arguments must include:
+  \itemize{
+    \item var
+    \item knot_locations
+  }}
+
 \item{missing}{TRUE/FALSE flag indicating whether missing data should be 
 simulated.}
 
@@ -145,6 +186,15 @@ This should be specified as a named list with fixed and random components.}
 \item{arima_fit_mod}{Valid nlme syntax for fitting serial correlation structures.
 See \code{\link{corStruct}} for help. This must be specified to 
 include serial correlation.}
+
+\item{general_mod}{Valid model syntax. This syntax can be from any R package. 
+By default, broom is used to extract model result information. Note, 
+package must be defined or loaded prior to running the sim_pow function.}
+
+\item{general_extract}{A valid function to extract model results if 
+general_mod argument is used. This argument is primarily used if extracting model
+results is not possibly using the broom package. If this is left NULL (default), 
+broom is used to collect model results.}
 
 \item{...}{Not currently used.}
 }

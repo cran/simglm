@@ -5,7 +5,7 @@
 \title{Simulates design matrix for single level model.}
 \usage{
 sim_fixef_single(fixed, fixed_vars, n, cov_param, cor_vars = NULL,
-  fact_vars = list(NULL), contrasts = NULL)
+  fact_vars = list(NULL), contrasts = NULL, knot_args = list(NULL))
 }
 \arguments{
 \item{fixed}{One sided formula for fixed effects in the simulation.}
@@ -33,7 +33,7 @@ Does not include intercept, time, factors, or interactions.}
      \item numlevels = Number of levels for ordinal or factor variables.
      \item var_type = Must be 'single'.
  }
- Optional arguments include:
+ Optional arguments passed on to sample in a nested list. These include:
  \itemize{
      \item replace
      \item prob
@@ -44,6 +44,13 @@ Does not include intercept, time, factors, or interactions.}
 \item{contrasts}{An optional list that specifies the contrasts to be used 
 for factor variables (i.e. those variables with .f or .c). 
 See \code{\link{contrasts}} for more detail.}
+
+\item{knot_args}{A nested list of named knot arguments. See \code{\link{sim_knot}} 
+for more details. Arguments must include:
+  \itemize{
+    \item var
+    \item knot_locations
+  }}
 }
 \description{
 Input fixed variables, sample size, and number of within variables, 

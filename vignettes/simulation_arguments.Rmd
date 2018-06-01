@@ -1,0 +1,490 @@
+---
+title: "Simulation Arguments Details for `simglm`"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulation Argument Details for `simglm`}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+```{r setup, include=FALSE}
+library(knitr)
+library(dplyr)
+library(simglm)
+knit_print.data.frame = function(x, ...) {
+  res = paste(c('', '', kable(x, output = FALSE)), collapse = '\n')
+  asis_output(res)
+}
+```
+
+The tidy simulation framework uses simulation arguments as the basis for specifying the models to be simulated. The goal of this vignette is to document more thoroughly the various arguments that are possible within each function. It is recommended that new users start with the "Tidy Simulation with `simglm`" vignette prior to working through this vignette.
+
+# Fixed Arguments
+Arguments associated with the fixed portion of the model are needed for each fixed variable that needs to be simulated. The fixed variables specified come from the formula argument. Interactions or the intercept are not included in the fixed arguments as these are generated automatically. Let's start with an example.
+
+```{r fixed_sim}
+library(simglm)
+
+set.seed(321) 
+
+# To-DO: Add knot variable and debug
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+fixed_data <- simulate_fixed(data = NULL, sim_arguments)
+head(fixed_data, n = 20)
+```
+
+The following example shows the five types of variables that can be generated. These types are specified with the `var_type` argument and can be one of the following five types: 
+
+* 'time': This type of variable is used for a time metric variable
+* 'continuous': This is a continuous distribution, default is to use the `rnorm` distribution function for generation.
+* 'ordinal': This generates ordinal data and is generated using the `sample` function.
+* 'factor': This is a categorical or factor variable specification representing groups or categories.
+* 'knot': This type of variable is generated based on another variable and represents a knot category variable.
+
+Each variable type will be explored in more detail.
+
+Finally, another common argument for all fixed variable types is the argument `var_level`. This defaults to `var_level = 1` which would be a variable defined at the level 1 of the model (i.e. unique value for each row in the data). These can be changed to reflect the data level that is desired. For example, `var_level = 2` would repeat values for each level 2 cluster found in the data and `var_level = 3` would do the same for each level 3 cluster. Therefore for variables that are at level 2 or level 3, there will be fewer unique values in the data compared to level 1 variables.
+
+## Time Variable
+For time variables used in longitudinal or repeated measures designs, the default metric is 0 to level1 sample size minus 1. This can be seen above in the output. To change the time variable metric the `time_levels` argument can be used. A vector of values to specify for the time variable can be given directly. For example, the following could be passed to alter the metric of the time variable: `time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)` where now the time variable would increment in 0.5 units for the first 7 measurements and 1 unit increments for the last three measurements. This could represent a case when the measurements are collected every 6 months for the first 7 measurements and yearly after that.
+
+Below is the output including the manual time variable specification. The only requirement is that the length of the `time_levels` argument must match the level1 sample size.
+
+```{r time_var}
+set.seed(321) 
+
+# To-DO: Add knot variable and debug
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time',
+                           time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+fixed_data <- simulate_fixed(data = NULL, sim_arguments)
+head(fixed_data, n = 20)
+```
+
+## Continuous Variable
+Continuous variables are generating using distribution functions (i.e. `rnorm`). Any distribution function found within R, or user written distribution functions can be used, however the default used in `rnorm`. To change the distribution function used, the argument `dist` can be specified. For example, if the Gamma distribution is desired for the weight variable, the following code would achieve this:
+
+```{r rbeta}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time',
+                           time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
+               weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+fixed_data <- simulate_fixed(data = NULL, sim_arguments)
+head(fixed_data, n = 20)
+```
+
+This would be the resulting distribution of the weight variable generated.
+
+```{r dist_beta}
+library(ggplot2)
+
+ggplot(fixed_data, aes(x = weight)) + 
+  geom_density() + 
+  theme_bw()
+```
+
+
+## Ordinal Variable
+Ordinal variable specification uses the `sample` function within R to generate ordinal variables that are whole integers. The required argument for these types of variables is `levels`. The `levels` argument takes a range or vector of integer values to be passed to the `sample` function within R. For example, these three specifications for the `levels` argument are valid: `3:60`, `seq(4, 60, 2)`, `c(3, 10, 18, 24, 54, 60)`.
+
+An additional optional argument is `replace`. The `replace` argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set `replace = FALSE`. See `sample` for more details on this argument.
+
+Finally, the probability of selecting each value specified to the `levels` argument is also able to be specified through the `prob` argument. If `prob` is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with `levels` to be equally likely to be sampled.
+
+## Factor Variable
+Factor variables are generated similarly to ordinal variables with the `sample` function, however factor variables allow the generation of text or categorical variables in addition to numeric grouping variables. Therefore the only needed argument for factor variables is a vector of numeric or text strings representing the different groups to be generated. For example, both of these specifications are equivalent: `c(1, 2, 3, 4)` and `c('Freshman', 'Sophomore', 'Junior', 'Senior')`. Both of these specifications would generate data for these four groups, the difference is that the text labels will be used when text strings are specified. 
+
+An additional optional argument is `replace`. The `replace` argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set `replace = FALSE`. See `sample` for more details on this argument.
+
+Finally, the probability of selecting each value specified to the `levels` argument is also able to be specified through the `prob` argument. If `prob` is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with `levels` to be equally likely to be sampled.
+
+## Knot Variable
+To come...
+
+# Random Error Arguments
+By default, the random error is generated as random normal with a mean of 0 and standard deviation of 1. If this is the desired behavior, no additional simulation arguments need to be specified in the simulation arguments. For example, the code below generates random error using the fixed arguments already shown above.
+
+```{r random_error}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+error_data <- simulate_error(data = NULL, sim_arguments)
+head(error_data, n = 20)
+```
+
+## Optional Arguments for Random Error
+The two main optional arguments for the random error component include a `dist` and `variance` that represent the error generating function and variance of the random error respectively. For example, if a t-distribution is desired for simulation of random error, `dist = 'rt'` can be used to specify the t-distribution as the generating distribution. When distributions other than random normal are specified, it is common that additional arguments will need to be specified for the generating distribution function (i.e. `rt`). In the `rt` example, the `df` argument is needed to specify the degrees of freedom for the t-distribution. Below is an example using a t-distribution.
+
+```{r random_error_t}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  error = list(dist = 'rt', df = 4),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+error_data <- simulate_error(data = NULL, sim_arguments)
+head(error_data, n = 20)
+```
+
+Finally, the variance of the random error can also be specified to be something other than the default 1. For example, if the variance is desired to be 10, then the argument `variance = 10` will set this variance. This variance works with any distribution function. For example, the following will generate data as a t-distribution with a variance of 10.
+
+```{r re_10}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  error = list(dist = 'rt', df = 4, variance = 10),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+error_data <- simulate_error(data = NULL, sim_arguments)
+var(error_data$error)
+```
+
+Note that the variance does not actually equal 10 here. This is due to the generating distribution specified (i.e. t-distribution with 4 degrees of freedom) has a theoretical variance of 2. In cases when the random error has a variance other than 1, the variable needs to be standardized prior to converting to the desired variance value. The standardization can be done in two ways. One, an empirical mean and standard deviation of the generating distribution can be obtained by setting the argument `ther_sim = TRUE`. For example:
+
+```{r re_10_ts}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  error = list(dist = 'rt', df = 4, variance = 10, ther_sim = TRUE),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+error_data <- simulate_error(data = NULL, sim_arguments)
+var(error_data$error)
+```
+
+This simulation takes longer to run as the generated empirical mean and standard deviation for the standardization draws a large number of random values from the specified distribution. To speed up this process, the theoretical values can be specified directly within the `ther_val` argument as a vector with the mean specified first followed by the standard deviation. This is shown below:
+
+```{r re_10_specify}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  error = list(dist = 'rt', df = 4, variance = 10, ther_val = c(0, sqrt(2))),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+error_data <- simulate_error(data = NULL, sim_arguments)
+var(error_data$error)
+```
+
+## Heterogeneity of Variance
+It is also possible to generate heterogeneity of variance for the random error. 
+
+# Random Effect Arguments
+The random effect arguments are passed through a named element of the list to the simulation arguments called 'randomeffect'. Within this element, each random effect specified in the formula must be specified as a named list. The named list allows the user to specify the names that will be used in the data simulation for the random effects. The default behavior of these random effects is to be simulated from a random normal distribution with mean 0 and variance of 1.
+
+Many of the same arguments that have been discussed with the error simulation are possible for the random effect simulation arguments. These include: `dist`, `variance`, `ther_sim`, `ther_val` and other arguments that are needed to pass on the data generating function. In addition, the argument `var_level` first introduced with the fixed effects are present here indicating which level of the data structure the random effect should be generated at. These arguments will not be discussed in more detail here, but readers can see examples of these arguments within the fixed effects and random error sections above.
+
+Below is an example that simulated two random effects in a two-level nested model and specifies the variance of 8 and 3 for the two random effects respectively. Finally, you will notice in the final output, the names of the random effect columns are specified by the names included in the list associated with the "randomeffect" portion of the simulation arguments.
+
+```{r random_args}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                time_id = list(variance = 3, var_level = 2)),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+random_data <- simulate_randomeffect(data = NULL, sim_arguments)
+head(random_data, n = 20)
+```
+
+
+## Cross-Classified Random Effects
+If cross-classified random effects are desired, these can be specified directly within the formula syntax as you would with lme4. For example, `y ~ 1 + time + weight + age + treat + (1 + time| id) + (1 | neighborhood_id)`. When documenting the simulation arguments for the additional cross-classified random effect (i.e. `(1 | neighborhood_id)`), specifying `cross_class = TRUE` with that random effect to identify that this is indeed a cross-classified random effect. Secondly, you can also specify directly the number of clusters that are associated with this cross-classified factor, this can be different than those specified in the `sample_size` argument. This can be done with the `num_ids` argument. Below is an example with a single cross-classified random effect representing neighborhoods individuals belong in
+
+```{r cross-class}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id) +
+    (1 | neighborhood_id),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                time_id = list(variance = 3, var_level = 2),
+                int_nid = list(variance = 5, var_level = 2,
+                               cross_class = TRUE,
+                               num_ids = 12)),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+random_data <- simulate_randomeffect(data = NULL, sim_arguments)
+head(random_data, n = 20)
+```
+
+# Missing Data Arguments
+Missing data is the standard rather than the exception in real world data. Therefore, generating data that include missing is important for generating data that are representative of real world data. In the power analysis context, most power analyses do not include missing data in the power computations (particularly if these are closed form solutions), but power can be negatively affected by missing data. 
+
+Fortunatly, the simglm package contains many useful frameworks for generating missing data. To generate missing data, the `generate_missing` function can be used for this. This function is called after the complete data are generated. This means that the complete data and missing data will be generated. Currently three types of missing data are supported, dropout, random, and mar (missing at random). The specification of missing data arguments is done using a named element to the simulation argument list called "missing_data".
+
+## Random Missing Data
+First, lets explore random missing data. This structure is equivalent to the missing completely at random framework if you are familiar with Rubin's missing data classifications. To generate random missing data the `type = 'random'` is specified. Two additional arguments are needed to generate the missing data, first the missing proportion needs to be specified with `miss_prop` and the name of the new response variable with missing data needs to be specified with `new_outcome`. Below is an example generating data with random missing data.
+
+```{r missing_random}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  reg_weights = c(4, 0.5, 0.75, 0, 0.33),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                      time_id = list(variance = 3, var_level = 2)),
+  missing_data = list(miss_prop = .25, new_outcome = 'y_missing',
+                      type = 'random'),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+data_w_missing <- sim_arguments %>%
+  simulate_fixed(data = NULL, .) %>%
+  simulate_randomeffect(sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  generate_missing(sim_arguments)
+
+head(data_w_missing, n = 10)
+```
+
+We can look at the amount of missing data:
+
+```{r amount_missing}
+prop.table(table(is.na(data_w_missing$y_missing)))
+```
+
+
+## MAR Missing Data
+Data that are missing at random (MAR) can be generated as well. 
+
+```{r missing_mar}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  reg_weights = c(4, 0.5, 0.75, 0, 0.33),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30,
+                             var_level = 1),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                      time_id = list(variance = 3, var_level = 2)),
+  missing_data = list(new_outcome = 'y_missing', miss_cov = 'weight', 
+                      mar_prop = seq(from = 0, to = .9, length.out = 200),
+                      type = 'mar'),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+data_w_missing <- sim_arguments %>%
+  simulate_fixed(data = NULL, .) %>%
+  simulate_randomeffect(sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  generate_missing(sim_arguments)
+
+head(data_w_missing, n = 10)
+```
+
+We can look at the amount of missing data:
+
+```{r amount_missing_mar}
+prop.table(table(is.na(data_w_missing$y_missing)))
+```
+
+## Dropout Missing Data
+Dropout missing data is possible when simulating data from a longitudinal design. When requesting dropout missing data, observations are removed after a specific point in the time cycle. For example, perhaps an individual stops being a part of the study after the third measurement. To request this type of missing data, the `type = 'dropout'` can be specified. In addition, one new argument is needed, `clust_var`. This argument represents the id associated with the clusters with longitudinal data. Below is an example:
+
+```{r missing_dropout}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  reg_weights = c(4, 0.5, 0.75, 0, 0.33),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                      time_id = list(variance = 3, var_level = 2)),
+  missing_data = list(miss_prop = .25, new_outcome = 'y_missing',
+                      clust_var = 'id', type = 'dropout'),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+data_w_missing <- sim_arguments %>%
+  simulate_fixed(data = NULL, .) %>%
+  simulate_randomeffect(sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  generate_missing(sim_arguments)
+
+head(data_w_missing, n = 10)
+```
+
+We can look at the amount of missing data:
+
+```{r amount_missing_dropout}
+prop.table(table(is.na(data_w_missing$y_missing)))
+```
+
+We can also look now at the amount of missing by the time variable.
+
+```{r missing_by_time}
+prop.table(table(is.na(data_w_missing$y_missing), data_w_missing$time))
+```
+
+### Specify location of dropout
+If additional control is desired, specifying the location of the dropout is possible. In this situation, a vector is passed to `dropout_location` that specifies for each individual (more generally each level 2 unit) where the dropout occurs. Below is an example of this.
+
+```{r missing_dropout_spec}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  reg_weights = c(4, 0.5, 0.75, 0, 0.33),
+  fixed = list(time = list(var_type = 'time'),
+               weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                      time_id = list(variance = 3, var_level = 2)),
+  missing_data = list(new_outcome = 'y_missing',
+      dropout_location = c(3, 9, 1, 6, 7, 8, 6, 9, 2, 4, 6, 5, 8, 9, 4, 5, 
+                           6, 7, 2, 9),
+                      clust_var = 'id', type = 'dropout'),
+  sample_size = list(level1 = 10, level2 = 20)
+)
+
+data_w_missing <- sim_arguments %>%
+  simulate_fixed(data = NULL, .) %>%
+  simulate_randomeffect(sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  generate_missing(sim_arguments)
+
+head(data_w_missing, n = 10)
+```
+
+We can look at the amount of missing data:
+
+```{r amount_missing_dropout_spec}
+prop.table(table(is.na(data_w_missing$y_missing)))
+```
+
+We can also look now at the amount of missing by the time variable.
+
+```{r missing_by_time_dropout_spec}
+prop.table(table(is.na(data_w_missing$y_missing), data_w_missing$time))
+```
+
+
+# Model Fit Arguments
+The default behavior when fitting models to the generated data is to fit a model with the same formula as the generated data (i.e. `formula` simulation arguments). Secondly, the default model functions are `lm`/`glm` for single level simulation and `lmer`/`glmer` for multilevel simulation. Finally, the default regression weights specified in `reg_weights` are to compute statistics for power, type I error rates, and precision. 
+
+These defaults can be overriden by specifying simulation arguments through the named list called `model_fit`. Some examples were given in the Tidy Simulation vignette and the options that are able to be specified will depend on the type of model fitting function specified. A few examples are given for various model types, however, the user is directed to the documentation of the modeling functions specified through the `model_function` argument.
+
+## Changing Family Argument
+
+
+## Adding Serial Correlation
+
+
+## Marginal Models
+
+
+# Power Arguments
+
