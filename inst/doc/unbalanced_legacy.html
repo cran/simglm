@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-06-01" />
+<meta name="date" content="2018-07-25" />
 
 <title>Unbalanced Data - legacy code</title>
 
@@ -19,16 +19,24 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
 @media print {
 code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
   { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
     position: absolute; left: -5em; text-align: right; vertical-align: baseline;
@@ -40,38 +48,40 @@ pre.numberSource a.sourceLine::before
     color: #aaaaaa;
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+a.sourceLine::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -268,16 +278,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Unbalanced Data - legacy code</h1>
-<h4 class="date"><em>2018-06-01</em></h4>
+<h4 class="date"><em>2018-07-25</em></h4>
 
 
 
-<section id="unbalanced-data" class="level3">
+<div id="unbalanced-data" class="section level3">
 <h3>Unbalanced Data</h3>
 <p>Unbalanced data tends to be the rule rather than the exception with real world data. As such, when simulating data it is better to replicate data that matches real world data conditions. The <em>simglm</em> package by default generates data for a balanced design. This means that the number of level one units within each level two cluster is the same.</p>
 <p>To override the default and generate unbalanced data where the number of observations within each level two cluster differ, two new arguments need to be passed to the <em>sim_reg</em> function. First, the argument <strong>unbal</strong> needs to be set to TRUE. This overrides the default of a balanced design. Next, the argument <strong>unbal_design</strong> is a vector of two values. The two values represent the minimum number of values per cluster and the maximum number of values per cluster. They can be specified in any order. The number of observations per cluster is then simulated from a random uniform distribution with the minimum and maximum values specified in the <strong>unbal_design</strong> argument.</p>
 <p>The following is an example of an unbalanced two level design. Note, the <strong>p</strong> argument (level one sample size) is set to NULL as the level one sample size is specified in the <strong>unbal_design</strong> argument.</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(simglm)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(simglm)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff<span class="op">:</span>act</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st">  </span>diff</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
@@ -297,9 +307,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-18" data-line-number="18">                      <span class="dt">random_param =</span> random_param, <span class="dt">cov_param =</span> cov_param,</a>
 <a class="sourceLine" id="cb1-19" data-line-number="19">                      <span class="dt">k =</span> <span class="ot">NULL</span>, <span class="dt">n =</span> n, <span class="dt">p =</span> <span class="ot">NULL</span>, <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb1-20" data-line-number="20">                      <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> data_str, </a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">                      <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">TRUE</span>), <span class="dt">unbal_design =</span> unbal_design)</a></code></pre>
+<a class="sourceLine" id="cb1-21" data-line-number="21">                      <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">TRUE</span>), <span class="dt">unbal_design =</span> unbal_design)</a></code></pre></div>
 <p>The unbalanced design can be verified by running a table on the cluster ID variable. As can be seen from the output below, the sample size of the clusters ranges from a small of 3 to a maximum of 10.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">table</span>(temp_cross<span class="op">$</span>clustID)</a></code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">table</span>(temp_cross<span class="op">$</span>clustID)</a></code></pre></div>
 <pre><code>## 
 ##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18 
 ##   5   5   7   3   6   6   9   6   7   4   7   9   5   6   8   8   4   6 
@@ -319,11 +329,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##  10  10   7   4   5   9   8   6   7   3   6   3   6   7   8   4   4   9 
 ## 145 146 147 148 149 150 
 ##   4   8  10   3   3   4</code></pre>
-<section id="three-level-models" class="level4">
+<div id="three-level-models" class="section level4">
 <h4>Three Level Models</h4>
 <p>Moving from two level to three level models is straightforward. The same <strong>unbal</strong> and <strong>unbal_design</strong> are now specified as named list, one representing level 2 (“level2”) and another representing level 3 (“level3”). The same framework as above is following for each level of the data.</p>
 <p>To specify a design that has an unbalanced number of observations within each level two cluster, but balanced level two units within each level three cluster, the following code can be used. Notice the similarities and differences with this level 3 design compared to the level 2 above.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>actClust <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>actClust <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">random3 &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>, <span class="dv">0</span>)</a>
@@ -346,9 +356,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-21" data-line-number="21">      <span class="dt">random_param3 =</span> random_param3, <span class="dt">cov_param =</span> cov_param, <span class="dt">k =</span> k,</a>
 <a class="sourceLine" id="cb4-22" data-line-number="22">      <span class="dt">n =</span> n, <span class="dt">p =</span> p, <span class="dt">unbal =</span> unbal, <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb4-23" data-line-number="23">      <span class="dt">with_err_gen =</span> with_err_gen, </a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">      <span class="dt">data_str =</span> data_str, <span class="dt">unbal_design =</span> unbal_design)</a></code></pre>
+<a class="sourceLine" id="cb4-24" data-line-number="24">      <span class="dt">data_str =</span> data_str, <span class="dt">unbal_design =</span> unbal_design)</a></code></pre></div>
 <p>Checking that the data are as unbalanced at level two and balanced number of clusters within each level three cluster.</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">table</span>(temp_three<span class="op">$</span>clustID)</a></code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">table</span>(temp_three<span class="op">$</span>clustID)</a></code></pre></div>
 <pre><code>## 
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15 
 ##    7    6    6    7    8    4    7    4    9    9    6    4    7    9    6 
@@ -550,12 +560,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##    3    6    5    8    6    6    7    7    7    3    5    7    9    9    4 
 ## 1486 1487 1488 1489 1490 1491 1492 1493 1494 1495 1496 1497 1498 1499 1500 
 ##    7    8    7    7    4    5    8    3    5    6    4    9    8   10    7</code></pre>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">func_temp &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">length</span>(<span class="kw">unique</span>(x))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">tapply</span>(temp_three<span class="op">$</span>clustID, temp_three<span class="op">$</span>clust3ID, func_temp)</a></code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">func_temp &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">length</span>(<span class="kw">unique</span>(x))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">tapply</span>(temp_three<span class="op">$</span>clustID, temp_three<span class="op">$</span>clust3ID, func_temp)</a></code></pre></div>
 <pre><code>##   1   2   3   4   5   6   7   8   9  10 
 ## 150 150 150 150 150 150 150 150 150 150</code></pre>
 <p>Moving to a design that is unbalanced at both levels is straightforward. Note that now only the number of clusters needs to be specified, the number of level one and two clusters are randomly generated.</p>
-<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>actClust <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>actClust <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">random3 &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>, <span class="dv">0</span>)</a>
@@ -578,9 +588,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb9-21" data-line-number="21">      <span class="dt">random_param3 =</span> random_param3, <span class="dt">cov_param =</span> cov_param, <span class="dt">k =</span> k,</a>
 <a class="sourceLine" id="cb9-22" data-line-number="22">      <span class="dt">n =</span> <span class="ot">NULL</span>, <span class="dt">p =</span> <span class="ot">NULL</span>, <span class="dt">unbal =</span> unbal, <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb9-23" data-line-number="23">      <span class="dt">with_err_gen =</span> with_err_gen, </a>
-<a class="sourceLine" id="cb9-24" data-line-number="24">      <span class="dt">data_str =</span> data_str, <span class="dt">unbal_design =</span> unbal_design)</a></code></pre>
+<a class="sourceLine" id="cb9-24" data-line-number="24">      <span class="dt">data_str =</span> data_str, <span class="dt">unbal_design =</span> unbal_design)</a></code></pre></div>
 <p>Lastly, showing that the design is indeed unbalanced at both levels.</p>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">table</span>(temp_three<span class="op">$</span>clustID)</a></code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">table</span>(temp_three<span class="op">$</span>clustID)</a></code></pre></div>
 <pre><code>## 
 ##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
 ## 14 12  8  6 14 13  4  9  9  6 12  5 11 13 13 10  5 13 13 10 13  8 11 13  5 
@@ -588,15 +598,15 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 13  6  6  8  5 15 11  5  6 10 12 13  9  5  6 15  3 12 11  7  8  6  4 11 10 
 ## 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 
 ##  8 15  8 15 13  5  4 12 13  4 14  7  3  8  8 11  8  6  7 12  5  9</code></pre>
-<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">tapply</span>(temp_three<span class="op">$</span>clustID, temp_three<span class="op">$</span>clust3ID, func_temp)</a></code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">tapply</span>(temp_three<span class="op">$</span>clustID, temp_three<span class="op">$</span>clust3ID, func_temp)</a></code></pre></div>
 <pre><code>##  1  2  3  4  5  6  7  8  9 10 
 ##  9  9  5  5  9  8  8  7  8  4</code></pre>
-</section>
-</section>
-<section id="specify-sample-size" class="level2">
+</div>
+</div>
+<div id="specify-sample-size" class="section level2">
 <h2>Specify Sample Size</h2>
 <p>It is also possible to specify the exact sample size for each cluster directly rather than simulating from a random uniform distribution. The <code>unbal_design</code> argument allows for this specification directly. The following is a level 2 example.</p>
-<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff<span class="op">:</span>act</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff<span class="op">:</span>act</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st">  </span>diff</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">2</span>), <span class="dt">rand_gen =</span> <span class="st">'rnorm'</span>)</a>
@@ -615,17 +625,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb14-17" data-line-number="17">                      <span class="dt">random_param =</span> random_param, <span class="dt">cov_param =</span> cov_param,</a>
 <a class="sourceLine" id="cb14-18" data-line-number="18">                      <span class="dt">k =</span> <span class="ot">NULL</span>, <span class="dt">n =</span> n, <span class="dt">p =</span> <span class="ot">NULL</span>, <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb14-19" data-line-number="19">                      <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> data_str, </a>
-<a class="sourceLine" id="cb14-20" data-line-number="20">                      <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">TRUE</span>), <span class="dt">unbal_design =</span> unbal_design)</a></code></pre>
+<a class="sourceLine" id="cb14-20" data-line-number="20">                      <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">TRUE</span>), <span class="dt">unbal_design =</span> unbal_design)</a></code></pre></div>
 <p>The sample sizes of each cluster can then be tabulated.</p>
-<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">table</span>(temp_cross<span class="op">$</span>clustID)</a></code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">table</span>(temp_cross<span class="op">$</span>clustID)</a></code></pre></div>
 <pre><code>## 
 ##  1  2  3  4  5  6 
 ##  6  3  5  2 10  7</code></pre>
-</section>
-<section id="unbalanced-factor-simulation" class="level2">
+</div>
+<div id="unbalanced-factor-simulation" class="section level2">
 <h2>Unbalanced factor simulation</h2>
 <p>The <code>simglm</code> package also allows factor or discrete covariate simulation with unbalanced designs. THe following is an example of this in a two level cross sectional model.</p>
-<pre class="sourceCode r" id="cb17"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act.o <span class="op">+</span><span class="st"> </span>diff<span class="op">:</span>act.o</a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act.o <span class="op">+</span><span class="st"> </span>diff<span class="op">:</span>act.o</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st">  </span>diff</a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
 <a class="sourceLine" id="cb17-4" data-line-number="4">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">2</span>), <span class="dt">rand_gen =</span> <span class="st">'rnorm'</span>)</a>
@@ -646,9 +656,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb17-19" data-line-number="19">                      <span class="dt">k =</span> <span class="ot">NULL</span>, <span class="dt">n =</span> n, <span class="dt">p =</span> <span class="ot">NULL</span>, <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb17-20" data-line-number="20">                      <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> data_str, </a>
 <a class="sourceLine" id="cb17-21" data-line-number="21">                      <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">TRUE</span>), <span class="dt">unbal_design =</span> unbal_design, </a>
-<a class="sourceLine" id="cb17-22" data-line-number="22">                      <span class="dt">fact_vars =</span> fact_vars)</a></code></pre>
+<a class="sourceLine" id="cb17-22" data-line-number="22">                      <span class="dt">fact_vars =</span> fact_vars)</a></code></pre></div>
 <p>This easily extends to three level models as well.</p>
-<pre class="sourceCode r" id="cb18"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act.o <span class="op">+</span><span class="st"> </span>num_rooms.o <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act.o</a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act.o <span class="op">+</span><span class="st"> </span>num_rooms.o <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act.o</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">random3 &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time</a>
 <a class="sourceLine" id="cb18-4" data-line-number="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>, <span class="dv">0</span>)</a>
@@ -672,8 +682,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb18-22" data-line-number="22">      <span class="dt">n =</span> <span class="ot">NULL</span>, <span class="dt">p =</span> <span class="ot">NULL</span>, <span class="dt">unbal =</span> unbal, <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb18-23" data-line-number="23">      <span class="dt">with_err_gen =</span> with_err_gen, </a>
 <a class="sourceLine" id="cb18-24" data-line-number="24">      <span class="dt">data_str =</span> data_str, <span class="dt">unbal_design =</span> unbal_design,</a>
-<a class="sourceLine" id="cb18-25" data-line-number="25">      <span class="dt">fact_vars =</span> fact_vars)</a></code></pre>
-</section>
+<a class="sourceLine" id="cb18-25" data-line-number="25">      <span class="dt">fact_vars =</span> fact_vars)</a></code></pre></div>
+</div>
 
 
 

@@ -673,29 +673,42 @@ sim_pow_single <- function(fixed, fixed_param, cov_param, n, error_var,
 #'     \item model_fit: These are arguments passed to the \code{\link{model_fit}}
 #'       function. 
 #'   }
-#' @param ... Additional arguments needed to pass on to model fitting 
-#'   functions. See specific model fitting functions for specific details.
+#' @param ... Currently not used.
 #' 
 #' @export 
 model_fit <- function(data, sim_args, ...) {
   
-  if(is.null(sim_args[['model_fit']][['model_function']])) {
+  model_args <- sim_args[['model_fit']]
+  
+  if(is.null(model_args[['model_function']])) {
     if(length(parse_formula(sim_args)[['randomeffect']]) == 0) {
       model_function <- 'lm'
+      if(!is.null(sim_args[['outcome_type']])) {
+        model_function <- 'glm'
+      }
     } else {
       model_function <- 'lmer'
+      if(!is.null(sim_args[['outcome_type']])) {
+        model_function <- 'glmer'
+      }
     }
   } else {
-    model_function <- sim_args[['model_fit']][['model_function']]
-  }
-  if(is.null(sim_args[['model_fit']][['formula']])) {
-    formula <- sim_args[['formula']]
-  } else {
-    formula <- sim_args[['model_fit']][['formula']]
+    model_function <- model_args[['model_function']]
   }
   
+  if('id' %in% names(model_args)) {
+    model_args[['id']] <- data[[model_args[['id']]]]
+  }
+  
+  if(is.null(model_args[['formula']])) {
+    model_args[['formula']] <- sim_args[['formula']]
+  }
+  
+  model_args[['model_function']] <- NULL
+  
   purrr::invoke(model_function, 
-                list(formula = formula, data = data, ...))
+                model_args, 
+                data = data)
 }
 
 #' Extract Coefficients
@@ -706,7 +719,7 @@ model_fit <- function(data, sim_args, ...) {
 #' @export 
 extract_coefficients <- function(model, extract_function = NULL) {
   
-  if(class(model) %in% c('glmerMod', 'lmerMod')) {
+  if(any(c('glmerMod', 'lmerMod') %in% class(model))) {
     tidy_mixed(model)
   } else {
     if(is.null(extract_function)) {
@@ -746,24 +759,28 @@ tidy_mixed <- function(model) {
 #'   }
 #' @param expression Simulation, model fitting, and coefficient extraction
 #'   expressions for a single replication.
+#' @param return_list TRUE/FALSE indicating whether a full list output should be
+#'   returned. If TRUE, the nested list is returned. If FALSE, replications are 
+#'   combined with a replication id appended.
 #' @param ... Currently not used.
 #' @importFrom purrr rerun
 #' @importFrom dplyr enquo
 #' @importFrom dplyr quo
 #' 
 #' @export 
-replicate_simulation <- function(sim_args, expression = NULL, ...) {
+replicate_simulation <- function(sim_args, expression = NULL, 
+                                 return_list = FALSE,...) {
   
   if(is.null(sim_args[['vary_arguments']])) {
     expression_quo <- dplyr::enquo(expression)
     purrr::rerun(sim_args[['replications']], !!expression_quo)
   } else {
-    replicate_simulation_vary(sim_args)
+    replicate_simulation_vary(sim_args, return_list = FALSE)
   }
   
 }
 
-replicate_simulation_vary <- function(sim_args) {
+replicate_simulation_vary <- function(sim_args, return_list = FALSE) {
   
   conditions <- data.frame(sapply(expand.grid(sim_args[['vary_arguments']], KEEP.OUT.ATTRS = FALSE),
                                   as.character))
@@ -774,15 +791,28 @@ replicate_simulation_vary <- function(sim_args) {
           purrr::rerun(sim_arguments[[xx]][['replications']], simglm(sim_arguments[[xx]]))
             )
   
-  power_list <- lapply(seq_along(sim_arguments), function(xx) 
-    data.frame(conditions[xx, , drop = FALSE],
-               dplyr::bind_rows(power_out[[xx]]),
-               row.names = NULL
+  if(return_list) {
+    return(power_out)
+  } else {
+    
+    power_df <- lapply(power_out, dplyr::bind_rows)
+    
+    num_rows <- unlist(lapply(power_df, nrow))
+    
+    rep_id <- lapply(seq_along(num_rows), function(xx) 
+      rep(1:sim_args[['replications']], 
+          each = num_rows[xx]/sim_args[['replications']]))
+    
+    power_list <- lapply(seq_along(sim_arguments), function(xx) 
+      data.frame(conditions[xx, , drop = FALSE],
+                 replication = rep_id[[xx]],
+                 power_df[[xx]],
+                 row.names = NULL
+      )
     )
-  )
-  
-  power_list
-  
+    
+    power_list
+  }
 }
 
 #' Compute Power, Type I Error, or Precision Statistics
@@ -822,6 +852,9 @@ compute_statistics <- function(data,  sim_args, power = TRUE,
                        'term')
   }
   
+  avg_estimates <- aggregate_estimate(data_df,
+                                      rlang::syms(group_vars))
+  
   if(power) {
     power_computation <- aggregate_power(data_df, 
                                          rlang::syms(group_vars))
@@ -843,7 +876,8 @@ compute_statistics <- function(data,  sim_args, power = TRUE,
     precision_computation <- NULL
   }
   
-  statistics <- dplyr::bind_cols(power_computation, 
+  statistics <- dplyr::bind_cols(avg_estimates,
+                                 power_computation, 
                                  type_1_error_computation, 
                                  precision_computation) 
   
@@ -916,6 +950,15 @@ compute_t1e <- function(data, sim_args, t1e_args) {
                             1, 0))
     }
   }
+}
+
+aggregate_estimate <- function(data, group_var) {
+  
+  group_by_var <- dplyr::quos(!!! group_var)
+  
+  data %>%
+    group_by(!!! group_by_var) %>%
+    summarise(avg_estimate = mean(estimate))
 }
 
 aggregate_power <- function(data, group_var) {

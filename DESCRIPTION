@@ -2,7 +2,7 @@ Package: simglm
 Type: Package
 Authors@R: person("Brandon", "LeBeau", email = "lebebr01+simglm@gmail.com",
      role = c("aut", "cre"))
-Version: 0.7.0
+Version: 0.7.1
 License: MIT + file LICENSE
 Title: Simulate Models Based on the Generalized Linear Model
 Description: Easily simulates regression models,
@@ -20,6 +20,6 @@ RoxygenNote: 6.0.1
 Author: Brandon LeBeau [aut, cre]
 Maintainer: Brandon LeBeau <lebebr01+simglm@gmail.com>
 NeedsCompilation: no
-Packaged: 2018-06-01 22:11:20 UTC; lebeb
+Packaged: 2018-07-25 20:28:41 UTC; bleb
 Repository: CRAN
-Date/Publication: 2018-06-01 22:46:49 UTC
+Date/Publication: 2018-07-25 20:50:03 UTC

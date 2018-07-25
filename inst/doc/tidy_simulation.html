@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-06-01" />
+<meta name="date" content="2018-07-25" />
 
 <title>Tidy Simulation with simglm</title>
 
@@ -19,16 +19,24 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
 @media print {
 code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
   { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
     position: absolute; left: -5em; text-align: right; vertical-align: baseline;
@@ -40,38 +48,40 @@ pre.numberSource a.sourceLine::before
     color: #aaaaaa;
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+a.sourceLine::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -268,15 +278,15 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Tidy Simulation with <code>simglm</code></h1>
-<h4 class="date"><em>2018-06-01</em></h4>
+<h4 class="date"><em>2018-07-25</em></h4>
 
 
 
-<section id="tidy-simulation-with-simglm" class="level1">
+<div id="tidy-simulation-with-simglm" class="section level1">
 <h1>Tidy Simulation with <code>simglm</code></h1>
 <p>Introducing a new framework for simulation and power analysis with the <code>simglm</code> package, tidy simulation. The package now has helper functions in which the first argument is always the data and the second argument is always the simulation arguments. A second vignette is written that contains a more exhuastive list of simluation arguments that are allowed. This vignette will give the basics needed to specify simulation arguments to generate simulated data.</p>
-</section>
-<section id="functions-for-basic-simulation" class="level1">
+</div>
+<div id="functions-for-basic-simulation" class="section level1">
 <h1>Functions for Basic Simulation</h1>
 <p>There are four primary functions to be used for basic simulation functionality. These include:</p>
 <ul>
@@ -286,13 +296,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>generate_response</code>: based on fixed, error, and random effects, generate outcome variable <span class="math inline">\(Y_{j}\)</span> given the following <span class="math inline">\(Y_{j} = g(X_{j} \beta + Z_{j} b_{j} + e_{j})\)</span>.</li>
 </ul>
 <p>We will dive into what each of these component represent in a second, but first let’s start with an example that simulates a linear regression model.</p>
-<section id="first-linear-regression-example" class="level2">
+<div id="first-linear-regression-example" class="section level2">
 <h2>First Linear Regression Example</h2>
 <p>Let us assume for this first example that our outcome of interest is continuous and that the data is not clustered. In this example, our model would look like: <span class="math inline">\(Y_{j} = X_{j} \beta + e_{j}\)</span>. In this equation, <span class="math inline">\(Y_{j}\)</span> represents the continuous outcome, <span class="math inline">\(X_{j} \beta\)</span> represents the fixed portion of the model comprised of regression coefficients (<span class="math inline">\(\beta\)</span>) and a design matrix (<span class="math inline">\(X_{j}\)</span>), and <span class="math inline">\(e_{j}\)</span> represents random error.</p>
-<section id="fixed-portion-of-model" class="level3">
+<div id="fixed-portion-of-model" class="section level3">
 <h3>Fixed Portion of Model</h3>
 <p>The fixed portion of the model represents variables that are treated as fixed. This means that the values observed in the data are the only values we are interested in, will generalize to, or that we consider values of interest in our population. Let us consider the following formula: <code>y ~ 1 + x1 + x2</code>. In this formula there are a total of two varaibles that are assumed to be fixed, <code>x1</code> and <code>x2</code>. These variables together with an intercept would make up the design matrix <span class="math inline">\(X_{j}\)</span>. Let’s generate some example data using the <code>simglm</code> package and the <code>simulate_fixed</code> function.</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(simglm)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(simglm)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"></a>
@@ -303,79 +313,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10">)</a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">x1</th>
-<th style="text-align: right;">x2</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">41.73851</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">47.42296</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">40.94163</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">52.21630</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">34.23280</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">35.97664</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">42.28035</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">42.10166</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">42.88792</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">42.23178</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.       x1       x2 level1_id
+## 1             1 231.1471 41.73851         1
+## 2             1 158.6388 47.42296         2
+## 3             1 171.6605 40.94163         3
+## 4             1 176.4105 52.21630         4
+## 5             1 176.2812 34.23280         5
+## 6             1 188.0455 35.97664         6
+## 7             1 201.8052 42.28035         7
+## 8             1 186.9941 42.10166         8
+## 9             1 190.1734 42.88792         9
+## 10            1 163.4426 42.23178        10</code></pre>
 <p>The first three columns of the resulting data frame is the design matrix described above, <span class="math inline">\(X_{j}\)</span>. You may have noticed that the <code>simulate_fixed</code> function needs three elements defined in the simulation arguments (called <code>sim_arguments</code>) above. These elements are:</p>
 <ul>
 <li><code>formula</code>: this argument represents a R formula that is used to represent the model that is wished to be simulated. For the <code>simulate_fixed</code> argument, only the right hand side is used.</li>
@@ -383,1020 +332,262 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>sample_size</code>: this argument tells the function how many responses to generate.</li>
 </ul>
 <p>The columns <code>x1</code> and <code>x2</code> would represent variables that we would gather if these data were real. To reflect a real life scenario, consider the following fixed simuation.</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">40</span>, <span class="dt">sd =</span> <span class="dv">5</span>)),</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">41.73851</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">47.42296</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">40.94163</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">52.21630</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">34.23280</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">35.97664</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">42.28035</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">42.10166</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">42.88792</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">42.23178</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-<p>Now instead of the variables being called <code>x1</code> and <code>x2</code>, they now reflect variables weight (measured in lbs) and age (measured continuously, not rounded to whole digits). If we wished to change the <code>'age'</code> variable to be rounded to a whole integer, we could change the variable type to <code>'ordinal'</code> as such.</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>)),</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">40</span>, <span class="dt">sd =</span> <span class="dv">5</span>)),</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">)</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-<p>When specifying a <code>var_type</code> as <code>'ordinal'</code>, an additional <code>levels</code> argument is needed to determine which values are possible for the simulation. The last type of variable that is useful to discuss now would be factor or categorical variables. These variables can be generated by setting the <code>var_type = 'factor'</code>.</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">sex</th>
-<th style="text-align: right;">weight1</th>
-<th style="text-align: right;">age1</th>
-<th style="text-align: left;">sex1</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-<p>The required arguments when a factor variable are identical to an ordinal variable, however for factor variables the <code>levels</code> argument can either be an integer or can be a character vector where the character labels are specified directly. As you can see from the output, when a character vector is used, two variables are returned, one that contains the variable represented numerically and another that is the variable represented as a character vector. More details on this behavior to follow.</p>
-</section>
-</section>
-<section id="simulate-random-error" class="level2">
-<h2>Simulate Random Error</h2>
-<p>The simulation of random error (<span class="math inline">\(e_{j}\)</span> from the equation above) is a bit simpler than generating the fixed effects. Suppose for example, we want to simply simulate random errors that are normally distributed with a mean of 0 and a variance of 1. This can be done with the <code>simulate_error</code> function.</p>
-<pre class="sourceCode r" id="cb5"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.   weight      age level1_id
+## 1             1 231.1471 41.73851         1
+## 2             1 158.6388 47.42296         2
+## 3             1 171.6605 40.94163         3
+## 4             1 176.4105 52.21630         4
+## 5             1 176.2812 34.23280         5
+## 6             1 188.0455 35.97664         6
+## 7             1 201.8052 42.28035         7
+## 8             1 186.9941 42.10166         8
+## 9             1 190.1734 42.88792         9
+## 10            1 163.4426 42.23178        10</code></pre>
+<p>Now instead of the variables being called <code>x1</code> and <code>x2</code>, they now reflect variables weight (measured in lbs) and age (measured continuously, not rounded to whole digits). If we wished to change the <code>'age'</code> variable to be rounded to a whole integer, we could change the variable type to <code>'ordinal'</code> as such.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1.7049032</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.7120386</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.2779849</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.1196490</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.1239606</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.2681838</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.7268415</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.2331354</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.3391139</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.5519147</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>simulate_error</code> function only needs to know how many data values to simulate. By default, the <code>rnorm</code> function is used to generate random error and this function assumes a mean of 0 and standard deviation of 1 by default. I personally prefer the slightly more verbose code however.</p>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1.7049032</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.7120386</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.2779849</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.1196490</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.1239606</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.2681838</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.7268415</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.2331354</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.3391139</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.5519147</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-<p>This code makes it clearer when the variance of the errors is wished to be specified as some other value. For example:</p>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>)),</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.   weight age level1_id
+## 1             1 231.1471  49         1
+## 2             1 158.6388  60         2
+## 3             1 171.6605  58         3
+## 4             1 176.4105  45         4
+## 5             1 176.2812  47         5
+## 6             1 188.0455  53         6
+## 7             1 201.8052  60         7
+## 8             1 186.9941  43         8
+## 9             1 190.1734  33         9
+## 10            1 163.4426  48        10</code></pre>
+<p>When specifying a <code>var_type</code> as <code>'ordinal'</code>, an additional <code>levels</code> argument is needed to determine which values are possible for the simulation. The last type of variable that is useful to discuss now would be factor or categorical variables. These variables can be generated by setting the <code>var_type = 'factor'</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">level1_id</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">8.5245161</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-3.5601928</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-1.3899246</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-0.5982451</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">-0.6198031</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1.3409189</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3.6342074</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1.1656771</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1.6955694</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">-2.7595733</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="generate-response-variable" class="level2">
+<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
+## 1             1 231.1471  49   1 231.1471   49   male         1
+## 2             1 158.6388  60   0 158.6388   60 female         2
+## 3             1 171.6605  58   0 171.6605   58 female         3
+## 4             1 176.4105  45   0 176.4105   45 female         4
+## 5             1 176.2812  47   0 176.2812   47 female         5
+## 6             1 188.0455  53   1 188.0455   53   male         6
+## 7             1 201.8052  60   0 201.8052   60 female         7
+## 8             1 186.9941  43   1 186.9941   43   male         8
+## 9             1 190.1734  33   0 190.1734   33 female         9
+## 10            1 163.4426  48   0 163.4426   48 female        10</code></pre>
+<p>The required arguments when a factor variable are identical to an ordinal variable, however for factor variables the <code>levels</code> argument can either be an integer or can be a character vector where the character labels are specified directly. As you can see from the output, when a character vector is used, two variables are returned, one that contains the variable represented numerically and another that is the variable represented as a character vector. More details on this behavior to follow.</p>
+</div>
+</div>
+<div id="simulate-random-error" class="section level2">
+<h2>Simulate Random Error</h2>
+<p>The simulation of random error (<span class="math inline">\(e_{j}\)</span> from the equation above) is a bit simpler than generating the fixed effects. Suppose for example, we want to simply simulate random errors that are normally distributed with a mean of 0 and a variance of 1. This can be done with the <code>simulate_error</code> function.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##         error level1_id
+## 1   1.7049032         1
+## 2  -0.7120386         2
+## 3  -0.2779849         3
+## 4  -0.1196490         4
+## 5  -0.1239606         5
+## 6   0.2681838         6
+## 7   0.7268415         7
+## 8   0.2331354         8
+## 9   0.3391139         9
+## 10 -0.5519147        10</code></pre>
+<p>The <code>simulate_error</code> function only needs to know how many data values to simulate. By default, the <code>rnorm</code> function is used to generate random error and this function assumes a mean of 0 and standard deviation of 1 by default. I personally prefer the slightly more verbose code however.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##         error level1_id
+## 1   1.7049032         1
+## 2  -0.7120386         2
+## 3  -0.2779849         3
+## 4  -0.1196490         4
+## 5  -0.1239606         5
+## 6   0.2681838         6
+## 7   0.7268415         7
+## 8   0.2331354         8
+## 9   0.3391139         9
+## 10 -0.5519147        10</code></pre>
+<p>This code makes it clearer when the variance of the errors is wished to be specified as some other value. For example:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<pre><code>##         error level1_id
+## 1   8.5245161         1
+## 2  -3.5601928         2
+## 3  -1.3899246         3
+## 4  -0.5982451         4
+## 5  -0.6198031         5
+## 6   1.3409189         6
+## 7   3.6342074         7
+## 8   1.1656771         8
+## 9   1.6955694         9
+## 10 -2.7595733        10</code></pre>
+</div>
+<div id="generate-response-variable" class="section level2">
 <h2>Generate Response Variable</h2>
 <p>Now that we have seen the basics of simulating fixed variables (covariates) and random error, we can now generate the response by combining the previous two steps and then using the <code>generate_response</code> function. What makes this a tidy simulation is that the pipe from magrittr, <code>%&gt;%</code> can be used to combine steps into a simulation pipeline.</p>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">sex</th>
-<th style="text-align: right;">weight1</th>
-<th style="text-align: right;">age1</th>
-<th style="text-align: left;">sex1</th>
-<th style="text-align: right;">level1_id</th>
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">fixed_outcome</th>
-<th style="text-align: right;">random_effects</th>
-<th style="text-align: right;">y</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4.5862776</td>
-<td style="text-align: right;">66.94413</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">71.53041</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">-0.5353077</td>
-<td style="text-align: right;">43.59165</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">43.05635</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4.9416770</td>
-<td style="text-align: right;">47.69814</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">52.63981</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">-5.3611940</td>
-<td style="text-align: right;">50.42316</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">45.06196</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">-3.7900764</td>
-<td style="text-align: right;">50.18435</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">46.39428</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0.4750036</td>
-<td style="text-align: right;">53.61365</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">54.08866</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">-11.6546559</td>
-<td style="text-align: right;">56.54157</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">44.88692</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2.0875799</td>
-<td style="text-align: right;">54.29822</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">56.38580</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">-5.6016371</td>
-<td style="text-align: right;">55.75202</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">50.15039</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">-2.3734235</td>
-<td style="text-align: right;">46.23277</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">43.85934</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">)</a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
+## 1             1 231.1471  49   1 231.1471   49   male         1
+## 2             1 158.6388  60   0 158.6388   60 female         2
+## 3             1 171.6605  58   0 171.6605   58 female         3
+## 4             1 176.4105  45   0 176.4105   45 female         4
+## 5             1 176.2812  47   0 176.2812   47 female         5
+## 6             1 188.0455  53   1 188.0455   53   male         6
+## 7             1 201.8052  60   0 201.8052   60 female         7
+## 8             1 186.9941  43   1 186.9941   43   male         8
+## 9             1 190.1734  33   0 190.1734   33 female         9
+## 10            1 163.4426  48   0 163.4426   48 female        10
+##          error fixed_outcome random_effects        y
+## 1    4.5862776      66.94413              0 71.53041
+## 2   -0.5353077      43.59165              0 43.05635
+## 3    4.9416770      47.69814              0 52.63981
+## 4   -5.3611940      50.42316              0 45.06196
+## 5   -3.7900764      50.18435              0 46.39428
+## 6    0.4750036      53.61365              0 54.08866
+## 7  -11.6546559      56.54157              0 44.88692
+## 8    2.0875799      54.29822              0 56.38580
+## 9   -5.6016371      55.75202              0 50.15039
+## 10  -2.3734235      46.23277              0 43.85934</code></pre>
 <p>The only additional argument that is needed for the <code>generate_response</code> function is the <code>reg_weights</code> argument. This argument represents the regression coeficients associated with <span class="math inline">\(\beta\)</span> in the equation <span class="math inline">\(Y_{j} = X_{j} \beta + e_{j}\)</span>. The regression coefficients are multiplied by the design matrix to generate the column labeled “fixed_outcome” in the output. The output also contains the column, “random_effects” which are all 0 here indicating there are no random effects and the response variable, “y”.</p>
-<section id="non-normal-outcomes" class="level3">
+<div id="non-normal-outcomes" class="section level3">
 <h3>Non-normal Outcomes</h3>
 <p>Non-normal outcomes are possible with simglm. Two non-normal outcomes are currently supported with more support coming in the future. Binary and count outcomes are supported and can be specified with the <code>outcome_type</code> simulation argument. If <code>outcome_type = 'logistic'</code> or <code>outcome_type = 'binary'</code> then a binary outcome is generated (ie. 0/1 variable) using the <code>rbinom</code> function. If <code>outcome_type = 'count'</code> or <code>outcome_type = 'poisson'</code> then the outcome is transformed to be a count variable (ie. discrete variable; 0, 1, 2, etc.).</p>
 <p>Here is an example of generating a binary outcome.</p>
-<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="dt">outcome_type =</span> <span class="st">'binary'</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">sex</th>
-<th style="text-align: right;">weight1</th>
-<th style="text-align: right;">age1</th>
-<th style="text-align: left;">sex1</th>
-<th style="text-align: right;">level1_id</th>
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">fixed_outcome</th>
-<th style="text-align: right;">random_effects</th>
-<th style="text-align: right;">untransformed_outcome</th>
-<th style="text-align: right;">y</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4.5862776</td>
-<td style="text-align: right;">66.94413</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">71.53041</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">-0.5353077</td>
-<td style="text-align: right;">43.59165</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">43.05635</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4.9416770</td>
-<td style="text-align: right;">47.69814</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">52.63981</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">-5.3611940</td>
-<td style="text-align: right;">50.42316</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">45.06196</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">-3.7900764</td>
-<td style="text-align: right;">50.18435</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">46.39428</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0.4750036</td>
-<td style="text-align: right;">53.61365</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">54.08866</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">-11.6546559</td>
-<td style="text-align: right;">56.54157</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">44.88692</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2.0875799</td>
-<td style="text-align: right;">54.29822</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">56.38580</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">-5.6016371</td>
-<td style="text-align: right;">55.75202</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">50.15039</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">-2.3734235</td>
-<td style="text-align: right;">46.23277</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">43.85934</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">outcome_type =</span> <span class="st">'binary'</span></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12">)</a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
+## 1             1 231.1471  49   1 231.1471   49   male         1
+## 2             1 158.6388  60   0 158.6388   60 female         2
+## 3             1 171.6605  58   0 171.6605   58 female         3
+## 4             1 176.4105  45   0 176.4105   45 female         4
+## 5             1 176.2812  47   0 176.2812   47 female         5
+## 6             1 188.0455  53   1 188.0455   53   male         6
+## 7             1 201.8052  60   0 201.8052   60 female         7
+## 8             1 186.9941  43   1 186.9941   43   male         8
+## 9             1 190.1734  33   0 190.1734   33 female         9
+## 10            1 163.4426  48   0 163.4426   48 female        10
+##          error fixed_outcome random_effects untransformed_outcome y
+## 1    4.5862776      66.94413              0              71.53041 1
+## 2   -0.5353077      43.59165              0              43.05635 1
+## 3    4.9416770      47.69814              0              52.63981 1
+## 4   -5.3611940      50.42316              0              45.06196 1
+## 5   -3.7900764      50.18435              0              46.39428 1
+## 6    0.4750036      53.61365              0              54.08866 1
+## 7  -11.6546559      56.54157              0              44.88692 1
+## 8    2.0875799      54.29822              0              56.38580 1
+## 9   -5.6016371      55.75202              0              50.15039 1
+## 10  -2.3734235      46.23277              0              43.85934 1</code></pre>
 <p>And finally, an example of generating a count outcome. Note, the weight variable here has been grand mean centered in the generation (ie. mean = 0). This helps to ensure that the counts are not too large.</p>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb10-9" data-line-number="9">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.01</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb10-10" data-line-number="10">  <span class="dt">outcome_type =</span> <span class="st">'count'</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">sex</th>
-<th style="text-align: right;">weight1</th>
-<th style="text-align: left;">sex1</th>
-<th style="text-align: right;">level1_id</th>
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">fixed_outcome</th>
-<th style="text-align: right;">random_effects</th>
-<th style="text-align: right;">untransformed_outcome</th>
-<th style="text-align: right;">y</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">51.147097</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">51.147097</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-4.0233584</td>
-<td style="text-align: right;">2.511471</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-1.511888</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-21.361157</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-21.361157</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2.2803457</td>
-<td style="text-align: right;">1.786388</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">4.066734</td>
-<td style="text-align: right;">53</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-8.339547</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-8.339547</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.1016629</td>
-<td style="text-align: right;">1.916605</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">4.018267</td>
-<td style="text-align: right;">58</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-3.589471</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-3.589471</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2.8879225</td>
-<td style="text-align: right;">2.464105</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">5.352028</td>
-<td style="text-align: right;">194</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-3.718818</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-3.718818</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2.2317803</td>
-<td style="text-align: right;">1.962812</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">4.194592</td>
-<td style="text-align: right;">70</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">8.045513</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">8.045513</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">4.5862776</td>
-<td style="text-align: right;">2.080455</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">6.666733</td>
-<td style="text-align: right;">743</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">21.805245</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">21.805245</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">-0.5353077</td>
-<td style="text-align: right;">2.218052</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1.682745</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6.994062</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6.994062</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">4.9416770</td>
-<td style="text-align: right;">2.569941</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">7.511618</td>
-<td style="text-align: right;">1767</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10.173416</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10.173416</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">-5.3611940</td>
-<td style="text-align: right;">2.601734</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-2.759460</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-16.557440</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-16.557440</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">-3.7900764</td>
-<td style="text-align: right;">1.834426</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-1.955651</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-</section>
-<section id="functions-for-power-analysis" class="level1">
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb19-7" data-line-number="7">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb19-9" data-line-number="9">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.01</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb19-10" data-line-number="10">  <span class="dt">outcome_type =</span> <span class="st">'count'</span></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">)</a>
+<a class="sourceLine" id="cb19-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
+<pre><code>##    X.Intercept.     weight sex    weight1   sex1 level1_id      error
+## 1             1  51.147097   0  51.147097 female         1 -4.0233584
+## 2             1 -21.361157   0 -21.361157 female         2  2.2803457
+## 3             1  -8.339547   0  -8.339547 female         3  2.1016629
+## 4             1  -3.589471   1  -3.589471   male         4  2.8879225
+## 5             1  -3.718819   0  -3.718819 female         5  2.2317803
+## 6             1   8.045513   0   8.045513 female         6  4.5862776
+## 7             1  21.805245   0  21.805245 female         7 -0.5353077
+## 8             1   6.994062   1   6.994062   male         8  4.9416770
+## 9             1  10.173416   1  10.173416   male         9 -5.3611940
+## 10            1 -16.557440   0 -16.557440 female        10 -3.7900764
+##    fixed_outcome random_effects untransformed_outcome    y
+## 1       2.511471              0             -1.511887    0
+## 2       1.786388              0              4.066734   53
+## 3       1.916605              0              4.018267   58
+## 4       2.464105              0              5.352028  194
+## 5       1.962812              0              4.194592   70
+## 6       2.080455              0              6.666733  743
+## 7       2.218052              0              1.682745    7
+## 8       2.569941              0              7.511618 1767
+## 9       2.601734              0             -2.759460    0
+## 10      1.834426              0             -1.955651    0</code></pre>
+</div>
+</div>
+</div>
+<div id="functions-for-power-analysis" class="section level1">
 <h1>Functions for Power Analysis</h1>
 <p>Now that the basics of tidy simulation have been shown in the context of a linear regression model, let’s explore an example in which the power for this model is to be evaluated. In particular, suppose we are interested in estimating empirical power for the three fixed effects based on the following formula: <code>y ~ 1 + weight + age + sex</code>. More specifically, we are interested in estimating power for “weight”, “age”, and “sex” variables. A few additional functions are needed for this step including:</p>
 <ul>
@@ -1404,492 +595,258 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>extract_coefficients</code>: this function will extract the fixed coefficients based on the model fitted.</li>
 </ul>
 <p>To fit a model and extract coefficients, we could do the following building off the example from the previous section:</p>
-<pre class="sourceCode r" id="cb11"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">11.5595634</td>
-<td style="text-align: right;">20.1840611</td>
-<td style="text-align: right;">0.5727075</td>
-<td style="text-align: right;">0.5876458</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">weight</td>
-<td style="text-align: right;">0.2081874</td>
-<td style="text-align: right;">0.0944780</td>
-<td style="text-align: right;">2.2035541</td>
-<td style="text-align: right;">0.0697598</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">-0.0361530</td>
-<td style="text-align: right;">0.1905126</td>
-<td style="text-align: right;">-0.1897671</td>
-<td style="text-align: right;">0.8557488</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">8.7893117</td>
-<td style="text-align: right;">4.0690679</td>
-<td style="text-align: right;">2.1600307</td>
-<td style="text-align: right;">0.0740737</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">)</a>
+<a class="sourceLine" id="cb21-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb21-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-16" data-line-number="16"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-17" data-line-number="17"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre></div>
+<pre><code>## # A tibble: 4 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  11.6      20.2        0.573  0.588 
+## 2 weight        0.208     0.0945     2.20   0.0698
+## 3 age          -0.0362    0.191     -0.190  0.856 
+## 4 sex           8.79      4.07       2.16   0.0741</code></pre>
 <p>This output contains the model output for a single data simulation, more specifically we can see the parameter name, parameter estimate, the standard error for the parameter estimate, the test statistics, and the p-value. These were estimated using the <code>lm</code> function based on the same formula defined in <code>sim_arguments</code>. It is possible to specify your own formula, model fitting function, and regression weights to the <code>model_fit</code> function. For example, suppose we knew that weight was an important predictor, but are unable to collect it in real life. We could then specify an alternative model when evaluating power, but include the variable in the data generation step.</p>
-<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb12-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb12-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
-<a class="sourceLine" id="cb12-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>))</a>
-<a class="sourceLine" id="cb12-14" data-line-number="14">)</a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">50.5974404</td>
-<td style="text-align: right;">12.0444655</td>
-<td style="text-align: right;">4.2008872</td>
-<td style="text-align: right;">0.0040311</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">-0.0801511</td>
-<td style="text-align: right;">0.2359415</td>
-<td style="text-align: right;">-0.3397075</td>
-<td style="text-align: right;">0.7440417</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">13.9448165</td>
-<td style="text-align: right;">4.1458745</td>
-<td style="text-align: right;">3.3635404</td>
-<td style="text-align: right;">0.0120260</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb23-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb23-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb23-14" data-line-number="14">)</a>
+<a class="sourceLine" id="cb23-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb23-16" data-line-number="16"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-17" data-line-number="17"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-18" data-line-number="18"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-19" data-line-number="19"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-20" data-line-number="20"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre></div>
+<pre><code>## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded</code></pre>
+<pre><code>## # A tibble: 3 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  50.6       12.0       4.20  0.00403
+## 2 age          -0.0802     0.236    -0.340 0.744  
+## 3 sex          13.9        4.15      3.36  0.0120</code></pre>
 <p>Notice that we now get very different parameter estimates for this single data generation process which reflects the contribution of the variable “weight” that is not taken into account in the model fitting.</p>
-<section id="replicate-analysis" class="level2">
+<div id="replicate-analysis" class="section level2">
 <h2>Replicate Analysis</h2>
 <p>When evaluating empirical power, it is essential to replicate the analysis just like a Monte Carlo study to avoid extreme simulation conditions. The simglm package offers functions to aid in the replication given the simulation conditions and the desired simulation framework. To do this, two additional functions are used:</p>
 <ul>
 <li><code>replicate_simulation</code>: this function replicates the simulation</li>
 <li><code>compute_statistics</code>: this function compute desired statistics across the replications.</li>
 </ul>
-<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb13-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb13-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb13-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb13-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb13-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
-<a class="sourceLine" id="cb13-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
-<a class="sourceLine" id="cb13-14" data-line-number="14">  <span class="dt">replications =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="kw">replicate_simulation</span>(sim_arguments, <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-20" data-line-number="20"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">power</th>
-<th style="text-align: right;">avg_test_stat</th>
-<th style="text-align: right;">type_1_error</th>
-<th style="text-align: right;">avg_adjtest_stat</th>
-<th style="text-align: right;">param_estimate_sd</th>
-<th style="text-align: right;">avg_standard_error</th>
-<th style="text-align: right;">precision_ratio</th>
-<th style="text-align: right;">replications</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.8</td>
-<td style="text-align: right;">3.5453131</td>
-<td style="text-align: right;">0.7</td>
-<td style="text-align: right;">3.4266432</td>
-<td style="text-align: right;">26.3406995</td>
-<td style="text-align: right;">19.2172695</td>
-<td style="text-align: right;">1.370679</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">0.2</td>
-<td style="text-align: right;">-0.4203890</td>
-<td style="text-align: right;">0.2</td>
-<td style="text-align: right;">-0.1540360</td>
-<td style="text-align: right;">0.6084609</td>
-<td style="text-align: right;">0.4281103</td>
-<td style="text-align: right;">1.421271</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">0.3</td>
-<td style="text-align: right;">-0.2080483</td>
-<td style="text-align: right;">0.3</td>
-<td style="text-align: right;">-0.2867755</td>
-<td style="text-align: right;">11.2575270</td>
-<td style="text-align: right;">7.0177274</td>
-<td style="text-align: right;">1.604156</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb26-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb26-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb26-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
+<a class="sourceLine" id="cb26-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
+<a class="sourceLine" id="cb26-14" data-line-number="14">  <span class="dt">replications =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb26-15" data-line-number="15">)</a>
+<a class="sourceLine" id="cb26-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb26-17" data-line-number="17"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
+<a class="sourceLine" id="cb26-18" data-line-number="18">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-19" data-line-number="19"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-20" data-line-number="20"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb26-21" data-line-number="21"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-22" data-line-number="22"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-23" data-line-number="23"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre></div>
+<pre><code>## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded</code></pre>
+<pre><code>## # A tibble: 3 x 10
+##   term  avg_estimate power avg_test_stat type_1_error avg_adjtest_stat
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
+## 1 (Int~       60.4     0.8         3.55           0.7            3.43 
+## 2 age         -0.189   0.2        -0.420          0.2           -0.154
+## 3 sex         -1.95    0.3        -0.208          0.3           -0.287
+## # ... with 4 more variables: param_estimate_sd &lt;dbl&gt;,
+## #   avg_standard_error &lt;dbl&gt;, precision_ratio &lt;dbl&gt;, replications &lt;dbl&gt;</code></pre>
 <p>As can be seen from the output, the default behavior is to return statistics for power, average test statistic, type I error rate, adjusted average test statistic, standard deviation of parameter estimate, average standard error, precision ration (standard deviation of parameter estimate divided by average standard error), and the number of replications for each term.</p>
 <p>To generate this output, only the number of replications is needed. Here only 10 replications were done, in practice many more replications would be done to ensure there are accurate results.</p>
 <p>The default power parameter values used are: Normal distribution, two-tailed alternative hypotheses, and alpha of 0.05. Additional power parameters can be passed directly to override default values by including a power argument within the simulation arguments. For example, if a t-distribution with one degree of freedom an alpha of 0.02 is desired, these can be added as follows:</p>
-<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb14-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb14-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb14-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
-<a class="sourceLine" id="cb14-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
-<a class="sourceLine" id="cb14-14" data-line-number="14">  <span class="dt">replications =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb14-15" data-line-number="15">  <span class="dt">power =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb14-16" data-line-number="16">    <span class="dt">dist =</span> <span class="st">'qt'</span>,</a>
-<a class="sourceLine" id="cb14-17" data-line-number="17">    <span class="dt">alpha =</span> <span class="fl">.02</span>,</a>
-<a class="sourceLine" id="cb14-18" data-line-number="18">    <span class="dt">opts =</span> <span class="kw">list</span>(<span class="dt">df =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb14-19" data-line-number="19">  )</a>
-<a class="sourceLine" id="cb14-20" data-line-number="20">)</a>
-<a class="sourceLine" id="cb14-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
-<a class="sourceLine" id="cb14-23" data-line-number="23">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-24" data-line-number="24"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-25" data-line-number="25"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-26" data-line-number="26"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-27" data-line-number="27"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-28" data-line-number="28"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">power</th>
-<th style="text-align: right;">avg_test_stat</th>
-<th style="text-align: right;">type_1_error</th>
-<th style="text-align: right;">avg_adjtest_stat</th>
-<th style="text-align: right;">param_estimate_sd</th>
-<th style="text-align: right;">avg_standard_error</th>
-<th style="text-align: right;">precision_ratio</th>
-<th style="text-align: right;">replications</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3.5453131</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3.4266432</td>
-<td style="text-align: right;">26.3406995</td>
-<td style="text-align: right;">19.2172695</td>
-<td style="text-align: right;">1.370679</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.4203890</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.1540360</td>
-<td style="text-align: right;">0.6084609</td>
-<td style="text-align: right;">0.4281103</td>
-<td style="text-align: right;">1.421271</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.2080483</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.2867755</td>
-<td style="text-align: right;">11.2575270</td>
-<td style="text-align: right;">7.0177274</td>
-<td style="text-align: right;">1.604156</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="nested-designs" class="level1">
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb29-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb29-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb29-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb29-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb29-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
+<a class="sourceLine" id="cb29-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
+<a class="sourceLine" id="cb29-14" data-line-number="14">  <span class="dt">replications =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb29-15" data-line-number="15">  <span class="dt">power =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb29-16" data-line-number="16">    <span class="dt">dist =</span> <span class="st">'qt'</span>,</a>
+<a class="sourceLine" id="cb29-17" data-line-number="17">    <span class="dt">alpha =</span> <span class="fl">.02</span>,</a>
+<a class="sourceLine" id="cb29-18" data-line-number="18">    <span class="dt">opts =</span> <span class="kw">list</span>(<span class="dt">df =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb29-19" data-line-number="19">  )</a>
+<a class="sourceLine" id="cb29-20" data-line-number="20">)</a>
+<a class="sourceLine" id="cb29-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb29-22" data-line-number="22"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
+<a class="sourceLine" id="cb29-23" data-line-number="23">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-24" data-line-number="24"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-25" data-line-number="25"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-26" data-line-number="26"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-27" data-line-number="27"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-28" data-line-number="28"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre></div>
+<pre><code>## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded
+
+## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+##  extra argument 'reg_weights' will be disregarded</code></pre>
+<pre><code>## # A tibble: 3 x 10
+##   term  avg_estimate power avg_test_stat type_1_error avg_adjtest_stat
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
+## 1 (Int~       60.4       0         3.55             0            3.43 
+## 2 age         -0.189     0        -0.420            0           -0.154
+## 3 sex         -1.95      0        -0.208            0           -0.287
+## # ... with 4 more variables: param_estimate_sd &lt;dbl&gt;,
+## #   avg_standard_error &lt;dbl&gt;, precision_ratio &lt;dbl&gt;, replications &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div id="nested-designs" class="section level1">
 <h1>Nested Designs</h1>
 <p>Nested designs are ones in which data belong to multiple levels. An example could be individuals nested within neighborhoods. In this example, a specific individual is tied directly to one neighborhood. These types of data often include correlations between individuals within a neighborhood that need to be taken into account when modeling the data. These types of data can be generated with simglm.</p>
 <p>To do this, the formula syntax introduced above is modified slightly to include information on the nesting structure. In the example below, the nesting structure in the formula is specified in the portion within the parentheses. How the part within parentheses could be read is, add a random intercept effect for each neighborhood. This random intercept effect is similar to random error found in regression models, except the error is associated with neighborhoods and is the same values for all individuals within that neighborhood. The simulation arguments, <code>randomeffect</code> provides information about this term, where the variance can be specified.</p>
 <p>Finally, the <code>sample_size</code> argument needs to be modified to include information about the two levels of nested. You could read the <code>sample_size = list(level1 = 10, level2 = 20)</code> argument below as: create 20 neighborhoods (ie. <code>level2 = 20</code>) and within each neighborhood have 10 individuals (ie. <code>level1 = 10</code>). Therefore the total sample size (ie. rows in the data) would be 200.</p>
-<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>neighborhood),</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">-0.03</span>, <span class="fl">0.2</span>, <span class="fl">0.33</span>),</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_neighborhood =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb15-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13">nested_data &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a>
-<a class="sourceLine" id="cb15-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="kw">head</span>(nested_data, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">weight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">sex</th>
-<th style="text-align: right;">weight1</th>
-<th style="text-align: right;">age1</th>
-<th style="text-align: left;">sex1</th>
-<th style="text-align: right;">level1_id</th>
-<th style="text-align: right;">neighborhood</th>
-<th style="text-align: right;">int_neighborhood</th>
-<th style="text-align: right;">error</th>
-<th style="text-align: right;">fixed_outcome</th>
-<th style="text-align: right;">random_effects</th>
-<th style="text-align: right;">y</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">231.1471</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">0.0397069</td>
-<td style="text-align: right;">3.665587</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">1.687125</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">158.6388</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">1.1003081</td>
-<td style="text-align: right;">9.770835</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">8.852974</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">171.6605</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">1.4882236</td>
-<td style="text-align: right;">10.850186</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">10.320241</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.4105</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">-0.2999733</td>
-<td style="text-align: right;">6.637684</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">4.319542</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">176.2812</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">0.4778934</td>
-<td style="text-align: right;">9.241565</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">7.701289</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">188.0455</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">-0.3877814</td>
-<td style="text-align: right;">10.358635</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">7.952685</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">201.8052</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">-0.3526818</td>
-<td style="text-align: right;">7.675843</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">5.304992</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">186.9941</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">0.9331313</td>
-<td style="text-align: right;">5.320178</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">4.235141</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">190.1734</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">-1.3991253</td>
-<td style="text-align: right;">5.694797</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">2.277503</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">36</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">163.4426</td>
-<td style="text-align: right;">36</td>
-<td style="text-align: left;">female</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">-0.0160353</td>
-<td style="text-align: right;">6.296723</td>
-<td style="text-align: right;">-2.018169</td>
-<td style="text-align: right;">4.262519</td>
-</tr>
-</tbody>
-</table>
-<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">nrow</span>(nested_data)</a></code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>neighborhood),</a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">-0.03</span>, <span class="fl">0.2</span>, <span class="fl">0.33</span>),</a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb32-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb32-8" data-line-number="8">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
+<a class="sourceLine" id="cb32-9" data-line-number="9">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_neighborhood =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb32-10" data-line-number="10">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb32-11" data-line-number="11">)</a>
+<a class="sourceLine" id="cb32-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb32-13" data-line-number="13">nested_data &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-16" data-line-number="16"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-17" data-line-number="17"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a>
+<a class="sourceLine" id="cb32-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb32-19" data-line-number="19"><span class="kw">head</span>(nested_data, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
+<pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
+## 1             1 231.1471  33   0 231.1471   33 female         1
+## 2             1 158.6388  51   1 158.6388   51   male         2
+## 3             1 171.6605  60   0 171.6605   60 female         3
+## 4             1 176.4105  38   1 176.4105   38   male         4
+## 5             1 176.2812  51   1 176.2812   51   male         5
+## 6             1 188.0455  60   0 188.0455   60 female         6
+## 7             1 201.8052  47   1 201.8052   47   male         7
+## 8             1 186.9941  33   1 186.9941   33   male         8
+## 9             1 190.1734  37   0 190.1734   37 female         9
+## 10            1 163.4426  36   0 163.4426   36 female        10
+##    neighborhood int_neighborhood       error fixed_outcome random_effects
+## 1             1        -2.018169  0.03970688      3.665587      -2.018169
+## 2             1        -2.018169  1.10030811      9.770835      -2.018169
+## 3             1        -2.018169  1.48822364     10.850186      -2.018169
+## 4             1        -2.018169 -0.29997335      6.637684      -2.018169
+## 5             1        -2.018169  0.47789336      9.241565      -2.018169
+## 6             1        -2.018169 -0.38778144     10.358635      -2.018169
+## 7             1        -2.018169 -0.35268182      7.675843      -2.018169
+## 8             1        -2.018169  0.93313126      5.320178      -2.018169
+## 9             1        -2.018169 -1.39912533      5.694798      -2.018169
+## 10            1        -2.018169 -0.01603532      6.296723      -2.018169
+##            y
+## 1   1.687125
+## 2   8.852974
+## 3  10.320241
+## 4   4.319542
+## 5   7.701289
+## 6   7.952684
+## 7   5.304992
+## 8   4.235141
+## 9   2.277503
+## 10  4.262519</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">nrow</span>(nested_data)</a></code></pre></div>
 <pre><code>## [1] 200</code></pre>
 <p>The vignette simulation_arguments contains more example of specifying random effects and additional nesting designs including three levels of nested and cross-classified models.</p>
-</section>
+</div>
 
 
 

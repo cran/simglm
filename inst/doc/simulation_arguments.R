@@ -339,3 +339,106 @@ prop.table(table(is.na(data_w_missing$y_missing)))
 ## ----missing_by_time_dropout_spec----------------------------------------
 prop.table(table(is.na(data_w_missing$y_missing), data_w_missing$time))
 
+## ----binomial_logit------------------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + age + sex,
+  fixed = list(weight = list(var_type = 'continuous', mean = 0, sd = 30),
+               age = list(var_type = 'ordinal', levels = 0:30),
+               sex = list(var_type = 'factor', levels = c('male', 'female'))),
+  error = list(variance = 25),
+  sample_size = 10,
+  reg_weights = c(2, 0.3, -0.1, 0.5),
+  outcome_type = 'binary',
+  model_fit = list(
+    model_function = 'glm',
+    family = binomial
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  model_fit(sim_arguments) %>% .$family
+
+## ----binomial_probit-----------------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + age + sex,
+  fixed = list(weight = list(var_type = 'continuous', mean = 0, sd = 30),
+               age = list(var_type = 'ordinal', levels = 0:30),
+               sex = list(var_type = 'factor', levels = c('male', 'female'))),
+  error = list(variance = 25),
+  sample_size = 10,
+  reg_weights = c(2, 0.3, -0.1, 0.5),
+  outcome_type = 'binary',
+  model_fit = list(
+    model_function = 'glm',
+    family = binomial(link = 'probit')
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  model_fit(sim_arguments) %>% .$family
+
+## ----gee-----------------------------------------------------------------
+set.seed(321) 
+
+# To-DO: Add knot variable and debug
+
+sim_arguments <- list(
+  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+  fixed = list(time = list(var_type = 'time',
+                           time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
+               weight = list(var_type = 'continuous', mean = 0, sd = 30),
+               age = list(var_type = 'ordinal', levels = 0:30, var_level = 2),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment', 'Control'),
+                            var_level = 2)),
+  reg_weights = c(0.4, 0.2, -0.5, 1, -0.6),
+  randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                time_id = list(variance = 3, var_level = 2)),
+  error = list(variance = 5),
+  outcome_type = 'binary',
+  sample_size = list(level1 = 10, level2 = 20),
+  model_fit = list(
+    model_function = geepack::geeglm,
+    formula = y ~ 1 + time + weight + age + treat,
+    id = 'level1_id',
+    family = binomial,
+    corstr = 'ar1'
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  simulate_randomeffect(sim_arguments) %>%
+  generate_response(sim_arguments) %>%
+  model_fit(sim_arguments) %>%
+  extract_coefficients()
+
+## ----vary_simulation-----------------------------------------------------
+sim_arguments <- list(
+  formula =  resp_var ~ 1 + time + factor(trt) + time:factor(trt) + 
+    (1 + time | individual),
+  reg_weights = c(4, 0.5, 0.75, 0),
+  fixed = list(time = list(var_type = 'time'),
+               trt = list(var_type = 'factor', levels = c('Drug', 'Placebo'), 
+                          var_level = 2)
+               ),
+  randomeffect = list(int_clust = list(variance = .2, var_level = 2),
+                      time_clust = list(variance = .3, var_level = 2)),
+  replications = 3,
+  error = list(variance = 1),
+  vary_arguments = list(
+    sample_size = list(list(level1 = 5, level2 = 50),
+                       list(level1 = 5, level2 = 60))
+  )
+)
+
+replicate_simulation(sim_arguments, return_list = TRUE)
+

@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-06-01" />
+<meta name="date" content="2018-07-25" />
 
 <title>Introduction to simglm - Legacy Code</title>
 
@@ -19,16 +19,24 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
 @media print {
 code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
   { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
     position: absolute; left: -5em; text-align: right; vertical-align: baseline;
@@ -40,38 +48,40 @@ pre.numberSource a.sourceLine::before
     color: #aaaaaa;
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
 @media screen {
-a.sourceLine::before { text-decoration: underline; color: initial; }
+a.sourceLine::before { text-decoration: underline; }
 }
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code span.dt { color: #902000; } /* DataType */
 code span.dv { color: #40a070; } /* DecVal */
-code span.bn { color: #40a070; } /* BaseN */
-code span.fl { color: #40a070; } /* Float */
-code span.ch { color: #4070a0; } /* Char */
-code span.st { color: #4070a0; } /* String */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.ot { color: #007020; } /* Other */
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.fu { color: #06287e; } /* Function */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code span.cn { color: #880000; } /* Constant */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.im { } /* Import */
-code span.va { color: #19177c; } /* Variable */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.op { color: #666666; } /* Operator */
-code span.bu { } /* BuiltIn */
 code span.ex { } /* Extension */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.at { color: #7d9029; } /* Attribute */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -268,28 +278,28 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Introduction to simglm - Legacy Code</h1>
-<h4 class="date"><em>2018-06-01</em></h4>
+<h4 class="date"><em>2018-07-25</em></h4>
 
 
 
-<section id="introduction-to-simglm" class="level1">
+<div id="introduction-to-simglm" class="section level1">
 <h1>Introduction to simglm</h1>
 <p>The <code>simglm</code> package aims to define a consistent framework for simulating regression models - including single level and multilevel models. This will hopefully allow the user to quickly simulate data for a class, project, or even a dissertation.</p>
-<section id="installation" class="level2">
+<div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>Currently development is happening on github. To install the package, use the <code>devtools</code> package:</p>
-<pre class="sourceCode r" id="cb1"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(devtools)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(devtools)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install_github</span>(<span class="st">&quot;lebebr01/simglm&quot;</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(simglm)</a></code></pre>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(simglm)</a></code></pre></div>
 <p>This should load the <code>devtools</code> package, install the <code>simglm</code> package, and finally load the <code>simglm</code> package. The package has currently not been tested on a Mac machine. I do not anticipate any problems installing on a Mac however.</p>
-</section>
-<section id="simulate-data" class="level2">
+</div>
+<div id="simulate-data" class="section level2">
 <h2>Simulate Data</h2>
 <p>The master function that handles the simulation grunt work is the <code>sim_reg</code> function. As always, you can do <code>?sim_reg</code> to pull up the help file for the function.</p>
-<section id="single-level" class="level3">
+<div id="single-level" class="section level3">
 <h3>Single Level</h3>
 <p>Let’s look at a simple single level regression example to get started:</p>
-<pre class="sourceCode r" id="cb2"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>), </a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
@@ -303,97 +313,28 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb2-12" data-line-number="12">                       <span class="dt">cov_param =</span> cov_param,</a>
 <a class="sourceLine" id="cb2-13" data-line-number="13">                       <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var, </a>
 <a class="sourceLine" id="cb2-14" data-line-number="14">                       <span class="dt">with_err_gen =</span> with_err_gen, </a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">                       <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>)</a></code></pre>
+<a class="sourceLine" id="cb2-15" data-line-number="15">                       <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>)</a></code></pre></div>
 <p>A few things to highlight about the above syntax, first the object <code>fixed</code> is a one sided formula that gives the names of the variables to be included in the simulated data. The intercept is directly shown in the formulation here, but can also be omitted (similar to linear models in R). I like to include the 1 as it reminds me that I do in fact want an intercept. The next object, <code>fixed_param</code> is the regression weights for the fixed effects, this must be the same length as fixed (or one larger if the 1 is not explicitly stated in the <code>fixed</code> object). Next, <code>cov_param</code> represents the mean, standard deviation, and type of variable from the <code>fixed</code> object (must by “single” for single level regression). The <code>cov_param</code> object must contain all variables except the intercept and any interactions.</p>
 <p>The rest of the arguments are pretty straightforward, <code>n</code> is the sample size, <code>error_var</code> is the error variance, <code>with_err_gen</code> is the distribution of the residuals, and finally in the function call itself, <code>data_str</code> must be “single” in this instance to reflect a single level regression.</p>
 <p>Finally, looking at the output from the above call:</p>
-<pre class="sourceCode r" id="cb3"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">head</span>(temp_single)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">act</th>
-<th style="text-align: right;">diff</th>
-<th style="text-align: right;">numCourse</th>
-<th style="text-align: right;">act.numCourse</th>
-<th style="text-align: right;">Fbeta</th>
-<th style="text-align: right;">err</th>
-<th style="text-align: right;">sim_data</th>
-<th style="text-align: right;">ID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-1.699074</td>
-<td style="text-align: right;">-0.0833754</td>
-<td style="text-align: right;">0.4203512</td>
-<td style="text-align: right;">-0.7142077</td>
-<td style="text-align: right;">-4.836856</td>
-<td style="text-align: right;">2.5368830</td>
-<td style="text-align: right;">-2.2999734</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5.236996</td>
-<td style="text-align: right;">5.9190125</td>
-<td style="text-align: right;">-2.1380174</td>
-<td style="text-align: right;">-11.1967893</td>
-<td style="text-align: right;">-1.009642</td>
-<td style="text-align: right;">1.0490983</td>
-<td style="text-align: right;">0.0394568</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-6.957610</td>
-<td style="text-align: right;">-0.6545520</td>
-<td style="text-align: right;">0.5804689</td>
-<td style="text-align: right;">-4.0386762</td>
-<td style="text-align: right;">-32.530704</td>
-<td style="text-align: right;">2.5910742</td>
-<td style="text-align: right;">-29.9396301</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-1.724779</td>
-<td style="text-align: right;">-0.3542770</td>
-<td style="text-align: right;">0.4402620</td>
-<td style="text-align: right;">-0.7593548</td>
-<td style="text-align: right;">-5.231187</td>
-<td style="text-align: right;">-3.5243413</td>
-<td style="text-align: right;">-8.7555281</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-3.902949</td>
-<td style="text-align: right;">-0.1401309</td>
-<td style="text-align: right;">-0.0271481</td>
-<td style="text-align: right;">0.1059578</td>
-<td style="text-align: right;">-13.635031</td>
-<td style="text-align: right;">-1.5531295</td>
-<td style="text-align: right;">-15.1881608</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-6.296467</td>
-<td style="text-align: right;">0.2659062</td>
-<td style="text-align: right;">-2.3312243</td>
-<td style="text-align: right;">14.6784762</td>
-<td style="text-align: right;">-1.722293</td>
-<td style="text-align: right;">0.8587253</td>
-<td style="text-align: right;">-0.8635680</td>
-<td style="text-align: right;">6</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">head</span>(temp_single)</a></code></pre></div>
+<pre><code>##   X.Intercept.        act        diff numCourse act.numCourse      Fbeta
+## 1            1  0.2678326  1.16371885 -3.423764    -0.9169956  -9.582117
+## 2            1 -5.1609766 -0.06128604 -5.540099    28.5923217  19.089104
+## 3            1  0.8835052 -4.41936743 -2.106476    -1.8610826  -9.980178
+## 4            1  5.2257502 -1.15502735 -4.495470   -23.4922056 -40.970585
+## 5            1  3.6990924  5.34842193  1.075489     3.9783347  33.865674
+## 6            1  1.3916040 -1.51226929 -4.314432    -6.0039805 -21.054326
+##          err   sim_data ID
+## 1 -2.0350516 -11.617169  1
+## 2  2.4159104  21.505015  2
+## 3  1.0577641  -8.922414  3
+## 4  1.3037979 -39.666787  4
+## 5  0.6143283  34.480002  5
+## 6  1.2007691 -19.853557  6</code></pre>
 <p>As can be seen from the data itself, the first 5 columns represent the raw data used in the simulation, the column labeled “Fbeta” is the matrix multiplication of the design matrix (first 5 columns in this case) by the <code>fixed_param</code> object above (the desired values for the fixed effects). The “err” column is the simulated errors, the column labeled “sim_data” is the simulated data (taking “Fbeta” + “err”), and lastly an ID variable reflecting the individuals.</p>
 <p>You could then use simple regression on these data to see how the simulation went:</p>
-<pre class="sourceCode r" id="cb4"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">lm</span>(sim_data <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse, <span class="dt">data =</span> temp_single))</a></code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">lm</span>(sim_data <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse, <span class="dt">data =</span> temp_single))</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = sim_data ~ 1 + act + diff + numCourse + act:numCourse, 
@@ -401,222 +342,86 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.2573 -1.0861 -0.1182  1.2051  3.9792 
+## -4.1410 -1.2165 -0.0549  1.0382  5.9206 
 ## 
 ## Coefficients:
 ##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   2.108616   0.138342   15.24   &lt;2e-16 ***
-## act           3.981589   0.031793  125.23   &lt;2e-16 ***
-## diff          1.053642   0.044734   23.55   &lt;2e-16 ***
-## numCourse     3.489401   0.049847   70.00   &lt;2e-16 ***
-## act:numCourse 2.010097   0.009388  214.12   &lt;2e-16 ***
+## (Intercept)    1.84541    0.14058   13.13   &lt;2e-16 ***
+## act            4.04884    0.03416  118.52   &lt;2e-16 ***
+## diff           1.07562    0.04389   24.51   &lt;2e-16 ***
+## numCourse      3.51937    0.04550   77.35   &lt;2e-16 ***
+## act:numCourse  1.99728    0.01139  175.41   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 1.665 on 145 degrees of freedom
-## Multiple R-squared:  0.9984, Adjusted R-squared:  0.9983 
-## F-statistic: 2.247e+04 on 4 and 145 DF,  p-value: &lt; 2.2e-16</code></pre>
-<section id="adding-factorcategoricalordinal-variables" class="level4">
+## Residual standard error: 1.684 on 145 degrees of freedom
+## Multiple R-squared:  0.9977, Adjusted R-squared:  0.9976 
+## F-statistic: 1.555e+04 on 4 and 145 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div id="adding-factorcategoricalordinal-variables" class="section level4">
 <h4>Adding Factor/Categorical/Ordinal Variables</h4>
 <p>To add a factor, categorical, or ordinal variable, just append one of the following to the end of the variable name in the <code>fixed</code> object: “.f”, “.c”, “.o”, “_f“,”_c“, or”_o“. These indicate the variable is a discrete variable of some sort. By default, all variables with a”.f&quot; or “.c” will be treated as factors and expanded using dummy coding. If “.o” is used in the variable names, the variable will be discrete but treated as continuous in the simulation (i.e. only a single fixed effect variable). See below for an example.</p>
-<pre class="sourceCode r" id="cb6"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act_o <span class="op">+</span><span class="st"> </span>diff.o <span class="op">+</span><span class="st"> </span>numCourse_f <span class="op">+</span><span class="st"> </span>act_o<span class="op">:</span>numCourse_f</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.15</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.02</span>, <span class="fl">-0.6</span>, <span class="fl">-0.1</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="kw">c</span>(<span class="dv">36</span>, <span class="dv">8</span>, <span class="dv">5</span>), </a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">'single'</span>, <span class="st">'single'</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">                              <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">error_var &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">with_err_gen =<span class="st"> 'rnorm'</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">                         <span class="dt">cov_param =</span> cov_param, <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var,</a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">                         <span class="dt">fact_vars =</span> fact_vars)</a></code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act_o <span class="op">+</span><span class="st"> </span>diff.o <span class="op">+</span><span class="st"> </span>numCourse_f <span class="op">+</span><span class="st"> </span>act_o<span class="op">:</span>numCourse_f</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.15</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.02</span>, <span class="fl">-0.6</span>, <span class="fl">-0.1</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="kw">c</span>(<span class="dv">36</span>, <span class="dv">8</span>, <span class="dv">5</span>), </a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">'single'</span>, <span class="st">'single'</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">                              <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">error_var &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">with_err_gen =<span class="st"> 'rnorm'</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">                         <span class="dt">cov_param =</span> cov_param, <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var,</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">                         <span class="dt">fact_vars =</span> fact_vars)</a></code></pre></div>
 <p>The next thing to add is a new object called <code>fact_vars</code>. This object must be a list that contains <code>numlevels</code> and <code>var_type</code>. Other optional features will be added in the future to increase functionality - such as including value labels, user specified probabilities, etc. Once these are passed into the <code>sim.reg()</code> function, the simulated data now looks like the following.</p>
-<pre class="sourceCode r" id="cb7"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">head</span>(temp_single_o)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">act_o</th>
-<th style="text-align: right;">diff.o</th>
-<th style="text-align: right;">factor.numCourse_f.2</th>
-<th style="text-align: right;">factor.numCourse_f.3</th>
-<th style="text-align: right;">factor.numCourse_f.4</th>
-<th style="text-align: right;">factor.numCourse_f.5</th>
-<th style="text-align: right;">act_o.factor.numCourse_f.2</th>
-<th style="text-align: right;">act_o.factor.numCourse_f.3</th>
-<th style="text-align: right;">act_o.factor.numCourse_f.4</th>
-<th style="text-align: right;">act_o.factor.numCourse_f.5</th>
-<th style="text-align: right;">act_o1</th>
-<th style="text-align: right;">diff.o1</th>
-<th style="text-align: right;">numCourse_f</th>
-<th style="text-align: right;">Fbeta</th>
-<th style="text-align: right;">err</th>
-<th style="text-align: right;">sim_data</th>
-<th style="text-align: right;">ID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">6.15</td>
-<td style="text-align: right;">-1.0251729</td>
-<td style="text-align: right;">5.124827</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">23.42</td>
-<td style="text-align: right;">2.5971693</td>
-<td style="text-align: right;">26.017169</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">24.24</td>
-<td style="text-align: right;">-1.3216331</td>
-<td style="text-align: right;">22.918367</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">13.80</td>
-<td style="text-align: right;">-1.2287227</td>
-<td style="text-align: right;">12.571277</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">21.40</td>
-<td style="text-align: right;">0.5372536</td>
-<td style="text-align: right;">21.937254</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">23.30</td>
-<td style="text-align: right;">1.1886734</td>
-<td style="text-align: right;">24.488673</td>
-<td style="text-align: right;">6</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="correlated-predictor-variables" class="level4">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">head</span>(temp_single_o)</a></code></pre></div>
+<pre><code>##   X.Intercept. act_o diff.o factor.numCourse_f.2 factor.numCourse_f.3
+## 1            1    10      3                    0                    0
+## 2            1    13      7                    0                    0
+## 3            1    17      4                    0                    1
+## 4            1    36      4                    0                    0
+## 5            1    10      5                    0                    1
+## 6            1    25      8                    0                    1
+##   factor.numCourse_f.4 factor.numCourse_f.5 act_o.factor.numCourse_f.2
+## 1                    0                    1                          0
+## 2                    0                    1                          0
+## 3                    0                    0                          0
+## 4                    0                    0                          0
+## 5                    0                    0                          0
+## 6                    0                    0                          0
+##   act_o.factor.numCourse_f.3 act_o.factor.numCourse_f.4
+## 1                          0                          0
+## 2                          0                          0
+## 3                         17                          0
+## 4                          0                          0
+## 5                         10                          0
+## 6                         25                          0
+##   act_o.factor.numCourse_f.5 act_o1 diff.o1 numCourse_f Fbeta        err
+## 1                         10     10       3           5 10.60  0.2778719
+## 2                         13     13       7           5 14.10 -0.3686308
+## 3                          0     17       4           3 18.94  2.0250628
+## 4                          0     36       4           1 37.60 -2.7646628
+## 5                          0     10       5           3 12.00  1.9866202
+## 6                          0     25       8           3 27.90 -2.0989924
+##   sim_data ID
+## 1 10.87787  1
+## 2 13.73137  2
+## 3 20.96506  3
+## 4 34.83534  4
+## 5 13.98662  5
+## 6 25.80101  6</code></pre>
+</div>
+<div id="correlated-predictor-variables" class="section level4">
 <h4>Correlated predictor variables</h4>
 <p>The ability to add correlated predictor variables is an easy addition. The additional argument <code>cor_vars</code> takes a vector of correlations between predictor variables (note this does not include the intercept, factor variables, or any interaction variables). These correlations are further turned into a covariance matrix with the standard deviations specified in the <code>cov_param</code> argument. Then through cholesky decomposition, the correlations between the variables are generated prior to simulating the response variable. Below is an example. The default value is no correlation between the covariates.</p>
-<pre class="sourceCode r" id="cb8"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse_o <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse_o</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="dv">5</span>, <span class="dt">var_type =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">error_var &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">with_err_gen =<span class="st"> 'rnorm'</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12">cor_vars &lt;-<span class="st"> </span><span class="fl">0.6</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13">temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb8-14" data-line-number="14">                         <span class="dt">cov_param =</span> cov_param, <span class="dt">n =</span> n, </a>
-<a class="sourceLine" id="cb8-15" data-line-number="15">                         <span class="dt">error_var =</span> error_var,</a>
-<a class="sourceLine" id="cb8-16" data-line-number="16">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb8-17" data-line-number="17">                         <span class="dt">cor_vars =</span> cor_vars, <span class="dt">fact_vars =</span> fact_vars)</a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="kw">cor</span>(temp_single_o[, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</a></code></pre>
-<pre><code>##            act      diff
-## act  1.0000000 0.4912482
-## diff 0.4912482 1.0000000</code></pre>
-</section>
-<section id="editing-distributions-for-covariates." class="level4">
-<h4>Editing distributions for covariates.</h4>
-<p>The distribution of covariates can also be changed to any R distribution function (e.g. <code>rnorm</code> or <code>rt</code>). These are called via the <code>cov_param</code> argument using <code>dist_fun</code>. Any additional parameters besides sample size are called via the optional <code>opts</code> argument within <code>cov_param</code>. The distributions need not be the same for each covariate. Below is an example generating two covariates using two different distributions and correlating them.</p>
-<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse_o <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse_o</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse_o <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse_o</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rt'</span>, <span class="st">'rgamma'</span>),</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">df =</span> <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">                              <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">2</span>)))</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="dv">5</span>, <span class="dt">var_type =</span> <span class="st">&quot;single&quot;</span>,</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="dv">5</span>, <span class="dt">var_type =</span> <span class="st">&quot;single&quot;</span>, </a>
 <a class="sourceLine" id="cb10-8" data-line-number="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
 <a class="sourceLine" id="cb10-9" data-line-number="9">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
 <a class="sourceLine" id="cb10-10" data-line-number="10">error_var &lt;-<span class="st"> </span><span class="dv">3</span></a>
@@ -627,383 +432,208 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb10-15" data-line-number="15">                         <span class="dt">error_var =</span> error_var,</a>
 <a class="sourceLine" id="cb10-16" data-line-number="16">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
 <a class="sourceLine" id="cb10-17" data-line-number="17">                         <span class="dt">cor_vars =</span> cor_vars, <span class="dt">fact_vars =</span> fact_vars)</a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="kw">cor</span>(temp_single_o[, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</a></code></pre>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="kw">cor</span>(temp_single_o[, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</a></code></pre></div>
 <pre><code>##            act      diff
-## act  1.0000000 0.6451224
-## diff 0.6451224 1.0000000</code></pre>
-<p>The skewness and kurtosis can be ways to ensure that these distributions are actually generated as desired. For example, the skewness and kurtosis for the <code>rt</code> distribution are: 0.8626342 and 4.9751213. Similarly done for the <code>rgamma</code> distribution: 0.7484012 and 6.2607979.</p>
-</section>
-<section id="heterogeneity" class="level4">
+## act  1.0000000 0.6234257
+## diff 0.6234257 1.0000000</code></pre>
+</div>
+<div id="editing-distributions-for-covariates." class="section level4">
+<h4>Editing distributions for covariates.</h4>
+<p>The distribution of covariates can also be changed to any R distribution function (e.g. <code>rnorm</code> or <code>rt</code>). These are called via the <code>cov_param</code> argument using <code>dist_fun</code>. Any additional parameters besides sample size are called via the optional <code>opts</code> argument within <code>cov_param</code>. The distributions need not be the same for each covariate. Below is an example generating two covariates using two different distributions and correlating them.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse_o <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse_o</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rt'</span>, <span class="st">'rgamma'</span>),</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">df =</span> <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">                              <span class="kw">list</span>(<span class="dt">shape =</span> <span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="dv">5</span>, <span class="dt">var_type =</span> <span class="st">&quot;single&quot;</span>,</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">error_var &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">with_err_gen =<span class="st"> 'rnorm'</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">cor_vars &lt;-<span class="st"> </span><span class="fl">0.6</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">                         <span class="dt">cov_param =</span> cov_param, <span class="dt">n =</span> n, </a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">                         <span class="dt">error_var =</span> error_var,</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
+<a class="sourceLine" id="cb12-17" data-line-number="17">                         <span class="dt">cor_vars =</span> cor_vars, <span class="dt">fact_vars =</span> fact_vars)</a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="kw">cor</span>(temp_single_o[, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>])</a></code></pre></div>
+<pre><code>##            act      diff
+## act  1.0000000 0.5917146
+## diff 0.5917146 1.0000000</code></pre>
+<p>The skewness and kurtosis can be ways to ensure that these distributions are actually generated as desired. For example, the skewness and kurtosis for the <code>rt</code> distribution are: 0.0082661 and -0.0777391. Similarly done for the <code>rgamma</code> distribution: -0.2149164 and 1.2071569.</p>
+</div>
+<div id="heterogeneity" class="section level4">
 <h4>Heterogeneity</h4>
 <p>It is also possible to build in heterogeneity of variance into the simulation design. This is done through two arguments, <code>homogeneity</code> and <code>heterogeneity_var</code>. Below is a possible specification within a single level framework. By specifying <code>homogeneity = FALSE</code>, this indicates that some level of heterogeneity is desired. Finally, by passing a variable name as a character string to the <code>heterogeneity_var</code> argument, this is the variable in which heterogeneity in the residuals depends on (i.e. this variable is used to group variables).</p>
-<pre class="sourceCode r" id="cb12"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>), </a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">                  <span class="dt">cov_param =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">                                   <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">                                   <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">n &lt;-<span class="st"> </span><span class="dv">1500</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">error_var &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">50</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">with_err_gen =<span class="st"> 'rnorm'</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12">temp_single &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb12-13" data-line-number="13">                       <span class="dt">cov_param =</span> cov_param,</a>
-<a class="sourceLine" id="cb12-14" data-line-number="14">                       <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var, </a>
-<a class="sourceLine" id="cb12-15" data-line-number="15">                       <span class="dt">with_err_gen =</span> with_err_gen, </a>
-<a class="sourceLine" id="cb12-16" data-line-number="16">                       <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb12-17" data-line-number="17">                       <span class="dt">homogeneity =</span> <span class="ot">FALSE</span>, <span class="dt">heterogeneity_var =</span> <span class="st">'diff'</span>)</a></code></pre>
-<p>The outcome of the heterogeneity from the simulation is best show with a figure.</p>
-<pre class="sourceCode r" id="cb13"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">ggplot</span>(temp_single, <span class="kw">aes</span>(<span class="dt">x =</span> diff, <span class="dt">y =</span> err)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</a></code></pre>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<p>As you can see from the figure, there is an increase in the error variance in the middle of the variable “diff” and smaller amounts of variance in the tails. What was done internally was that the variable “diff” was grouped into 3 groups (based on the length of the argument <code>error_var</code>) and the variance values passed from <code>error_var</code> are used to create the heterogeneity. In many instances, heterogeneity is thought of with regard to groups. This can be shown with the following:</p>
-<pre class="sourceCode r" id="cb14"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act_o <span class="op">+</span><span class="st"> </span>diff.o <span class="op">+</span><span class="st"> </span>numCourse_f</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.15</span>, <span class="fl">0.2</span>)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="kw">c</span>(<span class="dv">36</span>, <span class="dv">8</span>, <span class="dv">5</span>), </a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">'single'</span>, <span class="st">'single'</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">                              <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">error_var &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="fl">3.5</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>), </a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">                  <span class="dt">cov_param =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">                                   <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">                                   <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">n &lt;-<span class="st"> </span><span class="dv">1500</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">error_var &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">50</span>, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb14-10" data-line-number="10">with_err_gen =<span class="st"> 'rnorm'</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11">temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb14-12" data-line-number="12">                         <span class="dt">cov_param =</span> cov_param, <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var,</a>
-<a class="sourceLine" id="cb14-13" data-line-number="13">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb14-14" data-line-number="14">                         <span class="dt">fact_vars =</span> fact_vars, </a>
-<a class="sourceLine" id="cb14-15" data-line-number="15">                         <span class="dt">homogeneity =</span> <span class="ot">FALSE</span>, <span class="dt">heterogeneity_var =</span> <span class="st">'numCourse_f'</span>)</a></code></pre>
+<a class="sourceLine" id="cb14-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">temp_single &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">                       <span class="dt">cov_param =</span> cov_param,</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14">                       <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var, </a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">                       <span class="dt">with_err_gen =</span> with_err_gen, </a>
+<a class="sourceLine" id="cb14-16" data-line-number="16">                       <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">                       <span class="dt">homogeneity =</span> <span class="ot">FALSE</span>, <span class="dt">heterogeneity_var =</span> <span class="st">'diff'</span>)</a></code></pre></div>
+<p>The outcome of the heterogeneity from the simulation is best show with a figure.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
+<pre><code>## Warning: package 'ggplot2' was built under R version 3.5.1</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">ggplot</span>(temp_single, <span class="kw">aes</span>(<span class="dt">x =</span> diff, <span class="dt">y =</span> err)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAAq1BMVEUAAAAAADoAAGYAOjoAOpAAZrYzMzM6AAA6ADo6AGY6kNtNTU1NTW5NTY5NbqtNjshmAABmtv9uTU1uTW5uTY5ubo5ubqtuq+SOTU2OTW6OTY6Obk2OyP+QOgCQkGaQtpCQ2/+rbk2rbm6ryKur5OSr5P+2ZgC2///Ijk3I///bkDrb/7bb///kq27k///r6+v/tmb/yI7/25D/5Kv//7b//8j//9v//+T////ccKraAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAKg0lEQVR4nO2di3bUNhCGBQXasi3dQEtoG1poSwmBsEk3Ab//k3Xttde6z0jW1Zr/nEDisTWjL9JItqws60hWsdwBlC4CBIgAASJAgAgQIAIEyAPQkza0AJD26M5yhc0Wybi4VAIEGAkQYCRAgJEAAcYqADFmDa91QOwov2KzAtql0QgokTdZ5bcgxqAmVGwLcnZKgACnBAhw2lqSdnZKgACnNA8CnNJMGnBKgACnBAhwSoAApwQIcBqCgWZEI0CzUTsn8p1lNwLIPo9sDJDuvowAzUamAQTcy7YEiPE6WVoGxNWaAKlGod47iQ8HpNkcVBeg/fPN5qLr7l9tnn2ejsUFJILQABJ6WRCXWiMO0P2v77r9i3df31501z9NBxMDMjahEmbStz2Vy4v73z50+58/dOKleKfrBdTr0Ir2Lz8PjWl8NyjugtSIQTqkN0QUGtDXt+fd7bMJEM8W/1tZlKT1hqAudUYsoPtX54dU/TIhIGUepDUEdqka0aPYYQzrUuagMSwuB3kVmwjQkc/QzVKNYkNQp85UOqDrTa+LlPOgIahqAGmVIgdNhAiQL6DeSoC450HiCGa/D/NwqRpLBiTlIM0kmgDZAal3HYtdKsaiAY0IOvVunrMSoDEPEyDdQTug5nPQDIWStPZuXgCkaUBdw/MgJmp3QqNpMATo0EhsnalFQFIDso9Xtiy0ekBj7S2A7Il6/YD0PxtP9HdpMJYJSKm2mIOYMtAbCa0TkFprHhBvYkUDirLMImZn0SCcIZ8dJZritkMxSd3Yn3TNSzzf2yVgLB3Q1Dzm80QkjQFSG5AESGpd8P38qgDJeJQJotz72gKkwWPsT7ojHi5rB8SMGVm1c+fgXVYFSMNHbkK6U7RCuqwfkJSErPZGAQm1xjQemdB6ADlUH8aGdLk2QPo8bhj/MC7rArRT64lgNsRu5kOAjsU2AcgVzQxix4Tuh3dZFSCfpqO9Eu9y1YB021lWDciZj2kAI0A4cphwCBAQTlWAYhFKB2h4gTzia8BxADE5J6HjcQV0u/nxQxd3O1R4QAovp3iO/yEBXf7w96EFxd6KEJhPSkDHLhZ5O1QgPkwpb0lQToAib4daROV09VwiUw85xTPIswXxl+KdRgQ01EFCkR5Q1By0BI8BAsAnPKCI26EW4tFzSA4o4jwoBiAAT1Uz6QB8ZBQmbMhYCRAQ6+oBGbChYy0MUPgcNB82Q2oM0LhIpi/QOdbSAIW8ndcV5h5PKYBOwS+81eBhGKg5xVoIIC76gI87dKxcYy0OUBQ8wGBWPiAu/EiAvHfBlAYoBh8CBPMZn1Ni49EYS8lBEQG5xKMaywAUR33pu8mNa6yFABpjj4pJ8zAWEWsxgAbnaQApiAiQCgsdawhAyxd6pOWZ+Iq47KMBpD3q0YISAsLHWlIXiw2lUkDHeFnsQUx5fZEDVSyguEAsgKS7+0IBpcVjEhSrDdCX12frB8QWALrbxgDExnl/bjCTFgDqrh59Cg1ojiorFU4LAN1tj0U8fB8MEBdVLiCSzLHCgJDyARR9TEdrCaDwSZqLKx8SPgBLrAhAgZL0KQ79RCST+NiyJmk+npxAZPGxZU3SajxFSIgtQ5JmXBs+RZSFhEl8PIkB8TGsHdAVY2dgIhIBiTEYaBWhAID+ffRxe/bl9WNPQEIiLIwOryXDfD/S37gkadGzfKBM5QWU5FkYXlITZ0vnQR97Rk+Vi8yvAYvB6LlllS5C25MHe5K+6UtR+di2Q0mxlAdIsz4GPnkwAjLIthVhds6Xn6z+sJSqRwBk2A7FjutNTPzTfamXvGAhP1iKO991XUy7HWos7fRbOZVfVPvpNUY71wd8NOPfgqoEhFx6Fs9enINk5xygpHVHiscQPgfptkPJrndz+akrj5GOQThAunmQ7LpwQOLDBlM9GTQPQsmQg7o5E+ZBYJf2t6pTTECT8iCwKz0g69CphJeShU5SWGkA6crVQtrlb1RiTLbqJQfUnfJTTpUIaO6D+QGJMRW0ssrbygAExZoFEGPK52RkxFMcID7SqBRwdKyxdrkBpW9DbrF2GQBJ4aYGVH4LkqOdvouLhX/6Yo9VPqURQKJPc6zqOblzUHf6nREgMQYl1lSA1Cru1BgUY6Z5kHw4MIn5W37ZwBJrIYAy7NVYBaB4iAaXRj7Rc5D75ivEYlRQCWVj/KuGMlpQF6URzS4ZYiYtn1NUF+tiABJd6hiVNZMGbHEB8Ydw8awfkOByBYCCE+JdSgdR8awckOiSABnwrAlQHD4rykEEyG4LyYd/VWo186DQgKZvMAysRgIEGEsBFDgHnb4lQM0ACveHJofqrBFQkEY0lTb9SIAMhFYIKAge6T1fHAOrcb2AEC6DAqrn06HQLoMCiv7pUJUDiv/pUOEACVVJ28WifjpUOEBBw3ICFPXTocIBQrsM04IuN5s+7aT/dChfZC4uYaNTC4r7CXULmJQCKOKnQwV7n8rBZaPzILzLqmbSS4gw4QEHPpxmAO2EAvDhNALIvva1GkD+hAgQgEde+8p1q6EqwSNXgJtY7OoBeTQioVgCBADSri+3B0jZ0tA2IPVYp76yPxcr41kZIGQfswBydwkaSwKE4yM1p2UuYWM5gNzxtAwIxUsqlikJCHJZFSC56q6ApGMYlxUDQhEaryJAZkDjN7vOMI0GXNYFSDMBrB5Q0PUn8V5VPaJI/Ht+8rXBVE4L2ikTQHu3k1qNdCbSJWwsCZDSUSyAOvnsNgDNY5FS7SlOvvpTnxJ+EgmtDJDYZLg/FaO/UgSk0sS4hIxFAlJHNNOVbH4m3QIgphXmyl4N5CA9IO2rhjwGAqRcKYJo5pm06Q0G9UotoPU/cjU0IfVKqa00BEiYBzkDWv8zab7mli7GjIA8XELGGgDJOwokPgRIAiQ3oJYA8XlWIESACBA2IG4gMgDqJD6NARJlTdJxXErGGgEdD8dyKRkLBzR1Oe96pgK0f77ZXER9TzqSMRGgfoPG/sW7mPvF6gZ021O5vIi7V8NsYsotVnSXHjno0Iqi7hczahrp8wgNqN/IEnW/mNEoDeopXHJG7H6x+1fnho/PcnDqFa08b07gkjeiR7HDGBZ5v5jheBWAjnyi7herG9D1ptdFnnlQ6TnIKAIEiOZBgGgmDYgAASJAgAgQIAIEiAABetKG/AF5IE1/ZTCXBAi4kgABVyYBVLMIECACBIgAASJAgFIAGpdnnSU8x0zhsFe/SMorAaBxedb5OnE9N4HDQdeb5IDG5Vnn68S1lAQOe+1/+T05oF7zqhpe4mpcAocHff3rn/RdrDuuGzlLXM9N4PCg6/PEOYhbnnXWghbk53BwmSFJT8uPrvLOQb4Op3VAAW4CQL7hiuu5CRyOXpO3oGl51lm+8yBvh71ydLGqRYAAESBABAgQAQJEgAARIEDFA7p5+P6/7950V+zBm/4ruf8aAB3+vdueDV/pVQmgvhH1X+lVNKC7LXvwR9/F/vyWsW8OX4/Tx1AyoLvt08PXkIOoBek09K4rAmTU1aNPh+zzPQEyiQABGrrYDXUxo+62jylJW3Ua5glQuSJAgAgQIAIEiAABIkCACBAgAgSIAAEiQID+B6esRBhO7mD6AAAAAElFTkSuQmCC" /><!-- --></p>
+<p>As you can see from the figure, there is an increase in the error variance in the middle of the variable “diff” and smaller amounts of variance in the tails. What was done internally was that the variable “diff” was grouped into 3 groups (based on the length of the argument <code>error_var</code>) and the variance values passed from <code>error_var</code> are used to create the heterogeneity. In many instances, heterogeneity is thought of with regard to groups. This can be shown with the following:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act_o <span class="op">+</span><span class="st"> </span>diff.o <span class="op">+</span><span class="st"> </span>numCourse_f</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.15</span>, <span class="fl">0.2</span>)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">fact_vars &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">numlevels =</span> <span class="kw">c</span>(<span class="dv">36</span>, <span class="dv">8</span>, <span class="dv">5</span>), </a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">'single'</span>, <span class="st">'single'</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">                              <span class="kw">list</span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>)))</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9">error_var &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb18-10" data-line-number="10">with_err_gen =<span class="st"> 'rnorm'</span></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11">temp_single_o &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb18-12" data-line-number="12">                         <span class="dt">cov_param =</span> cov_param, <span class="dt">n =</span> n, <span class="dt">error_var =</span> error_var,</a>
+<a class="sourceLine" id="cb18-13" data-line-number="13">                         <span class="dt">with_err_gen =</span> with_err_gen, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
+<a class="sourceLine" id="cb18-14" data-line-number="14">                         <span class="dt">fact_vars =</span> fact_vars, </a>
+<a class="sourceLine" id="cb18-15" data-line-number="15">                         <span class="dt">homogeneity =</span> <span class="ot">FALSE</span>, <span class="dt">heterogeneity_var =</span> <span class="st">'numCourse_f'</span>)</a></code></pre></div>
 <p>Showing a plot of the outcome.</p>
-<pre class="sourceCode r" id="cb15"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">ggplot</span>(temp_single_o, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(numCourse_f), <span class="dt">y =</span> err)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</a></code></pre>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-</section>
-</section>
-<section id="nested-data" class="level3">
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">ggplot</span>(temp_single_o, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(numCourse_f), <span class="dt">y =</span> err)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+<div id="nested-data" class="section level3">
 <h3>Nested Data</h3>
 <p>This package currently supports the simulation of two-level nested or two-level longitudinal models. A few additional arguments are needed to do these models but much is the same.</p>
-<pre class="sourceCode r" id="cb16"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">rand_gen =</span> <span class="st">'rnorm'</span>)</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>), </a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>)))</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">p &lt;-<span class="st"> </span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11">error_var &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb16-12" data-line-number="12">data_str &lt;-<span class="st"> &quot;long&quot;</span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13">temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">random =</span> random, </a>
-<a class="sourceLine" id="cb16-14" data-line-number="14">                     <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb16-15" data-line-number="15">                     <span class="dt">random_param =</span> random_param, <span class="dt">cov_param =</span> cov_param, </a>
-<a class="sourceLine" id="cb16-16" data-line-number="16">                     <span class="dt">k =</span> <span class="ot">NULL</span>, <span class="dt">n =</span> n, <span class="dt">p =</span> p,</a>
-<a class="sourceLine" id="cb16-17" data-line-number="17">                     <span class="dt">error_var =</span> error_var, <span class="dt">with_err_gen =</span> <span class="st">&quot;rnorm&quot;</span>,</a>
-<a class="sourceLine" id="cb16-18" data-line-number="18">                     <span class="dt">data_str =</span> data_str, <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">FALSE</span>))</a></code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">rand_gen =</span> <span class="st">'rnorm'</span>)</a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>), </a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>)))</a>
+<a class="sourceLine" id="cb20-9" data-line-number="9">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb20-10" data-line-number="10">p &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb20-11" data-line-number="11">error_var &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb20-12" data-line-number="12">data_str &lt;-<span class="st"> &quot;long&quot;</span></a>
+<a class="sourceLine" id="cb20-13" data-line-number="13">temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(<span class="dt">fixed =</span> fixed, <span class="dt">random =</span> random, </a>
+<a class="sourceLine" id="cb20-14" data-line-number="14">                     <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb20-15" data-line-number="15">                     <span class="dt">random_param =</span> random_param, <span class="dt">cov_param =</span> cov_param, </a>
+<a class="sourceLine" id="cb20-16" data-line-number="16">                     <span class="dt">k =</span> <span class="ot">NULL</span>, <span class="dt">n =</span> n, <span class="dt">p =</span> p,</a>
+<a class="sourceLine" id="cb20-17" data-line-number="17">                     <span class="dt">error_var =</span> error_var, <span class="dt">with_err_gen =</span> <span class="st">&quot;rnorm&quot;</span>,</a>
+<a class="sourceLine" id="cb20-18" data-line-number="18">                     <span class="dt">data_str =</span> data_str, <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
 <p>Highlighting the new agruments needed, the first is a one sided formula <code>random</code>. This specifies which terms should be specified above. Related to <code>random</code>, <code>random_param</code> is a list of characteristics when simulation the random effects. This list must contain two named components: <code>random_var</code> and <code>rand_gen</code>. These two components represent the variance of the terms specified in the one sided <code>random</code> formula and <code>rand_gen</code> which represents a quoted distribution function (e.g. ‘rnorm’) to simulate the random effects. The <code>random_var</code> component must be the same length as the number of terms in <code>random</code>.</p>
 <p>The optional named arguments to the <code>random_param</code> argument include <code>ther</code>, <code>ther_sim</code>, and <code>cor_vars</code>. First, <code>cor_vars</code> is a vector of correlations between random effects, the default is no correlation between random effects. The argument <code>ther</code> represents a vector of the theoretical mean and standard deviation of the random effects. This can be used to center simulated values at 0 or scale them to have a standard deviation of 1. The following standardization formula is used: <span class="math inline">\(z = \frac{X - \mu}{\sigma}\)</span>, where <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the values specified within the <code>ther</code> argument. The default values are 0 and 1 for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> respectively so that no scaling is performed. The <code>ther_sim</code> argument does the same process as <code>ther</code>, but the <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> values are empirically drawn by sampling one million values from the <code>rand_gen</code> specified. Lastly, depending on the <code>rand_gen</code> function specified, additional arguments may be needed for that distribution function and can be specified as well. For example, if <code>rand_gen = 'rchisq'</code>, including <code>df = 1</code> would simulate a chi-square distribution with one degree of freedom.</p>
 <p>The specification of the covariates is still done with the <code>cov_param</code> argument, however, now the <code>var_type</code> portion of <code>cov_param</code> must be either “level1” or “level2” to represent either level 1 or level 2 variables respectively. Note that the time variable is not included in the <code>cov_param</code> argument and is automatically specified as discrete starting from 0. In the future, differing time scales will be expanded.</p>
 <p>The other new terms needed are straightforward, <code>p</code> is the within cluster sample size (i.e. how many repeated measurements) and <code>data_str</code> is now “long” for longitudinal data.</p>
 <p>The simulated data now look like the following:</p>
-<pre class="sourceCode r" id="cb17"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">head</span>(temp_long)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">time</th>
-<th style="text-align: right;">diff</th>
-<th style="text-align: right;">act</th>
-<th style="text-align: right;">time.act</th>
-<th style="text-align: right;">b0</th>
-<th style="text-align: right;">b1</th>
-<th style="text-align: right;">b2</th>
-<th style="text-align: right;">Fbeta</th>
-<th style="text-align: right;">randEff</th>
-<th style="text-align: right;">err</th>
-<th style="text-align: right;">sim_data</th>
-<th style="text-align: right;">withinID</th>
-<th style="text-align: right;">clustID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.0683779</td>
-<td style="text-align: right;">2.69546</td>
-<td style="text-align: right;">0.000000</td>
-<td style="text-align: right;">-2.108511</td>
-<td style="text-align: right;">-3.568587</td>
-<td style="text-align: right;">0.7140753</td>
-<td style="text-align: right;">9.789291</td>
-<td style="text-align: right;">-2.157338</td>
-<td style="text-align: right;">0.6800670</td>
-<td style="text-align: right;">8.31202</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-0.9346513</td>
-<td style="text-align: right;">2.69546</td>
-<td style="text-align: right;">2.695460</td>
-<td style="text-align: right;">-2.108511</td>
-<td style="text-align: right;">-3.568587</td>
-<td style="text-align: right;">0.7140753</td>
-<td style="text-align: right;">25.459872</td>
-<td style="text-align: right;">-6.344509</td>
-<td style="text-align: right;">-1.4485696</td>
-<td style="text-align: right;">17.66679</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3.3164452</td>
-<td style="text-align: right;">2.69546</td>
-<td style="text-align: right;">5.390920</td>
-<td style="text-align: right;">-2.108511</td>
-<td style="text-align: right;">-3.568587</td>
-<td style="text-align: right;">0.7140753</td>
-<td style="text-align: right;">71.834672</td>
-<td style="text-align: right;">-6.877493</td>
-<td style="text-align: right;">2.0451144</td>
-<td style="text-align: right;">67.00229</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1.6441833</td>
-<td style="text-align: right;">2.69546</td>
-<td style="text-align: right;">8.086381</td>
-<td style="text-align: right;">-2.108511</td>
-<td style="text-align: right;">-3.568587</td>
-<td style="text-align: right;">0.7140753</td>
-<td style="text-align: right;">82.669322</td>
-<td style="text-align: right;">-11.640201</td>
-<td style="text-align: right;">1.6290467</td>
-<td style="text-align: right;">72.65817</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2.1447982</td>
-<td style="text-align: right;">2.69546</td>
-<td style="text-align: right;">10.781841</td>
-<td style="text-align: right;">-2.108511</td>
-<td style="text-align: right;">-3.568587</td>
-<td style="text-align: right;">0.7140753</td>
-<td style="text-align: right;">106.541232</td>
-<td style="text-align: right;">-14.851310</td>
-<td style="text-align: right;">-1.4351867</td>
-<td style="text-align: right;">90.25474</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">-4.3674651</td>
-<td style="text-align: right;">2.69546</td>
-<td style="text-align: right;">13.477301</td>
-<td style="text-align: right;">-2.108511</td>
-<td style="text-align: right;">-3.568587</td>
-<td style="text-align: right;">0.7140753</td>
-<td style="text-align: right;">88.335874</td>
-<td style="text-align: right;">-23.070143</td>
-<td style="text-align: right;">0.4648691</td>
-<td style="text-align: right;">65.73060</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">head</span>(temp_long)</a></code></pre></div>
+<pre><code>##   X.Intercept. time       diff      act  time.act         b0       b1
+## 1            1    0  1.5834430 6.778024  0.000000 -0.4597294 2.150872
+## 2            1    1 -0.4960419 6.778024  6.778024 -0.4597294 2.150872
+## 3            1    2 -2.9233750 6.778024 13.556048 -0.4597294 2.150872
+## 4            1    3  1.2125887 6.778024 20.334071 -0.4597294 2.150872
+## 5            1    4 -2.1415665 6.778024 27.112095 -0.4597294 2.150872
+## 6            1    5  0.2841196 6.778024 33.890119 -0.4597294 2.150872
+##           b2     Fbeta   randEff        err  sim_data withinID clustID
+## 1 -0.9009526  29.09011 -1.886337  0.9282166  28.13199        1       1
+## 2 -0.9009526  66.05937  2.138053  0.1394998  68.33692        2       1
+## 3 -0.9009526 100.94154  6.475837  0.2264986 107.64387        3       1
+## 4 -0.9009526 175.20349  4.900401 -0.9882142 179.11567        4       1
+## 5 -0.9009526 204.52472 10.073208 -0.5536383 214.04429        5       1
+## 6 -0.9009526 268.52501 10.038652  2.4891496 281.05281        6       1</code></pre>
 <p>This structure is very similar to before, except now there are columns for the specific random effects as denoted by the lower case b’s, a column reflecting the contribution for the random effects combined and lastly now two ID variables, one reflecting the within cluster ID and another being the cluster ID.</p>
 <p>Checking how the simulation worked with the following:</p>
-<pre class="sourceCode r" id="cb18"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">library</span>(lme4)</a></code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">library</span>(lme4)</a></code></pre></div>
 <pre><code>## Loading required package: Matrix</code></pre>
-<pre class="sourceCode r" id="cb20"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">lmer</span>(sim_data <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">|</span><span class="st"> </span>clustID),</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">     <span class="dt">data =</span> temp_long)</a></code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">lmer</span>(sim_data <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">|</span><span class="st"> </span>clustID),</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">     <span class="dt">data =</span> temp_long)</a></code></pre></div>
 <pre><code>## Linear mixed model fit by REML ['lmerMod']
 ## Formula: sim_data ~ 1 + time + diff + act + time:act + (1 + time + diff |  
 ##     clustID)
 ##    Data: temp_long
-## REML criterion at convergence: 21447.44
+## REML criterion at convergence: 21321.22
 ## Random effects:
-##  Groups   Name        Std.Dev. Corr     
-##  clustID  (Intercept) 2.723             
-##           time        1.733    0.02     
-##           diff        1.475    0.04 0.05
-##  Residual             2.044             
+##  Groups   Name        Std.Dev. Corr       
+##  clustID  (Intercept) 2.847               
+##           time        1.893    -0.14      
+##           diff        1.361    -0.02  0.16
+##  Residual             2.011               
 ## Number of obs: 4500, groups:  clustID, 150
 ## Fixed Effects:
 ## (Intercept)         time         diff          act     time:act  
-##       4.173        1.812        6.106        2.265        7.047</code></pre>
+##       4.082        2.037        5.955        2.323        6.999</code></pre>
 <p>One note when looking at the output is that standard deviations are given, not variances as inputted into the simulation function.</p>
-<section id="specifying-time-variable" class="level4">
+<div id="specifying-time-variable" class="section level4">
 <h4>Specifying Time Variable</h4>
 <p>For longitudinal designs, the time variable (linear slope) is generated going from 0 to number of observations minus 1. Therefore, if there are 5 time points (measurement occasions), the time variable by default will be a sequence from 0 to 4 indexing by 1. An optional named argument within <code>cov_param</code>, named <code>time_var</code>, allows the user to specify the time scale. Below is an example with 5 time points. In this example the first three measurement occasions may be separated by 6 months with the last two occasions being measured 2 years apart and the time variable is represented on the time scale.</p>
-<pre class="sourceCode r" id="cb22"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">rand_gen =</span> <span class="st">'rnorm'</span>)</a>
-<a class="sourceLine" id="cb22-5" data-line-number="5">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>), </a>
-<a class="sourceLine" id="cb22-6" data-line-number="6">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>), </a>
-<a class="sourceLine" id="cb22-7" data-line-number="7">                  <span class="dt">time_var =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb22-8" data-line-number="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.5</span>), </a>
-<a class="sourceLine" id="cb22-9" data-line-number="9">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>)))</a>
-<a class="sourceLine" id="cb22-10" data-line-number="10">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb22-11" data-line-number="11">p &lt;-<span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb22-12" data-line-number="12">error_var &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb22-13" data-line-number="13">with_err_gen &lt;-<span class="st"> 'rnorm'</span></a>
-<a class="sourceLine" id="cb22-14" data-line-number="14">data_str &lt;-<span class="st"> &quot;long&quot;</span></a>
-<a class="sourceLine" id="cb22-15" data-line-number="15">temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(fixed, random, <span class="dt">random3 =</span> <span class="ot">NULL</span>, fixed_param, </a>
-<a class="sourceLine" id="cb22-16" data-line-number="16">                     random_param, <span class="dt">random_param3 =</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb22-17" data-line-number="17">                     cov_param, <span class="dt">k =</span> <span class="ot">NULL</span>, n, p, error_var, with_err_gen, </a>
-<a class="sourceLine" id="cb22-18" data-line-number="18">                     <span class="dt">data_str =</span> data_str)</a>
-<a class="sourceLine" id="cb22-19" data-line-number="19"><span class="kw">head</span>(temp_long)</a></code></pre>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;">X.Intercept.</th>
-<th style="text-align: right;">time</th>
-<th style="text-align: right;">diff</th>
-<th style="text-align: right;">act</th>
-<th style="text-align: right;">time.act</th>
-<th style="text-align: right;">b0</th>
-<th style="text-align: right;">b1</th>
-<th style="text-align: right;">b2</th>
-<th style="text-align: right;">Fbeta</th>
-<th style="text-align: right;">randEff</th>
-<th style="text-align: right;">err</th>
-<th style="text-align: right;">sim_data</th>
-<th style="text-align: right;">withinID</th>
-<th style="text-align: right;">clustID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.0</td>
-<td style="text-align: right;">-0.0206416</td>
-<td style="text-align: right;">0.8862132</td>
-<td style="text-align: right;">0.0000000</td>
-<td style="text-align: right;">-1.682921</td>
-<td style="text-align: right;">-2.488472</td>
-<td style="text-align: right;">0.1077509</td>
-<td style="text-align: right;">5.914441</td>
-<td style="text-align: right;">-1.685145</td>
-<td style="text-align: right;">-0.5926652</td>
-<td style="text-align: right;">3.636631</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">3.5664916</td>
-<td style="text-align: right;">0.8862132</td>
-<td style="text-align: right;">0.4431066</td>
-<td style="text-align: right;">-1.682921</td>
-<td style="text-align: right;">-2.488472</td>
-<td style="text-align: right;">0.1077509</td>
-<td style="text-align: right;">31.538986</td>
-<td style="text-align: right;">-2.542864</td>
-<td style="text-align: right;">-2.0642660</td>
-<td style="text-align: right;">26.931856</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1.0</td>
-<td style="text-align: right;">0.4133221</td>
-<td style="text-align: right;">0.8862132</td>
-<td style="text-align: right;">0.8862132</td>
-<td style="text-align: right;">-1.682921</td>
-<td style="text-align: right;">-2.488472</td>
-<td style="text-align: right;">0.1077509</td>
-<td style="text-align: right;">16.721715</td>
-<td style="text-align: right;">-4.126857</td>
-<td style="text-align: right;">1.8201192</td>
-<td style="text-align: right;">14.414978</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3.0</td>
-<td style="text-align: right;">0.5820209</td>
-<td style="text-align: right;">0.8862132</td>
-<td style="text-align: right;">2.6586397</td>
-<td style="text-align: right;">-1.682921</td>
-<td style="text-align: right;">-2.488472</td>
-<td style="text-align: right;">0.1077509</td>
-<td style="text-align: right;">34.140894</td>
-<td style="text-align: right;">-9.085622</td>
-<td style="text-align: right;">-3.2465047</td>
-<td style="text-align: right;">21.808767</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5.0</td>
-<td style="text-align: right;">-0.8939932</td>
-<td style="text-align: right;">0.8862132</td>
-<td style="text-align: right;">4.4310662</td>
-<td style="text-align: right;">-1.682921</td>
-<td style="text-align: right;">-2.488472</td>
-<td style="text-align: right;">0.1077509</td>
-<td style="text-align: right;">41.691794</td>
-<td style="text-align: right;">-14.221608</td>
-<td style="text-align: right;">2.8352095</td>
-<td style="text-align: right;">30.305396</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.0</td>
-<td style="text-align: right;">-2.3710192</td>
-<td style="text-align: right;">-1.6515617</td>
-<td style="text-align: right;">0.0000000</td>
-<td style="text-align: right;">5.302275</td>
-<td style="text-align: right;">2.713026</td>
-<td style="text-align: right;">0.6084412</td>
-<td style="text-align: right;">-14.024707</td>
-<td style="text-align: right;">3.859650</td>
-<td style="text-align: right;">-4.5274939</td>
-<td style="text-align: right;">-14.692552</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="cross-sectional-data" class="level4">
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>time<span class="op">:</span>act</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>diff</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="fl">2.3</span>, <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">4</span>, <span class="dv">2</span>), <span class="dt">rand_gen =</span> <span class="st">'rnorm'</span>)</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>), </a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>), </a>
+<a class="sourceLine" id="cb27-7" data-line-number="7">                  <span class="dt">time_var =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.5</span>), </a>
+<a class="sourceLine" id="cb27-9" data-line-number="9">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>)))</a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb27-11" data-line-number="11">p &lt;-<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb27-12" data-line-number="12">error_var &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb27-13" data-line-number="13">with_err_gen &lt;-<span class="st"> 'rnorm'</span></a>
+<a class="sourceLine" id="cb27-14" data-line-number="14">data_str &lt;-<span class="st"> &quot;long&quot;</span></a>
+<a class="sourceLine" id="cb27-15" data-line-number="15">temp_long &lt;-<span class="st"> </span><span class="kw">sim_reg</span>(fixed, random, <span class="dt">random3 =</span> <span class="ot">NULL</span>, fixed_param, </a>
+<a class="sourceLine" id="cb27-16" data-line-number="16">                     random_param, <span class="dt">random_param3 =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb27-17" data-line-number="17">                     cov_param, <span class="dt">k =</span> <span class="ot">NULL</span>, n, p, error_var, with_err_gen, </a>
+<a class="sourceLine" id="cb27-18" data-line-number="18">                     <span class="dt">data_str =</span> data_str)</a>
+<a class="sourceLine" id="cb27-19" data-line-number="19"><span class="kw">head</span>(temp_long)</a></code></pre></div>
+<pre><code>##   X.Intercept. time       diff        act   time.act        b0         b1
+## 1            1  0.0  1.1392639 -10.250491   0.000000 -1.329345  0.9153305
+## 2            1  0.5  0.4799478 -10.250491  -5.125246 -1.329345  0.9153305
+## 3            1  1.0  3.3488736 -10.250491 -10.250491 -1.329345  0.9153305
+## 4            1  3.0  1.5943631 -10.250491 -30.751474 -1.329345  0.9153305
+## 5            1  5.0 -2.3150511 -10.250491 -51.252456 -1.329345  0.9153305
+## 6            1  0.0  0.7334425  -0.642083   0.000000 -1.086827 -1.6722817
+##            b2       Fbeta    randEff        err    sim_data withinID
+## 1 -0.06429731  -12.740546 -1.4025964  1.4221294  -12.721013        1
+## 2 -0.06429731  -51.573162 -0.9025389  0.3235377  -52.152164        2
+## 3 -0.06429731  -69.236327 -0.6293378 -0.7589916  -70.624656        3
+## 4 -0.06429731 -219.270267  1.3141335  2.0141119 -215.942022        4
+## 5 -0.06429731 -382.233630  3.3961594 -0.2475867 -379.085057        5
+## 6 -0.23353384    6.923864 -1.2581103  1.0620889    6.727843        1
+##   clustID
+## 1       1
+## 2       1
+## 3       1
+## 4       1
+## 5       1
+## 6       2</code></pre>
+</div>
+<div id="cross-sectional-data" class="section level4">
 <h4>Cross-Sectional Data</h4>
 <p>A similar framework can be used for cross-sectional data, such as when students are nested within schools. The only thing that would need to be changed from the longitudinal portion above is the <code>data_str</code> argument from “long” to “cross” for cross-sectional data.</p>
 <p>One last note about cross-sectional data. As a default for longitudinal data, time is always considered to be in the model in some fashion (as noted above when talking about the <code>cov_param</code> object). Therefore, when specifying the <code>cov_param</code> and <code>fact_vars</code> objects, ensure information about all variables is there.</p>
-</section>
-<section id="categorical-data-for-nested-designs" class="level4">
+</div>
+<div id="categorical-data-for-nested-designs" class="section level4">
 <h4>Categorical Data for Nested Designs</h4>
 <p>The same framework to specify categorical data for single level regression designs is used for nested designs. Just asign the “.f”, “.c”, or “.o” (or “_f“,”_c“, or”_o“) to the end of the name and the function will take care of the rest.</p>
-</section>
-</section>
-</section>
-<section id="bugsfeature-requests" class="level2">
+</div>
+</div>
+</div>
+<div id="bugsfeature-requests" class="section level2">
 <h2>Bugs/Feature Requests</h2>
 <p>Lastly, for any bugs or feature requests go to the github repository to create post an issue. I will work to resolve them as quickly as possible. See <a href="https://github.com/lebebr01/simglm">simglm github repository</a></p>
-</section>
-</section>
+</div>
+</div>
 
 
 
