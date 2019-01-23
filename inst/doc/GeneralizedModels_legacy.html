@@ -11,17 +11,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-07-25" />
+<meta name="date" content="2019-01-23" />
 
 <title>Simulate Data from Generalized Linear Models - legacy code</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -34,13 +34,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -82,7 +80,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -278,7 +298,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Simulate Data from Generalized Linear Models - legacy code</h1>
-<h4 class="date"><em>2018-07-25</em></h4>
+<h4 class="date"><em>2019-01-23</em></h4>
 
 
 
@@ -287,115 +307,121 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The <code>simglm</code> package offers users the ability to simulate from a variety of generalized linear models, both single level and multilevel generalized models. Instead of using the <code>sim_reg</code> function to call these, there is now a <code>sim_glm</code> function to use.</p>
 <p>Similar to the <code>sim_reg</code> function, one benefit of this package for simulation is that the intermediate steps are returned as well. This is useful for additional processing of the data, for example to add in your own missing data function.</p>
 <p>Here is an example for simulating a single level logistic model:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">temp_single &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">                       <span class="dt">cov_param =</span> cov_param, </a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">'logistic'</span>)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">head</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       act      diff       Fbeta   logistic sim_data ID
-## 1            1  3.935867 -2.607994  3.18553511 0.96028629        1  1
-## 2            1 -8.430513 -2.052223 -2.83092363 0.05567582        0  2
-## 3            1 -1.894798 -3.240005  0.08059974 0.52013903        0  3
-## 4            1  0.289188  1.237694  2.51590223 0.92524913        1  4
-## 5            1 -1.036614  4.124543  2.71905586 0.93814177        1  5</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
+<a class="sourceLine" id="cb1-2" title="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
+<a class="sourceLine" id="cb1-4" title="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb1-5" title="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb1-6" title="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb1-7" title="7">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb1-8" title="8"></a>
+<a class="sourceLine" id="cb1-9" title="9">temp_single &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb1-10" title="10">                       <span class="dt">cov_param =</span> cov_param, </a>
+<a class="sourceLine" id="cb1-11" title="11">                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>)</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">head</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##   X.Intercept.       act       diff      Fbeta   logistic sim_data ID
+## 1            1  4.308783 -0.7412115  3.9320281 0.98077305        1  1
+## 2            1  4.867741 -0.6129266  4.2499927 0.98593627        1  2
+## 3            1 -5.777483 -1.7201841 -1.4047969 0.19705602        0  3
+## 4            1 -8.989782 -0.5180032 -2.6502921 0.06597101        0  4
+## 5            1 -5.606983  0.8515632 -0.5480227 0.36632329        1  5</code></pre>
 <p>As you can see from the code above, the syntax is virtually identical to the syntax for the <code>sim_reg</code> function. The largest difference is the omission of the <code>error_var</code> and <code>rand_gen</code> commands. The returned data frame includes the response variable in the logistic function (Fbeta), the probability found by taking <span class="math inline">\(\frac{exp(Fbeta)}{1 + exp(Fbeta)}\)</span> (logistic), and the returned 0/1 variable by using the <code>rbinom</code> function using the probabilities defined above (sim_data).</p>
 <div id="multilevel-logistic-models" class="section level2">
 <h2>Multilevel logistic models</h2>
 <p>Adding in additional levels is straightforward and again very similar to the <code>sim_reg</code> function. Here is a two level example with students nested in classrooms, the <strong>act</strong> variable is treated as a classroom variable:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Longitudinal linear mixed model example</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> </a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="dv">7</span>, <span class="dt">rand_gen =</span> <span class="st">&quot;rnorm&quot;</span>, <span class="dt">ther_sim =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>),</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.4</span>)))</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">p &lt;-<span class="st"> </span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">data_str &lt;-<span class="st"> &quot;cross&quot;</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">temp_cross &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(fixed, random, <span class="dt">random3 =</span> <span class="ot">NULL</span>, fixed_param,</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">                     random_param, <span class="dt">random_param3 =</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">                     cov_param, <span class="dt">k =</span> <span class="ot">NULL</span>, n, p,</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">                     <span class="dt">data_str =</span> data_str, <span class="dt">outcome_type =</span> <span class="st">'logistic'</span>)</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="kw">head</span>(temp_cross, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       diff       act        b0     Fbeta   randEff
-## 1            1 -3.8128751 0.5085166 -4.199728 0.2461174 -4.199728
-## 2            1  1.2009009 0.5085166 -4.199728 2.7530054 -4.199728
-## 3            1 -0.8232575 0.5085166 -4.199728 1.7409262 -4.199728
-## 4            1 -0.8121376 0.5085166 -4.199728 1.7464862 -4.199728
-## 5            1 -0.6748080 0.5085166 -4.199728 1.8151510 -4.199728
-##    logistic       prob sim_data withinID clustID
-## 1 -3.953610 0.01882416        0        1       1
-## 2 -1.446722 0.19050649        0        2       1
-## 3 -2.458802 0.07879728        0        3       1
-## 4 -2.453242 0.07920181        0        4       1
-## 5 -2.384577 0.08435637        0        5       1</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Longitudinal linear mixed model example</span></a>
+<a class="sourceLine" id="cb3-2" title="2">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act</a>
+<a class="sourceLine" id="cb3-3" title="3">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> </a>
+<a class="sourceLine" id="cb3-4" title="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb3-5" title="5">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="dv">7</span>, <span class="dt">rand_gen =</span> <span class="st">&quot;rnorm&quot;</span>, <span class="dt">ther_sim =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb3-6" title="6">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
+<a class="sourceLine" id="cb3-7" title="7">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>),</a>
+<a class="sourceLine" id="cb3-8" title="8">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb3-9" title="9">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.4</span>)))</a>
+<a class="sourceLine" id="cb3-10" title="10">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb3-11" title="11">p &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb3-12" title="12">data_str &lt;-<span class="st"> &quot;cross&quot;</span></a>
+<a class="sourceLine" id="cb3-13" title="13">temp_cross &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(fixed, random, <span class="dt">random3 =</span> <span class="ot">NULL</span>, fixed_param,</a>
+<a class="sourceLine" id="cb3-14" title="14">                     random_param, <span class="dt">random_param3 =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb3-15" title="15">                     cov_param, <span class="dt">k =</span> <span class="ot">NULL</span>, n, p,</a>
+<a class="sourceLine" id="cb3-16" title="16">                     <span class="dt">data_str =</span> data_str, <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>)</a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="kw">head</span>(temp_cross, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##   X.Intercept.       diff      act        b0     Fbeta   randEff  logistic
+## 1            1 -2.4782517 0.510712 0.3755224 0.9140877 0.3755224 1.2896102
+## 2            1 -3.0621637 0.510712 0.3755224 0.6221317 0.3755224 0.9976542
+## 3            1 -0.6295923 0.510712 0.3755224 1.8384175 0.3755224 2.2139399
+## 4            1  1.0613815 0.510712 0.3755224 2.6839043 0.3755224 3.0594267
+## 5            1  0.8294658 0.510712 0.3755224 2.5679465 0.3755224 2.9434689
+##        prob sim_data withinID clustID
+## 1 0.7840812        1        1       1
+## 2 0.7305971        1        2       1
+## 3 0.9014944        1        3       1
+## 4 0.9551878        1        4       1
+## 5 0.9499539        1        5       1</code></pre>
 </div>
 <div id="three-level-example" class="section level2">
 <h2>Three level example</h2>
 <p>Below is sample code for a three level example. Primary differences are the additional terms associated with the third level.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>actClust</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">random3 &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">0.8</span>, <span class="fl">0.15</span>, <span class="fl">1.1</span>)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="dv">7</span>, <span class="dt">rand_gen =</span> <span class="st">&quot;rnorm&quot;</span>)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">random_param3 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="dv">4</span>, <span class="dt">rand_gen =</span> <span class="st">&quot;rnorm&quot;</span>)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>, <span class="st">&quot;level3&quot;</span>),</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>)))</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">k &lt;-<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">p &lt;-<span class="st"> </span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">data_str &lt;-<span class="st"> &quot;cross&quot;</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">temp_three &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(fixed, random, random3, fixed_param, random_param,</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">                      random_param3, cov_param, k, n, p, <span class="dt">data_str =</span> data_str,</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18">                      <span class="dt">outcome_type =</span> <span class="st">'logistic'</span>)</a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="kw">head</span>(temp_three, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       diff      act actClust     b0_2    b0_3    Fbeta
-## 1            1  0.4681071 1.838096 2.435634 1.519803 6.21593 7.329397
-## 2            1 -1.0241312 1.838096 2.435634 1.519803 6.21593 6.135607
-## 3            1  0.1236086 1.838096 2.435634 1.519803 6.21593 7.053798
-## 4            1  0.6125938 1.838096 2.435634 1.519803 6.21593 7.444987
-## 5            1 -0.5879851 1.838096 2.435634 1.519803 6.21593 6.484524
-##    randEff randEff3 logistic      prob sim_data withinID clustID clust3ID
-## 1 1.519803  6.21593 15.06513 0.9999997        1        1       1        1
-## 2 1.519803  6.21593 13.87134 0.9999991        1        2       1        1
-## 3 1.519803  6.21593 14.78953 0.9999996        1        3       1        1
-## 4 1.519803  6.21593 15.18072 0.9999997        1        4       1        1
-## 5 1.519803  6.21593 14.22026 0.9999993        1        5       1        1</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>actClust</a>
+<a class="sourceLine" id="cb5-2" title="2">random &lt;-<span class="st"> </span><span class="er">~</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-3" title="3">random3 &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-4" title="4">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">0.8</span>, <span class="fl">0.15</span>, <span class="fl">1.1</span>)</a>
+<a class="sourceLine" id="cb5-5" title="5">random_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="dv">7</span>, <span class="dt">rand_gen =</span> <span class="st">&quot;rnorm&quot;</span>)</a>
+<a class="sourceLine" id="cb5-6" title="6">random_param3 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">random_var =</span> <span class="dv">4</span>, <span class="dt">rand_gen =</span> <span class="st">&quot;rnorm&quot;</span>)</a>
+<a class="sourceLine" id="cb5-7" title="7">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
+<a class="sourceLine" id="cb5-8" title="8">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;level1&quot;</span>, <span class="st">&quot;level2&quot;</span>, <span class="st">&quot;level3&quot;</span>),</a>
+<a class="sourceLine" id="cb5-9" title="9">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb5-10" title="10">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb5-11" title="11">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb5-12" title="12">k &lt;-<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb5-13" title="13">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb5-14" title="14">p &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb5-15" title="15">data_str &lt;-<span class="st"> &quot;cross&quot;</span></a>
+<a class="sourceLine" id="cb5-16" title="16">temp_three &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(fixed, random, random3, fixed_param, random_param,</a>
+<a class="sourceLine" id="cb5-17" title="17">                      random_param3, cov_param, k, n, p, <span class="dt">data_str =</span> data_str,</a>
+<a class="sourceLine" id="cb5-18" title="18">                      <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>)</a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="kw">head</span>(temp_three, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##   X.Intercept.       diff      act  actClust      b0_2      b0_3    Fbeta
+## 1            1  3.9888690 6.141684 -2.084903 0.1779015 0.6353578 5.818955
+## 2            1  2.7370162 6.141684 -2.084903 0.1779015 0.6353578 4.817473
+## 3            1 -0.7785872 6.141684 -2.084903 0.1779015 0.6353578 2.004990
+## 4            1 -0.7672332 6.141684 -2.084903 0.1779015 0.6353578 2.014073
+## 5            1  0.6907792 6.141684 -2.084903 0.1779015 0.6353578 3.180483
+##     randEff  randEff3 logistic      prob sim_data withinID clustID
+## 1 0.1779015 0.6353578 6.632214 0.9986845        1        1       1
+## 2 0.1779015 0.6353578 5.630732 0.9964269        1        2       1
+## 3 0.1779015 0.6353578 2.818249 0.9436540        1        3       1
+## 4 0.1779015 0.6353578 2.827332 0.9441351        1        4       1
+## 5 0.1779015 0.6353578 3.993742 0.9819029        1        5       1
+##   clust3ID
+## 1        1
+## 2        1
+## 3        1
+## 4        1
+## 5        1</code></pre>
 </div>
 </div>
 <div id="count-outcomes" class="section level1">
 <h1>Count Outcomes</h1>
 <p>The package also has the ability to simulate count outcomes in addition to the 0/1 dichotomous outcomes. The syntax is the same as above, except the <code>outcome_type</code> argument is modified from <code>logistic</code> to <code>poisson</code>. As some may have realized from above, the dichotomous outcomes are assumed to follow a logistic metric where as the count outcomes follow a poisson model. Belwo is an adapted example from above.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">'rnorm'</span>, <span class="st">'rnorm'</span>),</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">temp_single &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">                       <span class="dt">cov_param =</span> cov_param, </a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">'poisson'</span>)</a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">head</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       act       diff      Fbeta   poisson sim_data ID
-## 1            1 -1.288608  4.3264499  0.1536311 1.1660606        2  1
-## 2            1 -2.888592 -0.3395136 -2.0461499 0.1292315        0  2
-## 3            1  2.753678  2.5152666  1.6314189 5.1111219        3  3
-## 4            1  1.190036 -2.6993421 -0.7147846 0.4892975        1  4
-## 5            1  1.977921  3.8935914  1.6570381 5.2437563        5  5</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
+<a class="sourceLine" id="cb7-2" title="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
+<a class="sourceLine" id="cb7-4" title="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb7-5" title="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb7-6" title="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb7-7" title="7">n &lt;-<span class="st"> </span><span class="dv">150</span></a>
+<a class="sourceLine" id="cb7-8" title="8"></a>
+<a class="sourceLine" id="cb7-9" title="9">temp_single &lt;-<span class="st"> </span><span class="kw">sim_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb7-10" title="10">                       <span class="dt">cov_param =</span> cov_param, </a>
+<a class="sourceLine" id="cb7-11" title="11">                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">&#39;poisson&#39;</span>)</a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="kw">head</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##   X.Intercept.        act       diff     Fbeta    poisson sim_data ID
+## 1            1 -4.2809923  1.4287430 -2.211873 0.10949534        0  1
+## 2            1 -4.2778138 -1.6077157 -3.121222 0.04410326        0  2
+## 3            1 -4.4481936  1.7835822 -2.189022 0.11202624        0  3
+## 4            1  0.3934006  1.8470022  0.250801 1.28505427        3  4
+## 5            1  3.7834379 -0.6690836  1.190994 3.29034986        1  5</code></pre>
 </div>
 
 

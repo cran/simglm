@@ -11,17 +11,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2018-07-25" />
+<meta name="date" content="2019-01-23" />
 
 <title>Tidy Simulation with simglm</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -34,13 +34,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -82,7 +80,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -278,7 +298,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Tidy Simulation with <code>simglm</code></h1>
-<h4 class="date"><em>2018-07-25</em></h4>
+<h4 class="date"><em>2019-01-23</em></h4>
 
 
 
@@ -302,18 +322,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="fixed-portion-of-model" class="section level3">
 <h3>Fixed Portion of Model</h3>
 <p>The fixed portion of the model represents variables that are treated as fixed. This means that the values observed in the data are the only values we are interested in, will generalize to, or that we consider values of interest in our population. Let us consider the following formula: <code>y ~ 1 + x1 + x2</code>. In this formula there are a total of two varaibles that are assumed to be fixed, <code>x1</code> and <code>x2</code>. These variables together with an intercept would make up the design matrix <span class="math inline">\(X_{j}\)</span>. Let’s generate some example data using the <code>simglm</code> package and the <code>simulate_fixed</code> function.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(simglm)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2,</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">x1 =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">               <span class="dt">x2 =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">40</span>, <span class="dt">sd =</span> <span class="dv">5</span>)),</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(simglm)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2,</a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">x1 =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb1-8" title="8">               <span class="dt">x2 =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">40</span>, <span class="dt">sd =</span> <span class="dv">5</span>)),</a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb1-10" title="10">)</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.       x1       x2 level1_id
 ## 1             1 231.1471 41.73851         1
 ## 2             1 158.6388 47.42296         2
@@ -332,16 +352,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>sample_size</code>: this argument tells the function how many responses to generate.</li>
 </ul>
 <p>The columns <code>x1</code> and <code>x2</code> would represent variables that we would gather if these data were real. To reflect a real life scenario, consider the following fixed simuation.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">40</span>, <span class="dt">sd =</span> <span class="dv">5</span>)),</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb3-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">40</span>, <span class="dt">sd =</span> <span class="dv">5</span>)),</a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb3-8" title="8">)</a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.   weight      age level1_id
 ## 1             1 231.1471 41.73851         1
 ## 2             1 158.6388 47.42296         2
@@ -353,17 +373,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 8             1 186.9941 42.10166         8
 ## 9             1 190.1734 42.88792         9
 ## 10            1 163.4426 42.23178        10</code></pre>
-<p>Now instead of the variables being called <code>x1</code> and <code>x2</code>, they now reflect variables weight (measured in lbs) and age (measured continuously, not rounded to whole digits). If we wished to change the <code>'age'</code> variable to be rounded to a whole integer, we could change the variable type to <code>'ordinal'</code> as such.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>)),</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<p>Now instead of the variables being called <code>x1</code> and <code>x2</code>, they now reflect variables weight (measured in lbs) and age (measured continuously, not rounded to whole digits). If we wished to change the <code>&#39;age&#39;</code> variable to be rounded to a whole integer, we could change the variable type to <code>&#39;ordinal&#39;</code> as such.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age,</a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb5-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>)),</a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb5-8" title="8">)</a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.   weight age level1_id
 ## 1             1 231.1471  49         1
 ## 2             1 158.6388  60         2
@@ -375,18 +395,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 8             1 186.9941  43         8
 ## 9             1 190.1734  33         9
 ## 10            1 163.4426  48        10</code></pre>
-<p>When specifying a <code>var_type</code> as <code>'ordinal'</code>, an additional <code>levels</code> argument is needed to determine which values are possible for the simulation. The last type of variable that is useful to discuss now would be factor or categorical variables. These variables can be generated by setting the <code>var_type = 'factor'</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<p>When specifying a <code>var_type</code> as <code>&#39;ordinal&#39;</code>, an additional <code>levels</code> argument is needed to determine which values are possible for the simulation. The last type of variable that is useful to discuss now would be factor or categorical variables. These variables can be generated by setting the <code>var_type = &#39;factor&#39;</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb7-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb7-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb7-9" title="9">)</a>
+<a class="sourceLine" id="cb7-10" title="10"></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
 ## 1             1 231.1471  49   1 231.1471   49   male         1
 ## 2             1 158.6388  60   0 158.6388   60 female         2
@@ -404,13 +424,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="simulate-random-error" class="section level2">
 <h2>Simulate Random Error</h2>
 <p>The simulation of random error (<span class="math inline">\(e_{j}\)</span> from the equation above) is a bit simpler than generating the fixed effects. Suppose for example, we want to simply simulate random errors that are normally distributed with a mean of 0 and a variance of 1. This can be done with the <code>simulate_error</code> function.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb9-5" title="5">)</a>
+<a class="sourceLine" id="cb9-6" title="6"></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##         error level1_id
 ## 1   1.7049032         1
 ## 2  -0.7120386         2
@@ -423,14 +443,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 9   0.3391139         9
 ## 10 -0.5519147        10</code></pre>
 <p>The <code>simulate_error</code> function only needs to know how many data values to simulate. By default, the <code>rnorm</code> function is used to generate random error and this function assumes a mean of 0 and standard deviation of 1 by default. I personally prefer the slightly more verbose code however.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb11-5" title="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb11-6" title="6">)</a>
+<a class="sourceLine" id="cb11-7" title="7"></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##         error level1_id
 ## 1   1.7049032         1
 ## 2  -0.7120386         2
@@ -443,14 +463,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 9   0.3391139         9
 ## 10 -0.5519147        10</code></pre>
 <p>This code makes it clearer when the variance of the errors is wished to be specified as some other value. For example:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>)</a>
+<a class="sourceLine" id="cb13-2" title="2"></a>
+<a class="sourceLine" id="cb13-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb13-4" title="4">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="dt">sample_size =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb13-6" title="6">)</a>
+<a class="sourceLine" id="cb13-7" title="7"></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="kw">simulate_error</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments)</a></code></pre></div>
 <pre><code>##         error level1_id
 ## 1   8.5245161         1
 ## 2  -3.5601928         2
@@ -466,21 +486,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="generate-response-variable" class="section level2">
 <h2>Generate Response Variable</h2>
 <p>Now that we have seen the basics of simulating fixed variables (covariates) and random error, we can now generate the response by combining the previous two steps and then using the <code>generate_response</code> function. What makes this a tidy simulation is that the pipe from magrittr, <code>%&gt;%</code> can be used to combine steps into a simulation pipeline.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb15-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb15-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb15-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb15-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb15-8" title="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb15-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb15-10" title="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb15-11" title="11">)</a>
+<a class="sourceLine" id="cb15-12" title="12"></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
 ## 1             1 231.1471  49   1 231.1471   49   male         1
 ## 2             1 158.6388  60   0 158.6388   60 female         2
@@ -506,24 +526,24 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The only additional argument that is needed for the <code>generate_response</code> function is the <code>reg_weights</code> argument. This argument represents the regression coeficients associated with <span class="math inline">\(\beta\)</span> in the equation <span class="math inline">\(Y_{j} = X_{j} \beta + e_{j}\)</span>. The regression coefficients are multiplied by the design matrix to generate the column labeled “fixed_outcome” in the output. The output also contains the column, “random_effects” which are all 0 here indicating there are no random effects and the response variable, “y”.</p>
 <div id="non-normal-outcomes" class="section level3">
 <h3>Non-normal Outcomes</h3>
-<p>Non-normal outcomes are possible with simglm. Two non-normal outcomes are currently supported with more support coming in the future. Binary and count outcomes are supported and can be specified with the <code>outcome_type</code> simulation argument. If <code>outcome_type = 'logistic'</code> or <code>outcome_type = 'binary'</code> then a binary outcome is generated (ie. 0/1 variable) using the <code>rbinom</code> function. If <code>outcome_type = 'count'</code> or <code>outcome_type = 'poisson'</code> then the outcome is transformed to be a count variable (ie. discrete variable; 0, 1, 2, etc.).</p>
+<p>Non-normal outcomes are possible with simglm. Two non-normal outcomes are currently supported with more support coming in the future. Binary and count outcomes are supported and can be specified with the <code>outcome_type</code> simulation argument. If <code>outcome_type = &#39;logistic&#39;</code> or <code>outcome_type = &#39;binary&#39;</code> then a binary outcome is generated (ie. 0/1 variable) using the <code>rbinom</code> function. If <code>outcome_type = &#39;count&#39;</code> or <code>outcome_type = &#39;poisson&#39;</code> then the outcome is transformed to be a count variable (ie. discrete variable; 0, 1, 2, etc.).</p>
 <p>Here is an example of generating a binary outcome.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb17-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb17-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb17-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb17-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">outcome_type =</span> <span class="st">'binary'</span></a>
-<a class="sourceLine" id="cb17-12" data-line-number="12">)</a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb17-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb17-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb17-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb17-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb17-8" title="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb17-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb17-10" title="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb17-11" title="11">  <span class="dt">outcome_type =</span> <span class="st">&#39;binary&#39;</span></a>
+<a class="sourceLine" id="cb17-12" title="12">)</a>
+<a class="sourceLine" id="cb17-13" title="13"></a>
+<a class="sourceLine" id="cb17-14" title="14"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-15" title="15"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-16" title="16"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
 ## 1             1 231.1471  49   1 231.1471   49   male         1
 ## 2             1 158.6388  60   0 158.6388   60 female         2
@@ -547,21 +567,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 9   -5.6016371      55.75202              0              50.15039 1
 ## 10  -2.3734235      46.23277              0              43.85934 1</code></pre>
 <p>And finally, an example of generating a count outcome. Note, the weight variable here has been grand mean centered in the generation (ie. mean = 0). This helps to ensure that the counts are not too large.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb19-7" data-line-number="7">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb19-8" data-line-number="8">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb19-9" data-line-number="9">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.01</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb19-10" data-line-number="10">  <span class="dt">outcome_type =</span> <span class="st">'count'</span></a>
-<a class="sourceLine" id="cb19-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb19-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb19-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb19-6" title="6">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb19-7" title="7">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb19-8" title="8">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb19-9" title="9">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.01</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb19-10" title="10">  <span class="dt">outcome_type =</span> <span class="st">&#39;count&#39;</span></a>
+<a class="sourceLine" id="cb19-11" title="11">)</a>
+<a class="sourceLine" id="cb19-12" title="12"></a>
+<a class="sourceLine" id="cb19-13" title="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-14" title="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-15" title="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a></code></pre></div>
 <pre><code>##    X.Intercept.     weight sex    weight1   sex1 level1_id      error
 ## 1             1  51.147097   0  51.147097 female         1 -4.0233584
 ## 2             1 -21.361157   0 -21.361157 female         2  2.2803457
@@ -595,23 +615,23 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>extract_coefficients</code>: this function will extract the fixed coefficients based on the model fitted.</li>
 </ul>
 <p>To fit a model and extract coefficients, we could do the following building off the example from the previous section:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb21-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb21-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb21-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb21-13" data-line-number="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-15" data-line-number="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-16" data-line-number="16"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-17" data-line-number="17"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb21-2" title="2"></a>
+<a class="sourceLine" id="cb21-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb21-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb21-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb21-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb21-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb21-8" title="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb21-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb21-10" title="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb21-11" title="11">)</a>
+<a class="sourceLine" id="cb21-12" title="12"></a>
+<a class="sourceLine" id="cb21-13" title="13"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-14" title="14"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-15" title="15"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-16" title="16"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-17" title="17"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre></div>
 <pre><code>## # A tibble: 4 x 5
 ##   term        estimate std.error statistic p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -620,28 +640,28 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 3 age          -0.0362    0.191     -0.190  0.856 
 ## 4 sex           8.79      4.07       2.16   0.0741</code></pre>
 <p>This output contains the model output for a single data simulation, more specifically we can see the parameter name, parameter estimate, the standard error for the parameter estimate, the test statistics, and the p-value. These were estimated using the <code>lm</code> function based on the same formula defined in <code>sim_arguments</code>. It is possible to specify your own formula, model fitting function, and regression weights to the <code>model_fit</code> function. For example, suppose we knew that weight was an important predictor, but are unable to collect it in real life. We could then specify an alternative model when evaluating power, but include the variable in the data generation step.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb23-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb23-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb23-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb23-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb23-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb23-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb23-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb23-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
-<a class="sourceLine" id="cb23-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>))</a>
-<a class="sourceLine" id="cb23-14" data-line-number="14">)</a>
-<a class="sourceLine" id="cb23-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb23-16" data-line-number="16"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-17" data-line-number="17"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-18" data-line-number="18"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb23-19" data-line-number="19"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-20" data-line-number="20"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb23-2" title="2"></a>
+<a class="sourceLine" id="cb23-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb23-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb23-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb23-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb23-8" title="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb23-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb23-10" title="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb23-11" title="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb23-12" title="12">                   <span class="dt">model_function =</span> <span class="st">&#39;lm&#39;</span>,</a>
+<a class="sourceLine" id="cb23-13" title="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb23-14" title="14">)</a>
+<a class="sourceLine" id="cb23-15" title="15"></a>
+<a class="sourceLine" id="cb23-16" title="16"><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-17" title="17"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-18" title="18"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-19" title="19"><span class="st">  </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-20" title="20"><span class="st">  </span><span class="kw">extract_coefficients</span>()</a></code></pre></div>
 <pre><code>## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded</code></pre>
+##  extra argument &#39;reg_weights&#39; will be disregarded</code></pre>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -656,133 +676,133 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>replicate_simulation</code>: this function replicates the simulation</li>
 <li><code>compute_statistics</code>: this function compute desired statistics across the replications.</li>
 </ul>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb26-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb26-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb26-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
-<a class="sourceLine" id="cb26-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
-<a class="sourceLine" id="cb26-14" data-line-number="14">  <span class="dt">replications =</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb26-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb26-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb26-17" data-line-number="17"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
-<a class="sourceLine" id="cb26-18" data-line-number="18">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-19" data-line-number="19"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-20" data-line-number="20"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb26-21" data-line-number="21"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-22" data-line-number="22"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-23" data-line-number="23"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb26-2" title="2"></a>
+<a class="sourceLine" id="cb26-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb26-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb26-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb26-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb26-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb26-8" title="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb26-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb26-10" title="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb26-11" title="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb26-12" title="12">                   <span class="dt">model_function =</span> <span class="st">&#39;lm&#39;</span>,</a>
+<a class="sourceLine" id="cb26-13" title="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
+<a class="sourceLine" id="cb26-14" title="14">  <span class="dt">replications =</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb26-15" title="15">)</a>
+<a class="sourceLine" id="cb26-16" title="16"></a>
+<a class="sourceLine" id="cb26-17" title="17"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
+<a class="sourceLine" id="cb26-18" title="18">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-19" title="19"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-20" title="20"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb26-21" title="21"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-22" title="22"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb26-23" title="23"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre></div>
 <pre><code>## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded</code></pre>
+##  extra argument &#39;reg_weights&#39; will be disregarded</code></pre>
 <pre><code>## # A tibble: 3 x 10
 ##   term  avg_estimate power avg_test_stat type_1_error avg_adjtest_stat
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
-## 1 (Int~       60.4     0.8         3.55           0.7            3.43 
+## 1 (Int…       60.4     0.8         3.55           0.7            3.43 
 ## 2 age         -0.189   0.2        -0.420          0.2           -0.154
 ## 3 sex         -1.95    0.3        -0.208          0.3           -0.287
-## # ... with 4 more variables: param_estimate_sd &lt;dbl&gt;,
+## # … with 4 more variables: param_estimate_sd &lt;dbl&gt;,
 ## #   avg_standard_error &lt;dbl&gt;, precision_ratio &lt;dbl&gt;, replications &lt;dbl&gt;</code></pre>
 <p>As can be seen from the output, the default behavior is to return statistics for power, average test statistic, type I error rate, adjusted average test statistic, standard deviation of parameter estimate, average standard error, precision ration (standard deviation of parameter estimate divided by average standard error), and the number of replications for each term.</p>
 <p>To generate this output, only the number of replications is needed. Here only 10 replications were done, in practice many more replications would be done to ensure there are accurate results.</p>
 <p>The default power parameter values used are: Normal distribution, two-tailed alternative hypotheses, and alpha of 0.05. Additional power parameters can be passed directly to override default values by including a power argument within the simulation arguments. For example, if a t-distribution with one degree of freedom an alpha of 0.02 is desired, these can be added as follows:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb29-7" data-line-number="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb29-8" data-line-number="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
-<a class="sourceLine" id="cb29-9" data-line-number="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb29-10" data-line-number="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb29-11" data-line-number="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
-<a class="sourceLine" id="cb29-12" data-line-number="12">                   <span class="dt">model_function =</span> <span class="st">'lm'</span>,</a>
-<a class="sourceLine" id="cb29-13" data-line-number="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
-<a class="sourceLine" id="cb29-14" data-line-number="14">  <span class="dt">replications =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb29-15" data-line-number="15">  <span class="dt">power =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb29-16" data-line-number="16">    <span class="dt">dist =</span> <span class="st">'qt'</span>,</a>
-<a class="sourceLine" id="cb29-17" data-line-number="17">    <span class="dt">alpha =</span> <span class="fl">.02</span>,</a>
-<a class="sourceLine" id="cb29-18" data-line-number="18">    <span class="dt">opts =</span> <span class="kw">list</span>(<span class="dt">df =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb29-19" data-line-number="19">  )</a>
-<a class="sourceLine" id="cb29-20" data-line-number="20">)</a>
-<a class="sourceLine" id="cb29-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb29-22" data-line-number="22"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
-<a class="sourceLine" id="cb29-23" data-line-number="23">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb29-24" data-line-number="24"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb29-25" data-line-number="25"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-26" data-line-number="26"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb29-27" data-line-number="27"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb29-28" data-line-number="28"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb29-2" title="2"></a>
+<a class="sourceLine" id="cb29-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb29-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb29-5" title="5">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb29-6" title="6">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb29-7" title="7">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb29-8" title="8">  <span class="dt">error =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">25</span>),</a>
+<a class="sourceLine" id="cb29-9" title="9">  <span class="dt">sample_size =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb29-10" title="10">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">0.3</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb29-11" title="11">  <span class="dt">model_fit =</span> <span class="kw">list</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex,</a>
+<a class="sourceLine" id="cb29-12" title="12">                   <span class="dt">model_function =</span> <span class="st">&#39;lm&#39;</span>,</a>
+<a class="sourceLine" id="cb29-13" title="13">                   <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="fl">-0.1</span>, <span class="fl">0.5</span>)),</a>
+<a class="sourceLine" id="cb29-14" title="14">  <span class="dt">replications =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb29-15" title="15">  <span class="dt">power =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb29-16" title="16">    <span class="dt">dist =</span> <span class="st">&#39;qt&#39;</span>,</a>
+<a class="sourceLine" id="cb29-17" title="17">    <span class="dt">alpha =</span> <span class="fl">.02</span>,</a>
+<a class="sourceLine" id="cb29-18" title="18">    <span class="dt">opts =</span> <span class="kw">list</span>(<span class="dt">df =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb29-19" title="19">  )</a>
+<a class="sourceLine" id="cb29-20" title="20">)</a>
+<a class="sourceLine" id="cb29-21" title="21"></a>
+<a class="sourceLine" id="cb29-22" title="22"><span class="kw">replicate_simulation</span>(sim_arguments, </a>
+<a class="sourceLine" id="cb29-23" title="23">                     <span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-24" title="24"><span class="st">                       </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-25" title="25"><span class="st">                       </span><span class="kw">generate_response</span>(sim_arguments) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-26" title="26"><span class="st">                       </span><span class="kw">model_fit</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-27" title="27"><span class="st">                       </span><span class="kw">extract_coefficients</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-28" title="28"><span class="st">  </span><span class="kw">compute_statistics</span>(sim_arguments)</a></code></pre></div>
 <pre><code>## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded
+##  extra argument &#39;reg_weights&#39; will be disregarded
 
 ## Warning: In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
-##  extra argument 'reg_weights' will be disregarded</code></pre>
+##  extra argument &#39;reg_weights&#39; will be disregarded</code></pre>
 <pre><code>## # A tibble: 3 x 10
 ##   term  avg_estimate power avg_test_stat type_1_error avg_adjtest_stat
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
-## 1 (Int~       60.4       0         3.55             0            3.43 
+## 1 (Int…       60.4       0         3.55             0            3.43 
 ## 2 age         -0.189     0        -0.420            0           -0.154
 ## 3 sex         -1.95      0        -0.208            0           -0.287
-## # ... with 4 more variables: param_estimate_sd &lt;dbl&gt;,
+## # … with 4 more variables: param_estimate_sd &lt;dbl&gt;,
 ## #   avg_standard_error &lt;dbl&gt;, precision_ratio &lt;dbl&gt;, replications &lt;dbl&gt;</code></pre>
 </div>
 </div>
@@ -791,25 +811,25 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Nested designs are ones in which data belong to multiple levels. An example could be individuals nested within neighborhoods. In this example, a specific individual is tied directly to one neighborhood. These types of data often include correlations between individuals within a neighborhood that need to be taken into account when modeling the data. These types of data can be generated with simglm.</p>
 <p>To do this, the formula syntax introduced above is modified slightly to include information on the nesting structure. In the example below, the nesting structure in the formula is specified in the portion within the parentheses. How the part within parentheses could be read is, add a random intercept effect for each neighborhood. This random intercept effect is similar to random error found in regression models, except the error is associated with neighborhoods and is the same values for all individuals within that neighborhood. The simulation arguments, <code>randomeffect</code> provides information about this term, where the variance can be specified.</p>
 <p>Finally, the <code>sample_size</code> argument needs to be modified to include information about the two levels of nested. You could read the <code>sample_size = list(level1 = 10, level2 = 20)</code> argument below as: create 20 neighborhoods (ie. <code>level2 = 20</code>) and within each neighborhood have 10 individuals (ie. <code>level1 = 10</code>). Therefore the total sample size (ie. rows in the data) would be 200.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
-<a class="sourceLine" id="cb32-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb32-3" data-line-number="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb32-4" data-line-number="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>neighborhood),</a>
-<a class="sourceLine" id="cb32-5" data-line-number="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">-0.03</span>, <span class="fl">0.2</span>, <span class="fl">0.33</span>),</a>
-<a class="sourceLine" id="cb32-6" data-line-number="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'continuous'</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb32-7" data-line-number="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'ordinal'</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb32-8" data-line-number="8">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">'factor'</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">'male'</span>, <span class="st">'female'</span>))),</a>
-<a class="sourceLine" id="cb32-9" data-line-number="9">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_neighborhood =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
-<a class="sourceLine" id="cb32-10" data-line-number="10">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb32-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb32-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb32-13" data-line-number="13">nested_data &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-14" data-line-number="14"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-15" data-line-number="15"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-16" data-line-number="16"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-17" data-line-number="17"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a>
-<a class="sourceLine" id="cb32-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb32-19" data-line-number="19"><span class="kw">head</span>(nested_data, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">set.seed</span>(<span class="dv">321</span>) </a>
+<a class="sourceLine" id="cb32-2" title="2"></a>
+<a class="sourceLine" id="cb32-3" title="3">sim_arguments &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb32-4" title="4">  <span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>weight <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>neighborhood),</a>
+<a class="sourceLine" id="cb32-5" title="5">  <span class="dt">reg_weights =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">-0.03</span>, <span class="fl">0.2</span>, <span class="fl">0.33</span>),</a>
+<a class="sourceLine" id="cb32-6" title="6">  <span class="dt">fixed =</span> <span class="kw">list</span>(<span class="dt">weight =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;continuous&#39;</span>, <span class="dt">mean =</span> <span class="dv">180</span>, <span class="dt">sd =</span> <span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb32-7" title="7">               <span class="dt">age =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="dt">levels =</span> <span class="dv">30</span><span class="op">:</span><span class="dv">60</span>),</a>
+<a class="sourceLine" id="cb32-8" title="8">               <span class="dt">sex =</span> <span class="kw">list</span>(<span class="dt">var_type =</span> <span class="st">&#39;factor&#39;</span>, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&#39;male&#39;</span>, <span class="st">&#39;female&#39;</span>))),</a>
+<a class="sourceLine" id="cb32-9" title="9">  <span class="dt">randomeffect =</span> <span class="kw">list</span>(<span class="dt">int_neighborhood =</span> <span class="kw">list</span>(<span class="dt">variance =</span> <span class="dv">8</span>, <span class="dt">var_level =</span> <span class="dv">2</span>)),</a>
+<a class="sourceLine" id="cb32-10" title="10">  <span class="dt">sample_size =</span> <span class="kw">list</span>(<span class="dt">level1 =</span> <span class="dv">10</span>, <span class="dt">level2 =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb32-11" title="11">)</a>
+<a class="sourceLine" id="cb32-12" title="12"></a>
+<a class="sourceLine" id="cb32-13" title="13">nested_data &lt;-<span class="st"> </span>sim_arguments <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-14" title="14"><span class="st">  </span><span class="kw">simulate_fixed</span>(<span class="dt">data =</span> <span class="ot">NULL</span>, .) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-15" title="15"><span class="st">  </span><span class="kw">simulate_randomeffect</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-16" title="16"><span class="st">  </span><span class="kw">simulate_error</span>(sim_arguments) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-17" title="17"><span class="st">  </span><span class="kw">generate_response</span>(sim_arguments)</a>
+<a class="sourceLine" id="cb32-18" title="18"></a>
+<a class="sourceLine" id="cb32-19" title="19"><span class="kw">head</span>(nested_data, <span class="dt">n =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    X.Intercept.   weight age sex  weight1 age1   sex1 level1_id
 ## 1             1 231.1471  33   0 231.1471   33 female         1
 ## 2             1 158.6388  51   1 158.6388   51   male         2
@@ -843,7 +863,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 8   4.235141
 ## 9   2.277503
 ## 10  4.262519</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">nrow</span>(nested_data)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">nrow</span>(nested_data)</a></code></pre></div>
 <pre><code>## [1] 200</code></pre>
 <p>The vignette simulation_arguments contains more example of specifying random effects and additional nesting designs including three levels of nested and cross-classified models.</p>
 </div>
