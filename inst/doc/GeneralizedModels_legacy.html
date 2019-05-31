@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-01-23" />
+<meta name="date" content="2019-05-30" />
 
 <title>Simulate Data from Generalized Linear Models - legacy code</title>
 
@@ -290,6 +290,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -298,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Simulate Data from Generalized Linear Models - legacy code</h1>
-<h4 class="date"><em>2019-01-23</em></h4>
+<h4 class="date">2019-05-30</h4>
 
 
 
@@ -319,12 +322,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-10" title="10">                       <span class="dt">cov_param =</span> cov_param, </a>
 <a class="sourceLine" id="cb1-11" title="11">                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>)</a>
 <a class="sourceLine" id="cb1-12" title="12"><span class="kw">head</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       act       diff      Fbeta   logistic sim_data ID
-## 1            1  4.308783 -0.7412115  3.9320281 0.98077305        1  1
-## 2            1  4.867741 -0.6129266  4.2499927 0.98593627        1  2
-## 3            1 -5.777483 -1.7201841 -1.4047969 0.19705602        0  3
-## 4            1 -8.989782 -0.5180032 -2.6502921 0.06597101        0  4
-## 5            1 -5.606983  0.8515632 -0.5480227 0.36632329        1  5</code></pre>
+<pre><code>##   X.Intercept.       act      diff     Fbeta  logistic sim_data ID
+## 1            1 -2.928576 -6.106825 -1.296335 0.2147824        0  1
+## 2            1  4.247863 -2.550834  3.358681 0.9663880        1  2
+## 3            1  1.325616 -1.264119  2.283572 0.9075073        1  3
+## 4            1 -7.933378  2.787676 -1.130386 0.2440898        0  4
+## 5            1 -4.042249 -5.794621 -1.759511 0.1468516        1  5</code></pre>
 <p>As you can see from the code above, the syntax is virtually identical to the syntax for the <code>sim_reg</code> function. The largest difference is the omission of the <code>error_var</code> and <code>rand_gen</code> commands. The returned data frame includes the response variable in the logistic function (Fbeta), the probability found by taking <span class="math inline">\(\frac{exp(Fbeta)}{1 + exp(Fbeta)}\)</span> (logistic), and the returned 0/1 variable by using the <code>rbinom</code> function using the probabilities defined above (sim_data).</p>
 <div id="multilevel-logistic-models" class="section level2">
 <h2>Multilevel logistic models</h2>
@@ -346,18 +349,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb3-15" title="15">                     cov_param, <span class="dt">k =</span> <span class="ot">NULL</span>, n, p,</a>
 <a class="sourceLine" id="cb3-16" title="16">                     <span class="dt">data_str =</span> data_str, <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>)</a>
 <a class="sourceLine" id="cb3-17" title="17"><span class="kw">head</span>(temp_cross, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       diff      act        b0     Fbeta   randEff  logistic
-## 1            1 -2.4782517 0.510712 0.3755224 0.9140877 0.3755224 1.2896102
-## 2            1 -3.0621637 0.510712 0.3755224 0.6221317 0.3755224 0.9976542
-## 3            1 -0.6295923 0.510712 0.3755224 1.8384175 0.3755224 2.2139399
-## 4            1  1.0613815 0.510712 0.3755224 2.6839043 0.3755224 3.0594267
-## 5            1  0.8294658 0.510712 0.3755224 2.5679465 0.3755224 2.9434689
+<pre><code>##   X.Intercept.       diff       act      b0     Fbeta randEff logistic
+## 1            1 -0.5808425 -1.109843 2.90443 1.3766259 2.90443 4.281056
+## 2            1 -0.8688169 -1.109843 2.90443 1.2326387 2.90443 4.137069
+## 3            1 -1.6730168 -1.109843 2.90443 0.8305388 2.90443 3.734969
+## 4            1 -2.8333092 -1.109843 2.90443 0.2503925 2.90443 3.154823
+## 5            1 -2.2453243 -1.109843 2.90443 0.5443850 2.90443 3.448815
 ##        prob sim_data withinID clustID
-## 1 0.7840812        1        1       1
-## 2 0.7305971        1        2       1
-## 3 0.9014944        1        3       1
-## 4 0.9551878        1        4       1
-## 5 0.9499539        1        5       1</code></pre>
+## 1 0.9863606        1        1       1
+## 2 0.9842814        1        2       1
+## 3 0.9766828        1        3       1
+## 4 0.9590983        1        4       1
+## 5 0.9691958        1        5       1</code></pre>
 </div>
 <div id="three-level-example" class="section level2">
 <h2>Three level example</h2>
@@ -381,18 +384,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb5-17" title="17">                      random_param3, cov_param, k, n, p, <span class="dt">data_str =</span> data_str,</a>
 <a class="sourceLine" id="cb5-18" title="18">                      <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>)</a>
 <a class="sourceLine" id="cb5-19" title="19"><span class="kw">head</span>(temp_three, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.       diff      act  actClust      b0_2      b0_3    Fbeta
-## 1            1  3.9888690 6.141684 -2.084903 0.1779015 0.6353578 5.818955
-## 2            1  2.7370162 6.141684 -2.084903 0.1779015 0.6353578 4.817473
-## 3            1 -0.7785872 6.141684 -2.084903 0.1779015 0.6353578 2.004990
-## 4            1 -0.7672332 6.141684 -2.084903 0.1779015 0.6353578 2.014073
-## 5            1  0.6907792 6.141684 -2.084903 0.1779015 0.6353578 3.180483
-##     randEff  randEff3 logistic      prob sim_data withinID clustID
-## 1 0.1779015 0.6353578 6.632214 0.9986845        1        1       1
-## 2 0.1779015 0.6353578 5.630732 0.9964269        1        2       1
-## 3 0.1779015 0.6353578 2.818249 0.9436540        1        3       1
-## 4 0.1779015 0.6353578 2.827332 0.9441351        1        4       1
-## 5 0.1779015 0.6353578 3.993742 0.9819029        1        5       1
+<pre><code>##   X.Intercept.       diff       act  actClust      b0_2     b0_3     Fbeta
+## 1            1 -2.0036192 0.7191938 -1.815508 -2.165191 1.797921 0.5079254
+## 2            1  0.3555894 0.7191938 -1.815508 -2.165191 1.797921 2.3952923
+## 3            1 -1.6734751 0.7191938 -1.815508 -2.165191 1.797921 0.7720407
+## 4            1 -0.6381194 0.7191938 -1.815508 -2.165191 1.797921 1.6003253
+## 5            1 -2.0222088 0.7191938 -1.815508 -2.165191 1.797921 0.4930538
+##     randEff randEff3  logistic      prob sim_data withinID clustID
+## 1 -2.165191 1.797921 0.1406555 0.5351060        1        1       1
+## 2 -2.165191 1.797921 2.0280224 0.8837080        1        2       1
+## 3 -2.165191 1.797921 0.4047708 0.5998334        0        3       1
+## 4 -2.165191 1.797921 1.2330554 0.7743529        1        4       1
+## 5 -2.165191 1.797921 0.1257839 0.5314046        1        5       1
 ##   clust3ID
 ## 1        1
 ## 2        1
@@ -416,12 +419,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb7-10" title="10">                       <span class="dt">cov_param =</span> cov_param, </a>
 <a class="sourceLine" id="cb7-11" title="11">                       <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, <span class="dt">outcome_type =</span> <span class="st">&#39;poisson&#39;</span>)</a>
 <a class="sourceLine" id="cb7-12" title="12"><span class="kw">head</span>(temp_single, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
-<pre><code>##   X.Intercept.        act       diff     Fbeta    poisson sim_data ID
-## 1            1 -4.2809923  1.4287430 -2.211873 0.10949534        0  1
-## 2            1 -4.2778138 -1.6077157 -3.121222 0.04410326        0  2
-## 3            1 -4.4481936  1.7835822 -2.189022 0.11202624        0  3
-## 4            1  0.3934006  1.8470022  0.250801 1.28505427        3  4
-## 5            1  3.7834379 -0.6690836  1.190994 3.29034986        1  5</code></pre>
+<pre><code>##   X.Intercept.       act       diff       Fbeta   poisson sim_data ID
+## 1            1 -1.655157 -0.2838826 -1.41274351 0.2434744        0  1
+## 2            1  3.373535 -4.2538885 -0.08939913 0.9144805        0  2
+## 3            1 -6.840285  5.9891692 -2.12339193 0.1196252        0  3
+## 4            1  1.618381 -3.7367856 -0.81184524 0.4440380        0  4
+## 5            1  1.314580  1.5309700  0.61658088 1.8525830        3  5</code></pre>
 </div>
 
 

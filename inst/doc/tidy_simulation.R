@@ -170,8 +170,8 @@ sim_arguments <- list(
   sample_size = 10,
   reg_weights = c(2, 0.3, -0.1, 0.5),
   model_fit = list(formula = y ~ 1 + age + sex,
-                   model_function = 'lm',
-                   reg_weights = c(2, -0.1, 0.5))
+                   model_function = 'lm'),
+  reg_weights_model = c(2, -0.1, 0.5)
 )
 
 simulate_fixed(data = NULL, sim_arguments) %>%
@@ -192,21 +192,20 @@ sim_arguments <- list(
   sample_size = 10,
   reg_weights = c(2, 0.3, -0.1, 0.5),
   model_fit = list(formula = y ~ 1 + age + sex,
-                   model_function = 'lm',
-                   reg_weights = c(2, -0.1, 0.5)),
-  replications = 10
+                   model_function = 'lm'),
+  reg_weights_model = c(2, -0.1, 0.5),
+  replications = 10,
+  extract_coefficients = TRUE
 )
 
-replicate_simulation(sim_arguments, 
-                     simulate_fixed(data = NULL, sim_arguments) %>%
-                       simulate_error(sim_arguments) %>%
-                       generate_response(sim_arguments) %>% 
-                       model_fit(sim_arguments) %>%
-                       extract_coefficients()) %>%
+replicate_simulation(sim_arguments) %>%
   compute_statistics(sim_arguments)
 
 ## ----replicate_simulation_power_values-----------------------------------
 set.seed(321) 
+
+library(future.apply)
+plan(multiprocess)
 
 sim_arguments <- list(
   formula = y ~ 1 + weight + age + sex,
@@ -214,25 +213,21 @@ sim_arguments <- list(
                age = list(var_type = 'ordinal', levels = 30:60),
                sex = list(var_type = 'factor', levels = c('male', 'female'))),
   error = list(variance = 25),
-  sample_size = 10,
+  sample_size = 50,
   reg_weights = c(2, 0.3, -0.1, 0.5),
   model_fit = list(formula = y ~ 1 + age + sex,
-                   model_function = 'lm',
-                   reg_weights = c(2, -0.1, 0.5)),
-  replications = 10,
+                   model_function = 'lm'),
+  reg_weights_model = c(2, -0.1, 0.5),
+  replications = 1000,
   power = list(
     dist = 'qt',
     alpha = .02,
     opts = list(df = 1)
-  )
+  ),
+  extract_coefficients = TRUE
 )
 
-replicate_simulation(sim_arguments, 
-                     simulate_fixed(data = NULL, sim_arguments) %>%
-                       simulate_error(sim_arguments) %>%
-                       generate_response(sim_arguments) %>% 
-                       model_fit(sim_arguments) %>%
-                       extract_coefficients()) %>%
+replicate_simulation(sim_arguments) %>%
   compute_statistics(sim_arguments)
 
 ## ----nested--------------------------------------------------------------

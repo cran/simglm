@@ -163,6 +163,28 @@ sim_arguments <- list(
 error_data <- simulate_error(data = NULL, sim_arguments)
 var(error_data$error)
 
+## ----heterogeneity-------------------------------------------------------
+simulation_arguments <- list(
+  formula = y ~ 1 + group,
+  fixed = list(group = list(var_type = 'factor', 
+                            levels = c('male', 'female'))),
+  sample_size = 500,
+  error = list(variance = 1),
+  heterogeneity = list(variable = 'group',
+                       variance = c(1, 8)),
+  reg_weights = c(0, .15)
+)
+
+hetero_data <- simulate_fixed(data = NULL, simulation_arguments) %>%
+  simulate_error(simulation_arguments) %>%
+  simulate_heterogeneity(simulation_arguments)
+
+## ----heterogeneity-var---------------------------------------------------
+hetero_data %>% 
+  group_by(group) %>% 
+  summarise(var_error = var(error), 
+            var_o_error = var(orig_error))
+
 ## ----random_args---------------------------------------------------------
 set.seed(321) 
 
@@ -422,6 +444,9 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   extract_coefficients()
 
 ## ----vary_simulation-----------------------------------------------------
+library(future.apply)
+plan(multiprocess)
+
 sim_arguments <- list(
   formula =  resp_var ~ 1 + time + factor(trt) + time:factor(trt) + 
     (1 + time | individual),
@@ -440,5 +465,5 @@ sim_arguments <- list(
   )
 )
 
-replicate_simulation(sim_arguments, return_list = TRUE)
+replicate_simulation(sim_arguments)
 

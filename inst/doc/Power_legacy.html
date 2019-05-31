@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2019-01-23" />
+<meta name="date" content="2019-05-30" />
 
 <title>Power with simglm - legacy code</title>
 
@@ -290,6 +290,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -298,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Power with simglm - legacy code</h1>
-<h4 class="date"><em>2019-01-23</em></h4>
+<h4 class="date">2019-05-30</h4>
 
 
 
@@ -335,10 +338,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## # A tibble: 4 x 9
 ##   term  avg_test_stat sd_test_stat avg_std_err sd_std_err power num_reject
 ##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
-## 1 (Int…         0.549        0.364       0.371     0.0225     0          0
-## 2 act           1.11         0.208       0.189     0.0161     0          0
-## 3 diff          0.602        0.171       0.185     0.0157     0          0
-## 4 numC…         0.866        0.374       0.376     0.0306     0          0
+## 1 (Int…         0.497        0.398       0.368     0.0215     0          0
+## 2 act           1.12         0.179       0.187     0.0148     0          0
+## 3 diff          0.634        0.192       0.184     0.0134     0          0
+## 4 numC…         0.972        0.347       0.375     0.0286     0          0
 ## # … with 2 more variables: num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
 <p>The output contains the variable name, the average test statistic, the standard deviation of the test statistic, the power rate, the number of null hypotheses rejects, and the total number of replications. Increasing the number of replications would increase the precision of the power analysis, however may significantly increase the computational time.</p>
 <div id="standardized-coefficients" class="section level3">
@@ -369,10 +372,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## # A tibble: 4 x 9
 ##   term  avg_test_stat sd_test_stat avg_std_err sd_std_err power num_reject
 ##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
-## 1 (Int…         0.192       0.0678      0.0831    0.00498     0          0
-## 2 act           0.404       0.0797      0.0835    0.00707     0          0
-## 3 diff          0.257       0.0823      0.0835    0.00678     0          0
-## 4 numC…         0.695       0.0749      0.0836    0.00675     0          0
+## 1 (Int…         0.198       0.0970      0.0829    0.00539     0          0
+## 2 act           0.400       0.0867      0.0837    0.00772     0          0
+## 3 diff          0.262       0.0758      0.0834    0.00704     0          0
+## 4 numC…         0.707       0.0852      0.0837    0.00716     0          0
 ## # … with 2 more variables: num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
 </div>
 <div id="varying-arguments" class="section level3">
@@ -442,9 +445,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## # A tibble: 3 x 9
 ##   term  avg_test_stat sd_test_stat avg_std_err sd_std_err power num_reject
 ##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
-## 1 (Int…         0.545        0.455       0.415     0.0288     0          0
-## 2 act           1.08         0.249       0.210     0.0171     0          0
-## 3 diff          0.609        0.204       0.210     0.0185     0          0
+## 1 (Int…         0.470        0.472       0.416     0.0295     0          0
+## 2 act           1.11         0.263       0.209     0.0168     0          0
+## 3 diff          0.609        0.192       0.207     0.0193     0          0
 ## # … with 2 more variables: num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
 <p>You’ll notice, compared to above, the power is somewhat reduced for the other three fixed effects when not modeling the <code>numCourse</code> variable. You can also build in the <code>lm_fit_mod</code> argument into the design via the <code>terms_vary</code> argument.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff <span class="op">+</span><span class="st"> </span>numCourse <span class="op">+</span><span class="st"> </span>act<span class="op">:</span>numCourse</a>
@@ -481,12 +484,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## # Groups:   term, n, error_var, fixed_param [3]
 ##   term      n error_var fixed_param lm_fit_mod avg_test_stat sd_test_stat
 ##   &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;       &lt;fct&gt;              &lt;dbl&gt;        &lt;dbl&gt;
-## 1 (Int…    20         5 0.5,1.1,0.… ~,sim_dat…         0.535        0.799
-## 2 (Int…    20         5 0.5,1.1,0.… ~,sim_dat…         0.526        0.675
-## 3 (Int…    20         5 0.6,1.1,0.… ~,sim_dat…         0.499        0.772
-## 4 (Int…    20         5 0.6,1.1,0.… ~,sim_dat…         0.579        0.849
-## 5 (Int…    20        10 0.5,1.1,0.… ~,sim_dat…         0.408        0.920
-## 6 (Int…    20        10 0.5,1.1,0.… ~,sim_dat…         0.495        0.874
+## 1 (Int…    20         5 0.5,1.1,0.… ~,sim_dat…         0.433        0.717
+## 2 (Int…    20         5 0.5,1.1,0.… ~,sim_dat…         0.624        0.798
+## 3 (Int…    20         5 0.6,1.1,0.… ~,sim_dat…         0.534        0.774
+## 4 (Int…    20         5 0.6,1.1,0.… ~,sim_dat…         0.720        0.814
+## 5 (Int…    20        10 0.5,1.1,0.… ~,sim_dat…         0.471        0.886
+## 6 (Int…    20        10 0.5,1.1,0.… ~,sim_dat…         0.531        0.892
 ## # … with 6 more variables: avg_std_err &lt;dbl&gt;, sd_std_err &lt;dbl&gt;,
 ## #   power &lt;dbl&gt;, num_reject &lt;dbl&gt;, num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
 </div>
@@ -527,88 +530,92 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb11-31" title="31">                     <span class="dt">unbal =</span> <span class="kw">list</span>(<span class="dt">level2 =</span> <span class="ot">FALSE</span>, <span class="dt">level3 =</span> <span class="ot">FALSE</span>),</a>
 <a class="sourceLine" id="cb11-32" title="32">                     <span class="dt">pow_param =</span> pow_param, <span class="dt">alpha =</span> alpha,</a>
 <a class="sourceLine" id="cb11-33" title="33">                     <span class="dt">pow_dist =</span> pow_dist, <span class="dt">pow_tail =</span> pow_tail, </a>
-<a class="sourceLine" id="cb11-34" title="34">                     <span class="dt">replicates =</span> replicates)</a>
-<a class="sourceLine" id="cb11-35" title="35"><span class="kw">head</span>(power_out)</a></code></pre></div>
+<a class="sourceLine" id="cb11-34" title="34">                     <span class="dt">replicates =</span> replicates)</a></code></pre></div>
+<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl =
+## control$checkConv, : Model failed to converge with max|grad| = 0.00962439
+## (tol = 0.002, component 1)</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">head</span>(power_out)</a></code></pre></div>
 <pre><code>## # A tibble: 4 x 9
 ##   term  avg_test_stat sd_test_stat avg_std_err sd_std_err power num_reject
 ##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
-## 1 act            2.27      0.0117       0.0333   0.000722     0          0
-## 2 actC…          6.85      0.135        0.468    0.219        1          3
-## 3 diff           5.97      0.00978      0.0250   0.000174     1          3
-## 4 time           1.88      0.380        0.429    0.0914       0          0
+## 1 act            2.32       0.0150      0.0352   0.00237  0              0
+## 2 actC…          7.14       0.255       0.300    0.0485   1              3
+## 3 diff           5.99       0.0351      0.0251   0.000674 1              3
+## 4 time           2.08       0.686       0.344    0.0745   0.333          1
 ## # … with 2 more variables: num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
 </div>
 <div id="generalized-power-analysis" class="section level2">
 <h2>Generalized Power Analysis</h2>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
-<a class="sourceLine" id="cb13-2" title="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
-<a class="sourceLine" id="cb13-3" title="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
-<a class="sourceLine" id="cb13-4" title="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb13-5" title="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb13-6" title="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>)))</a>
-<a class="sourceLine" id="cb13-7" title="7">n &lt;-<span class="st"> </span><span class="dv">50</span></a>
-<a class="sourceLine" id="cb13-8" title="8">pow_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;(Intercept)&#39;</span>, <span class="st">&#39;act&#39;</span>, <span class="st">&#39;diff&#39;</span>)</a>
-<a class="sourceLine" id="cb13-9" title="9">alpha &lt;-<span class="st"> </span><span class="fl">.01</span></a>
-<a class="sourceLine" id="cb13-10" title="10">pow_dist &lt;-<span class="st"> &quot;z&quot;</span></a>
-<a class="sourceLine" id="cb13-11" title="11">pow_tail &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb13-12" title="12">replicates &lt;-<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb13-13" title="13"></a>
-<a class="sourceLine" id="cb13-14" title="14">power_out &lt;-<span class="st"> </span><span class="kw">sim_pow_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb13-15" title="15">                         <span class="dt">cov_param =</span> cov_param, </a>
-<a class="sourceLine" id="cb13-16" title="16">                         <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb13-17" title="17">                         <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>,</a>
-<a class="sourceLine" id="cb13-18" title="18">                         <span class="dt">pow_param =</span> pow_param, <span class="dt">alpha =</span> alpha,</a>
-<a class="sourceLine" id="cb13-19" title="19">                         <span class="dt">pow_dist =</span> pow_dist, <span class="dt">pow_tail =</span> pow_tail, </a>
-<a class="sourceLine" id="cb13-20" title="20">                         <span class="dt">replicates =</span> replicates)</a>
-<a class="sourceLine" id="cb13-21" title="21"><span class="kw">head</span>(power_out)</a></code></pre></div>
-<pre><code>## # A tibble: 3 x 9
-##   term  avg_test_stat sd_test_stat avg_std_err sd_std_err power[,1]
-##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Int…         0.316       0.322        0.377     0.0345         0
-## 2 act           0.588       0.267        0.237     0.0597         0
-## 3 diff          0.352       0.0998       0.121     0.0229         0
-## # … with 3 more variables: num_reject[,1] &lt;dbl&gt;, num_repl &lt;dbl&gt;,
-## #   data &lt;list&gt;</code></pre>
-<div id="vary-arguments" class="section level3">
-<h3>Vary Arguments</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
 <a class="sourceLine" id="cb15-2" title="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
 <a class="sourceLine" id="cb15-3" title="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
 <a class="sourceLine" id="cb15-4" title="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
-<a class="sourceLine" id="cb15-5" title="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb15-6" title="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">8</span>)))</a>
-<a class="sourceLine" id="cb15-7" title="7">n &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb15-5" title="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb15-6" title="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">4</span>)))</a>
+<a class="sourceLine" id="cb15-7" title="7">n &lt;-<span class="st"> </span><span class="dv">50</span></a>
 <a class="sourceLine" id="cb15-8" title="8">pow_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;(Intercept)&#39;</span>, <span class="st">&#39;act&#39;</span>, <span class="st">&#39;diff&#39;</span>)</a>
 <a class="sourceLine" id="cb15-9" title="9">alpha &lt;-<span class="st"> </span><span class="fl">.01</span></a>
 <a class="sourceLine" id="cb15-10" title="10">pow_dist &lt;-<span class="st"> &quot;z&quot;</span></a>
 <a class="sourceLine" id="cb15-11" title="11">pow_tail &lt;-<span class="st"> </span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb15-12" title="12">replicates &lt;-<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb15-13" title="13">terms_vary &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">n =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">80</span>, <span class="dv">100</span>),</a>
-<a class="sourceLine" id="cb15-14" title="14">                   <span class="dt">fixed_param =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>), </a>
-<a class="sourceLine" id="cb15-15" title="15">                                      <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>)))</a>
-<a class="sourceLine" id="cb15-16" title="16"></a>
-<a class="sourceLine" id="cb15-17" title="17">power_out &lt;-<span class="st"> </span><span class="kw">sim_pow_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
-<a class="sourceLine" id="cb15-18" title="18">                         <span class="dt">cov_param =</span> cov_param, </a>
-<a class="sourceLine" id="cb15-19" title="19">                         <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
-<a class="sourceLine" id="cb15-20" title="20">                         <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>,</a>
-<a class="sourceLine" id="cb15-21" title="21">                         <span class="dt">pow_param =</span> pow_param, <span class="dt">alpha =</span> alpha,</a>
-<a class="sourceLine" id="cb15-22" title="22">                         <span class="dt">pow_dist =</span> pow_dist, <span class="dt">pow_tail =</span> pow_tail, </a>
-<a class="sourceLine" id="cb15-23" title="23">                         <span class="dt">replicates =</span> replicates, <span class="dt">terms_vary =</span> terms_vary)</a></code></pre></div>
+<a class="sourceLine" id="cb15-13" title="13"></a>
+<a class="sourceLine" id="cb15-14" title="14">power_out &lt;-<span class="st"> </span><span class="kw">sim_pow_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb15-15" title="15">                         <span class="dt">cov_param =</span> cov_param, </a>
+<a class="sourceLine" id="cb15-16" title="16">                         <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
+<a class="sourceLine" id="cb15-17" title="17">                         <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>,</a>
+<a class="sourceLine" id="cb15-18" title="18">                         <span class="dt">pow_param =</span> pow_param, <span class="dt">alpha =</span> alpha,</a>
+<a class="sourceLine" id="cb15-19" title="19">                         <span class="dt">pow_dist =</span> pow_dist, <span class="dt">pow_tail =</span> pow_tail, </a>
+<a class="sourceLine" id="cb15-20" title="20">                         <span class="dt">replicates =</span> replicates)</a>
+<a class="sourceLine" id="cb15-21" title="21"><span class="kw">head</span>(power_out)</a></code></pre></div>
+<pre><code>## # A tibble: 3 x 9
+##   term  avg_test_stat sd_test_stat avg_std_err sd_std_err power num_reject
+##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+## 1 (Int…        0.0883        0.566       0.387     0.111      0          0
+## 2 act          0.673         0.538       0.260     0.121      0          0
+## 3 diff         0.386         0.243       0.134     0.0727     0          0
+## # … with 2 more variables: num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
+<div id="vary-arguments" class="section level3">
+<h3>Vary Arguments</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">fixed &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>act <span class="op">+</span><span class="st"> </span>diff</a>
+<a class="sourceLine" id="cb17-2" title="2">fixed_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3">cov_param &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">dist_fun =</span> <span class="kw">c</span>(<span class="st">&#39;rnorm&#39;</span>, <span class="st">&#39;rnorm&#39;</span>),</a>
+<a class="sourceLine" id="cb17-4" title="4">                  <span class="dt">var_type =</span> <span class="kw">c</span>(<span class="st">&quot;single&quot;</span>, <span class="st">&quot;single&quot;</span>),</a>
+<a class="sourceLine" id="cb17-5" title="5">                  <span class="dt">opts =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">5</span>),</a>
+<a class="sourceLine" id="cb17-6" title="6">                              <span class="kw">list</span>(<span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">8</span>)))</a>
+<a class="sourceLine" id="cb17-7" title="7">n &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb17-8" title="8">pow_param &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;(Intercept)&#39;</span>, <span class="st">&#39;act&#39;</span>, <span class="st">&#39;diff&#39;</span>)</a>
+<a class="sourceLine" id="cb17-9" title="9">alpha &lt;-<span class="st"> </span><span class="fl">.01</span></a>
+<a class="sourceLine" id="cb17-10" title="10">pow_dist &lt;-<span class="st"> &quot;z&quot;</span></a>
+<a class="sourceLine" id="cb17-11" title="11">pow_tail &lt;-<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb17-12" title="12">replicates &lt;-<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb17-13" title="13">terms_vary &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">n =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">80</span>, <span class="dv">100</span>),</a>
+<a class="sourceLine" id="cb17-14" title="14">                   <span class="dt">fixed_param =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>), </a>
+<a class="sourceLine" id="cb17-15" title="15">                                      <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>)))</a>
+<a class="sourceLine" id="cb17-16" title="16"></a>
+<a class="sourceLine" id="cb17-17" title="17">power_out &lt;-<span class="st"> </span><span class="kw">sim_pow_glm</span>(<span class="dt">fixed =</span> fixed, <span class="dt">fixed_param =</span> fixed_param, </a>
+<a class="sourceLine" id="cb17-18" title="18">                         <span class="dt">cov_param =</span> cov_param, </a>
+<a class="sourceLine" id="cb17-19" title="19">                         <span class="dt">n =</span> n, <span class="dt">data_str =</span> <span class="st">&quot;single&quot;</span>, </a>
+<a class="sourceLine" id="cb17-20" title="20">                         <span class="dt">outcome_type =</span> <span class="st">&#39;logistic&#39;</span>,</a>
+<a class="sourceLine" id="cb17-21" title="21">                         <span class="dt">pow_param =</span> pow_param, <span class="dt">alpha =</span> alpha,</a>
+<a class="sourceLine" id="cb17-22" title="22">                         <span class="dt">pow_dist =</span> pow_dist, <span class="dt">pow_tail =</span> pow_tail, </a>
+<a class="sourceLine" id="cb17-23" title="23">                         <span class="dt">replicates =</span> replicates, <span class="dt">terms_vary =</span> terms_vary)</a></code></pre></div>
 <pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
 <pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">head</span>(power_out)</a></code></pre></div>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">head</span>(power_out)</a></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
 ## # Groups:   term, n [3]
 ##   term      n fixed_param avg_test_stat sd_test_stat avg_std_err sd_std_err
 ##   &lt;chr&gt; &lt;dbl&gt; &lt;fct&gt;               &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
-## 1 (Int…    20 0.5,0.1,0.2         9.88        24.8      6297.    19906.    
-## 2 (Int…    20 0.6,0.1,0.2         0.320        1.46        1.01      0.990 
-## 3 (Int…    40 0.5,0.1,0.2         0.327        0.441       0.434     0.0520
-## 4 (Int…    40 0.6,0.1,0.2         0.650        0.542       0.459     0.0631
-## 5 (Int…    60 0.5,0.1,0.2         0.430        0.323       0.349     0.0459
-## 6 (Int…    60 0.6,0.1,0.2         0.750        0.240       0.363     0.0401
-## # … with 4 more variables: power[,1] &lt;dbl&gt;, num_reject[,1] &lt;dbl&gt;,
-## #   num_repl &lt;dbl&gt;, data &lt;list&gt;</code></pre>
+## 1 (Int…    20 0.5,0.1,0.2         0.456        0.952       0.702     0.188 
+## 2 (Int…    20 0.6,0.1,0.2         5.23        16.4      7809.    20316.    
+## 3 (Int…    40 0.5,0.1,0.2         0.808        0.362       0.488     0.0681
+## 4 (Int…    40 0.6,0.1,0.2         0.804        0.502       0.498     0.104 
+## 5 (Int…    60 0.5,0.1,0.2         0.501        0.434       0.366     0.0423
+## 6 (Int…    60 0.6,0.1,0.2         0.690        0.500       0.367     0.0504
+## # … with 4 more variables: power &lt;dbl&gt;, num_reject &lt;dbl&gt;, num_repl &lt;dbl&gt;,
+## #   data &lt;list&gt;</code></pre>
 </div>
 </div>
 </div>
