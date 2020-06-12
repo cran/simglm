@@ -1,7 +1,28 @@
-## ----seed, echo = FALSE--------------------------------------------------
-set.seed(100)
+---
+title: "Unbalanced Data - legacy code"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Unbalanced Data - legacy code}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+# Deprecated
+*This functionality has been deprecated and is no longer supported*. **See tidy_simulation vignette**.
 
-## ----twolevelunbal-------------------------------------------------------
+### Unbalanced Data
+
+Unbalanced data tends to be the rule rather than the exception with real world data. As such, when simulating data it is better to replicate data that matches real world data conditions. The *simglm* package by default generates data for a balanced design. This means that the number of level one units within each level two cluster is the same.
+
+To override the default and generate unbalanced data where the number of observations within each level two cluster differ, two new arguments need to be passed to the *sim_reg* function. First, the argument **unbal** needs to be set to TRUE. This overrides the default of a balanced design. Next, the argument **unbal_design** is a vector of two values. The two values represent the minimum number of values per cluster and the maximum number of values per cluster. They can be specified in any order. The number of observations per cluster is then simulated from a random uniform distribution with the minimum and maximum values specified in the **unbal_design** argument.
+
+The following is an example of an unbalanced two level design. Note, the **p** argument (level one sample size) is set to NULL as the level one sample size is specified in the **unbal_design** argument.
+
+```{r seed, echo = FALSE}
+set.seed(100)
+```
+
+```{r twolevelunbal}
 library(simglm)
 fixed <- ~1 + diff + act + diff:act
 random <- ~1 +  diff
@@ -23,11 +44,19 @@ temp_cross <- sim_reg(fixed = fixed, random = random,
                       k = NULL, n = n, p = NULL, error_var = error_var,
                       with_err_gen = with_err_gen, data_str = data_str, 
                       unbal = list(level2 = TRUE), unbal_design = unbal_design)
+```
 
-## ----clustValue----------------------------------------------------------
+The unbalanced design can be verified by running a table on the cluster ID variable. As can be seen from the output below, the sample size of the clusters ranges from a small of 3 to a maximum of 10.
+```{r clustValue}
 table(temp_cross$clustID)
+```
 
-## ----bal3lvl2------------------------------------------------------------
+#### Three Level Models
+Moving from two level to three level models is straightforward. The same **unbal** and **unbal_design** are now specified as named list, one representing level 2 ("level2") and another representing level 3 ("level3"). The same framework as above is following for each level of the data.
+
+To specify a design that has an unbalanced number of observations within each level two cluster, but balanced level two units within each level three cluster, the following code can be used. Notice the similarities and differences with this level 3 design compared to the level 2 above.
+
+```{r bal3lvl2}
 fixed <- ~1 + time + diff + act + actClust + time:act
 random <- ~1 + time + diff
 random3 <- ~ 1 + time
@@ -52,13 +81,17 @@ temp_three <- sim_reg(fixed = fixed, random = random, random3 = random3,
       n = n, p = p, unbal = unbal, error_var = error_var,
       with_err_gen = with_err_gen, 
       data_str = data_str, unbal_design = unbal_design)
+```
 
-## ----threecheck----------------------------------------------------------
+Checking that the data are as unbalanced at level two and balanced number of clusters within each level three cluster.
+```{r threecheck}
 table(temp_three$clustID)
 func_temp <- function(x) length(unique(x))
 tapply(temp_three$clustID, temp_three$clust3ID, func_temp)
+```
 
-## ----unbal3lvl2----------------------------------------------------------
+Moving to a design that is unbalanced at both levels is straightforward. Note that now only the number of clusters needs to be specified, the number of level one and two clusters are randomly generated.
+```{r unbal3lvl2}
 fixed <- ~1 + time + diff + act + actClust + time:act
 random <- ~1 + time + diff
 random3 <- ~ 1 + time
@@ -83,12 +116,18 @@ temp_three <- sim_reg(fixed = fixed, random = random, random3 = random3,
       n = NULL, p = NULL, unbal = unbal, error_var = error_var,
       with_err_gen = with_err_gen, 
       data_str = data_str, unbal_design = unbal_design)
+```
 
-## ----unbal3--------------------------------------------------------------
+Lastly, showing that the design is indeed unbalanced at both levels.
+```{r unbal3}
 table(temp_three$clustID)
 tapply(temp_three$clustID, temp_three$clust3ID, func_temp)
+```
 
-## ----unbal_direct--------------------------------------------------------
+## Specify Sample Size
+It is also possible to specify the exact sample size for each cluster directly rather than simulating from a random uniform distribution. The `unbal_design` argument allows for this specification directly. The following is a level 2 example.
+
+```{r unbal_direct}
 fixed <- ~1 + diff + act + diff:act
 random <- ~1 +  diff
 fixed_param <- c(4, 6, 2.3, 7)
@@ -109,11 +148,20 @@ temp_cross <- sim_reg(fixed = fixed, random = random,
                       k = NULL, n = n, p = NULL, error_var = error_var,
                       with_err_gen = with_err_gen, data_str = data_str, 
                       unbal = list(level2 = TRUE), unbal_design = unbal_design)
+```
 
-## ----direct_table--------------------------------------------------------
+The sample sizes of each cluster can then be tabulated.
+
+```{r direct_table}
 table(temp_cross$clustID)
+```
 
-## ----twolevelunbal_factor------------------------------------------------
+
+
+## Unbalanced factor simulation
+The `simglm` package also allows factor or discrete covariate simulation with unbalanced designs. THe following is an example of this in a two level cross sectional model.
+
+```{r twolevelunbal_factor}
 fixed <- ~1 + diff + act.o + diff:act.o
 random <- ~1 +  diff
 fixed_param <- c(4, 6, 2.3, 7)
@@ -136,8 +184,11 @@ temp_cross <- sim_reg(fixed = fixed, random = random,
                       with_err_gen = with_err_gen, data_str = data_str, 
                       unbal = list(level2 = TRUE), unbal_design = unbal_design, 
                       fact_vars = fact_vars)
+```
 
-## ----unbal3lvl2_factor---------------------------------------------------
+This easily extends to three level models as well.
+
+```{r unbal3lvl2_factor}
 fixed <- ~1 + time + diff + act.o + num_rooms.o + time:act.o
 random <- ~1 + time + diff
 random3 <- ~ 1 + time
@@ -163,4 +214,4 @@ temp_three <- sim_reg(fixed = fixed, random = random, random3 = random3,
       with_err_gen = with_err_gen, 
       data_str = data_str, unbal_design = unbal_design,
       fact_vars = fact_vars)
-
+```

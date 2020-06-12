@@ -2,7 +2,7 @@ Package: simglm
 Type: Package
 Authors@R: person("Brandon", "LeBeau", email = "lebebr01+simglm@gmail.com",
      role = c("aut", "cre"))
-Version: 0.7.4
+Version: 0.8.0
 License: MIT + file LICENSE
 Title: Simulate Models Based on the Generalized Linear Model
 Description: Simulates regression models,
@@ -10,17 +10,19 @@ Description: Simulates regression models,
     models with up to three level of nesting. Power simulations that are
     flexible allowing the specification of missing data, unbalanced designs,
     and different random error distributions are built into the package.
-Depends: R (>= 3.3.0)
+Depends: R (>= 3.6.0)
 Imports: stats, methods, Matrix, rlang, dplyr, purrr, broom,
         future.apply
 Suggests: knitr, lme4, nlme, testthat, shiny, e1071, ggplot2, tidyr,
-        geepack, rmarkdown
+        geepack, rmarkdown, future, splines, covr
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Author: Brandon LeBeau [aut, cre]
 Maintainer: Brandon LeBeau <lebebr01+simglm@gmail.com>
+URL: https://github.com/lebebr01/simglm
+BugReports: https://github.com/lebebr01/simglm/issues
 NeedsCompilation: no
-Packaged: 2019-05-30 19:59:39 UTC; brandonlebeau
+Packaged: 2020-06-12 19:40:35 UTC; bleb
 Repository: CRAN
-Date/Publication: 2019-05-31 17:10:03 UTC
+Date/Publication: 2020-06-12 20:10:02 UTC

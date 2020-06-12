@@ -1,4 +1,4 @@
-## ----setup, include=FALSE------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------
 library(knitr)
 library(dplyr)
 library(simglm)
@@ -7,7 +7,7 @@ knit_print.data.frame = function(x, ...) {
   asis_output(res)
 }
 
-## ----simulate_fixed------------------------------------------------------
+## ----simulate_fixed-----------------------------------------------------------
 library(simglm)
 
 set.seed(321) 
@@ -21,7 +21,7 @@ sim_arguments <- list(
 
 simulate_fixed(data = NULL, sim_arguments)
 
-## ----simulate_fixed_real-------------------------------------------------
+## ----simulate_fixed_real------------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -33,7 +33,7 @@ sim_arguments <- list(
 
 simulate_fixed(data = NULL, sim_arguments)
 
-## ----simulate_fixed_ordinal----------------------------------------------
+## ----simulate_fixed_ordinal---------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -45,7 +45,7 @@ sim_arguments <- list(
 
 simulate_fixed(data = NULL, sim_arguments)
 
-## ----simulate_fixed_factor-----------------------------------------------
+## ----simulate_fixed_factor----------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -58,7 +58,7 @@ sim_arguments <- list(
 
 simulate_fixed(data = NULL, sim_arguments)
 
-## ----simulate_error------------------------------------------------------
+## ----simulate_error-----------------------------------------------------------
 set.seed(321)
 
 sim_arguments <- list(
@@ -67,7 +67,7 @@ sim_arguments <- list(
 
 simulate_error(data = NULL, sim_arguments)
 
-## ----simulate_error_verbose----------------------------------------------
+## ----simulate_error_verbose---------------------------------------------------
 set.seed(321)
 
 sim_arguments <- list(
@@ -77,7 +77,7 @@ sim_arguments <- list(
 
 simulate_error(data = NULL, sim_arguments)
 
-## ----simulate_error_var25------------------------------------------------
+## ----simulate_error_var25-----------------------------------------------------
 set.seed(321)
 
 sim_arguments <- list(
@@ -87,7 +87,7 @@ sim_arguments <- list(
 
 simulate_error(data = NULL, sim_arguments)
 
-## ----generate_response---------------------------------------------------
+## ----generate_response--------------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -104,7 +104,7 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   simulate_error(sim_arguments) %>%
   generate_response(sim_arguments)
 
-## ----binary--------------------------------------------------------------
+## ----binary-------------------------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -122,7 +122,7 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   simulate_error(sim_arguments) %>%
   generate_response(sim_arguments)
 
-## ----count---------------------------------------------------------------
+## ----count--------------------------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -139,7 +139,7 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   simulate_error(sim_arguments) %>%
   generate_response(sim_arguments)
 
-## ----model_extract_coefficients------------------------------------------
+## ----model_extract_coefficients-----------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -158,7 +158,7 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   model_fit(sim_arguments) %>%
   extract_coefficients()
 
-## ----model_fit_manual----------------------------------------------------
+## ----model_fit_manual---------------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -180,7 +180,7 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   model_fit(sim_arguments) %>%
   extract_coefficients()
 
-## ----replicate_simulation------------------------------------------------
+## ----replicate_simulation-----------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(
@@ -201,11 +201,11 @@ sim_arguments <- list(
 replicate_simulation(sim_arguments) %>%
   compute_statistics(sim_arguments)
 
-## ----replicate_simulation_power_values-----------------------------------
+## ----replicate_simulation_power_values----------------------------------------
 set.seed(321) 
 
-library(future.apply)
-plan(multiprocess)
+library(future)
+plan(sequential)
 
 sim_arguments <- list(
   formula = y ~ 1 + weight + age + sex,
@@ -230,7 +230,7 @@ sim_arguments <- list(
 replicate_simulation(sim_arguments) %>%
   compute_statistics(sim_arguments)
 
-## ----nested--------------------------------------------------------------
+## ----nested-------------------------------------------------------------------
 set.seed(321) 
 
 sim_arguments <- list(

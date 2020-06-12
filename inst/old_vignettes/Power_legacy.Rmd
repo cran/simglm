@@ -1,12 +1,31 @@
-## ----setup, include=FALSE------------------------------------------------
+---
+title: "Power with simglm - legacy code"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Power with simglm - legacy code}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+```{r setup, include=FALSE}
 library(knitr)
 library(simglm)
 knit_print.data.frame = function(x, ...) {
   res = paste(c('', '', kable(x, output = FALSE)), collapse = '\n')
   asis_output(res)
 }
+```
+# Deprecated
+*This functionality has been deprecated and is no longer supported*. **See tidy_simulation vignette**.
 
-## ----singlelevel---------------------------------------------------------
+# Power Analysis with simglm
+
+The `simglm` package allows the ability to conduct a power analysis through simulation. This will be particularly helpful with multilevel models and generalized linear models. To show the process, we will start with basic regression models.
+
+## Single Level Power Analysis
+Let's look at a simple single level regression example to get started:
+
+```{r singlelevel}
 fixed <- ~ 1 + act + diff + numCourse + act:numCourse
 fixed_param <- c(0.5, 1.1, 0.6, 0.9, 1.1)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'),
@@ -28,11 +47,20 @@ power_out <- sim_pow(fixed = fixed, fixed_param = fixed_param,
                      pow_param = pow_param, alpha = alpha,
                      pow_dist = pow_dist, pow_tail = pow_tail, 
                      replicates = replicates)
+```
 
-## ----printsinglelevel----------------------------------------------------
+Much of the output here is the same from the `sim_reg` function. The additional arguments, `pow_param` represents the terms to conduct a power analysis for and must be a subset of the `fixed` argument, `alpha` represents the per term level of significance, `pow_dist` represents the sampling distribution to refer to, either 'z' or 't', `pow_tail` represents whether a one or two tailed hypothesis is being tested, and `replicates` represents the number of simulations to conduct. Note, to do a power analysis for the intercept, '(Intercept)' must be used. By default, if pow_param is not specified power is conducted for all terms. 
+
+Finally, looking at the output from the above call:
+```{r printsinglelevel}
 head(power_out)
+```
 
-## ----standardized--------------------------------------------------------
+The output contains the variable name, the average test statistic, the standard deviation of the test statistic, the power rate, the number of null hypotheses rejects, and the total number of replications. Increasing the number of replications would increase the precision of the power analysis, however may significantly increase the computational time.
+
+### Standardized Coefficients
+By default, the `simglm` package uses unstandardized regression coefficients when doing the simulation. A way to use standardized coefficients however, would be to generate standardized variables. For example:
+```{r standardized}
 fixed <- ~ 1 + act + diff + numCourse + act:numCourse
 fixed_param <- c(0.2, 0.4, 0.25, 0.7, 0.1)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'),
@@ -55,8 +83,10 @@ power_out <- sim_pow(fixed = fixed, fixed_param = fixed_param,
                      pow_dist = pow_dist, pow_tail = pow_tail, 
                      replicates = replicates)
 head(power_out)
+```
 
-## ----singlelevel_vary----------------------------------------------------
+### Varying Arguments
+```{r singlelevel_vary}
 fixed <- ~ 1 + act + diff + numCourse + act:numCourse
 fixed_param <- c(0.5, 1.1, 0.6, 0.9, 1.1)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'), 
@@ -89,8 +119,14 @@ power_out <- sim_pow(fixed = fixed, fixed_param = fixed_param,
                      data_str = "single", pow_param = pow_param, alpha = alpha,
                      pow_dist = pow_dist, pow_tail = pow_tail, 
                      replicates = replicates, terms_vary = terms_vary)
+```
 
-## ----misspecify----------------------------------------------------------
+### Model Misspecification
+It is also possible to specify a model different than the generating model for evaluation of power. This may be useful if it is thought another variable is important in explaining variation, however due to design issues is not possible to collect this variable. As a result, there would likely be additional variation due to this variable that will not be able to be explained. Building this into the generating model can help provide additional information about the impact on power.
+
+An example using single level power analysis is shown below. 
+
+```{r misspecify}
 fixed <- ~ 1 + act + diff + numCourse + act:numCourse
 fixed_param <- c(0.5, 1.1, 0.6, 0.9, 1.1)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'),
@@ -116,8 +152,11 @@ power_out <- sim_pow(fixed = fixed, fixed_param = fixed_param,
                      pow_dist = pow_dist, pow_tail = pow_tail, 
                      replicates = replicates, lm_fit_mod = lm_fit_mod)
 head(power_out)
+```
 
-## ----misspecify_vary-----------------------------------------------------
+You'll notice, compared to above, the power is somewhat reduced for the other three fixed effects when not modeling the `numCourse` variable. You can also build in the `lm_fit_mod` argument into the design via the `terms_vary` argument.
+
+```{r misspecify_vary}
 fixed <- ~ 1 + act + diff + numCourse + act:numCourse
 fixed_param <- c(0.5, 1.1, 0.6, 0.9, 1.1)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm', 'rnorm'),
@@ -148,8 +187,13 @@ power_out <- sim_pow(fixed = fixed, fixed_param = fixed_param,
                      pow_dist = pow_dist, pow_tail = pow_tail, 
                      replicates = replicates, terms_vary = terms_vary)
 head(power_out)
+```
 
-## ----three---------------------------------------------------------------
+
+## Nested Data
+Extending the power analysis to nested data is fairly straightforward. Below is a three level example
+
+```{r three}
 fixed <- ~1 + time + diff + act + actClust + time:act
 random <- ~1 + time
 random3 <- ~ 1 + time
@@ -185,8 +229,10 @@ power_out <- sim_pow(fixed = fixed, random = random, random3 = random3,
                      pow_dist = pow_dist, pow_tail = pow_tail, 
                      replicates = replicates)
 head(power_out)
+```
 
-## ----singlelogistic------------------------------------------------------
+## Generalized Power Analysis
+```{r singlelogistic}
 fixed <- ~ 1 + act + diff
 fixed_param <- c(0.1, 0.5, 0.3)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm'),
@@ -208,8 +254,10 @@ power_out <- sim_pow_glm(fixed = fixed, fixed_param = fixed_param,
                          pow_dist = pow_dist, pow_tail = pow_tail, 
                          replicates = replicates)
 head(power_out)
+```
 
-## ----singlelogistic_vary-------------------------------------------------
+### Vary Arguments
+```{r singlelogistic_vary}
 fixed <- ~ 1 + act + diff
 fixed_param <- c(0.1, 0.5, 0.3)
 cov_param <- list(dist_fun = c('rnorm', 'rnorm'),
@@ -234,4 +282,5 @@ power_out <- sim_pow_glm(fixed = fixed, fixed_param = fixed_param,
                          pow_dist = pow_dist, pow_tail = pow_tail, 
                          replicates = replicates, terms_vary = terms_vary)
 head(power_out)
+```
 
