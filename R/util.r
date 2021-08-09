@@ -61,7 +61,11 @@ sample_sizes <- function(sample_size) {
                       max = sample_size[['level1']]$max) %>%
         round(0)
     } else {
-      level1 <- rep(sample_size[['level1']], total_level2_samplesize)
+      if(length(sample_size[['level1']]) == sample_size[['level2']]) {
+        level1 <- sample_size[['level1']]
+      } else {
+        level1 <- rep(sample_size[['level1']], total_level2_samplesize)
+      }
     }
     sample_size['level1'] <- list(level1)
     
@@ -110,6 +114,9 @@ create_ids <- function(sample_size_list, id_names) {
 compute_samplesize <- function(data, sim_args) {
   
   id_vars <- parse_randomeffect(parse_formula(sim_args)[['randomeffect']])[['cluster_id_vars']]
+  cross_class <- parse_crossclass(sim_args, parse_randomeffect(parse_formula(sim_args)[['randomeffect']]))
+  
+  id_vars <- id_vars[id_vars %ni% cross_class[['cross_class_idvars']]]
   
   samp_size <- lapply(seq_along(id_vars), function(xx) as.numeric(table(data[id_vars[xx]])))
   
@@ -134,20 +141,43 @@ compute_samplesize <- function(data, sim_args) {
 
 length_unique <- function(x) length(unique(x))
 
+is_factor_var <- function(sim_args) {
+  unlist(lapply(seq_along(sim_args[['fixed']]), function(yy) 
+    isTRUE(sim_args[['fixed']][[yy]][['var_type']] == 'factor')))
+}
+
 factor_names <- function(sim_args, fixed_vars) {
-  num_levels <- lapply(seq_along(sim_args[['fixed']]), function(xx) 
+  
+  which_factor <- is_factor_var(sim_args)
+  
+  fixed_vars_continuous <- fixed_vars[!which_factor]
+  fixed_vars_cat <- fixed_vars[which_factor]
+  
+  if(any(grepl(":|^I", fixed_vars_cat))) {
+    int_loc <- grep(":|^I", fixed_vars_cat)
+    fixed_vars_cat <- fixed_vars_cat[-int_loc]
+  } 
+  
+  num_levels <- lapply(fixed_vars_cat, function(xx) 
     sim_args[['fixed']][[xx]][['levels']])
   num_levels <- purrr::modify_if(num_levels, is.character, length)
     
-  loc <- num_levels > 2
-  fixed_levels_gt2 <- fixed_vars[loc]
+  loc <- num_levels > 1
+  fixed_levels_gt2 <- fixed_vars_cat[loc]
   num_levels_gt2 <- num_levels[loc]
   
   fixed_levels_gt2_names <- lapply(seq_along(fixed_levels_gt2), function(xx) 
     paste0(fixed_levels_gt2[xx], '_', 1:(num_levels_gt2[[xx]] - 1)))
+  names(fixed_levels_gt2_names) <- fixed_vars_cat
   
-  var_loc <- lapply(seq_along(fixed_levels_gt2), function(xx) 
-    grep(fixed_levels_gt2[xx], fixed_vars))
+  if(any(grepl(":|^I", fixed_vars))) {
+    int_loc <- grep(":|^I", fixed_vars)
+    var_loc <- lapply(seq_along(fixed_levels_gt2), function(xx) 
+      grep(fixed_levels_gt2[xx], fixed_vars[-int_loc]))
+  } else {
+    var_loc <- lapply(seq_along(fixed_levels_gt2), function(xx) 
+      grep(fixed_levels_gt2[xx], fixed_vars))
+  }
   
   updated_names <- lapply(seq_along(fixed_levels_gt2), function(ii) 
     lapply(seq_along(fixed_levels_gt2_names[[ii]]), function(xx) 
@@ -161,12 +191,58 @@ factor_names <- function(sim_args, fixed_vars) {
        reorder_names(updated_names[[ii]])
     )
   
+  if(any(grepl(":|^I", fixed_vars))) {
+    int_loc <- grep(":|^I", fixed_vars)
+    new_interaction_names <- interaction_names(fixed_vars, 
+                                               fixed_levels_gt2_names,
+                                               sim_args)
+    for(ii in seq_along(int_loc)) {
+      fixed_vars[int_loc[ii]] <- new_interaction_names[ii]
+    }
+  }
   
-  imported_names <- lapply(seq_along(fixed_levels_gt2), function(ii)
-    c(fixed_vars[-var_loc[[ii]]], reordered_names[[ii]])
-    )
+  for(ii in seq_along(var_loc)) {
+    fixed_vars[[var_loc[[ii]]]] <- reordered_names[ii]
+  }
+  
+  unlist(fixed_vars)
+}
 
-  unlist(imported_names)
+interaction_names <- function(fixed_vars, renamed_vars, sim_args) {
+  
+  int_loc <- grep(":|^I", fixed_vars)
+  
+  int_names <- lapply(int_loc, function(ii) 
+    unlist(strsplit(fixed_vars[ii], split = ":"))
+    )
+  
+  factor_vars <- unlist(lapply(seq_along(sim_args[['fixed']]), function(xx) 
+    sim_args[['fixed']][[xx]][['var_type']] == 'factor'
+    )
+  )
+  factor_names <- names(sim_args[['fixed']])[factor_vars]
+  
+  # int_vars_location_f <- lapply(seq_along(int_names), function(ii) 
+  #   grep(paste(int_names[[ii]][factor_vars], collapse = "|"), fixed_vars[-int_loc[ii]]))
+  # 
+  renamed_int_vars <- lapply(seq_along(int_names), function(ii) {
+    if(length(int_names[[ii]][int_names[[ii]] %in% factor_names]) == 1) {
+      cont_vars <- int_names[[ii]][!int_names[[ii]] %in% factor_names]
+      do.call(paste, c(expand.grid(cont_vars, renamed_vars[[int_names[[ii]][int_names[[ii]] %in% factor_names]]], stringsAsFactors = FALSE), sep = ":"))
+    } else {
+      if(all(int_names[[ii]] %in% factor_names)) {
+        do.call(paste, c(expand.grid(renamed_vars[int_names[[ii]][int_names[[ii]] %in% factor_names]], stringsAsFactors = FALSE), sep = ":"))
+      } else {
+        cont_vars <- int_names[[ii]][!int_names[[ii]] %in% factor_names]
+        factor_expand <- expand.grid(renamed_vars[int_names[[ii]][int_names[[ii]] %in% factor_names]], stringsAsFactors = FALSE)
+        do.call(paste, c(cbind(cont_vars, factor_expand), sep = ":"))
+      }
+    }
+  }
+  )
+  
+  renamed_int_vars
+  
 }
 
 reorder_names <- function(names) {
@@ -241,6 +317,30 @@ unique_columns <- function(x, y) {
       any(y[[xx]] != x[[grep(names(y)[[xx]], names(x))[1]]])
     )
   )
+}
+
+dataframe2matrix <- function(data, corr_variable, var_names) {
+  
+  if(is.null(data)) {
+    NULL
+  } else {
+    n <- ((sqrt(1 + 8 * nrow(data)) + 1) / 2)
+    
+    corr_mat <- matrix(NA, nrow = n, ncol = n)
+    lower <- lower.tri(corr_mat, diag = FALSE)
+    upper <- upper.tri(corr_mat, diag = FALSE)
+    
+    corr_mat[lower] <- data[[corr_variable]]
+    corr_mat[upper] <- data[[corr_variable]]
+    diag(corr_mat) <- 1
+    
+    mat_names <- unique(unlist(data[var_names]))
+    
+    colnames(corr_mat) <-mat_names
+    rownames(corr_mat) <- mat_names
+    
+    corr_mat
+  }
 }
 
 

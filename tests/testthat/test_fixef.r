@@ -1,4 +1,4 @@
-# context('fixef_sim')
+context('fixed effect sim')
 # 
 # test_that('sim_factor are discrete', {
 #   expect_length(table(sim_factor(n = 100, numlevels = 4, 
@@ -75,7 +75,7 @@ test_that('number of columns, fixed generation', {
                  type = list(var_type = 'factor', levels = c('type1', 'type2'))),
     error = list(variance = 0.2),
     sample_size = 250,
-    reg_weights = c(0,0,1,2,0, 0)    ## less parameters than previous example!
+    reg_weights = c(0,0,1,2)    ## less parameters than previous example!
     # outcome_type = 'count'
   )
   
@@ -88,10 +88,53 @@ test_that('number of columns, fixed generation', {
                  type = list(var_type = 'factor', levels = c('type1', 'type2', 'type3'))),
     error = list(variance = 0.2),
     sample_size = 250,
-    reg_weights = c(0,0,1,2,0, 0)    ## less parameters than previous example!
+    reg_weights = c(0,0,1,2)    ## less parameters than previous example!
     # outcome_type = 'count'
   )
   
   expect_equal(nrow(simulate_fixed(data = NULL, sim_arguments)), 250)
   expect_equal(ncol(simulate_fixed(data = NULL, sim_arguments)), 7)
+})
+test_that('number of columns, categorical and continuous', {
+  sim_arguments <- list(
+    formula = y ~ 1 + turnover + type,
+    fixed = list(turnover = list(var_type = 'continuous', mean = 10, sd = 3),
+                 type = list(var_type = 'factor', levels = c('A','B','C'), prob = c(.2,.6,.2))),
+    error = list(variance = 0.1),
+    sample_size = 100,
+    reg_weights = c(2, 0.01, 0.5, -0.25),
+    outcome_type = 'poisson'
+  )
+  
+  expect_equal(nrow(simulate_fixed(data = NULL, sim_arguments)), 100)
+  expect_equal(ncol(simulate_fixed(data = NULL, sim_arguments)), 6)
+  
+  sim_arguments <- list(
+    formula = y ~ 1 + turnover + type + turnover:type,
+    fixed = list(turnover = list(var_type = 'continuous', mean = 10, sd = 3),
+                 type = list(var_type = 'factor', levels = c('A','B','C'), prob = c(.2,.6,.2))),
+    error = list(variance = 0.1),
+    sample_size = 100,
+    reg_weights = c(2, 0.01, 0.5, -0.25, -1, 0.1),
+    outcome_type = 'poisson'
+  )
+  
+  expect_equal(nrow(simulate_fixed(data = NULL, sim_arguments)), 100)
+  expect_equal(ncol(simulate_fixed(data = NULL, sim_arguments)), 8)
+})
+
+test_that('knot sim', {
+  sim_args <- list(
+    formula = y ~ 1  + age + age_knot,
+    fixed = list(age = list(var_type = 'ordinal', levels = 30:60)),
+    knot = list(age_knot = list(variable = 'age', 
+                                knot_locations = 50)),
+    sample_size = 250,
+    error = list(variance = 10),
+    reg_weights = c(2, .5, 1.5)
+  )
+  
+  expect_equal(nrow(simulate_fixed(data = NULL, sim_args = sim_args)), 250)
+  expect_equal(ncol(simulate_fixed(data = NULL, sim_args = sim_args)), 4)
+  expect_equal(length(unique(simulate_fixed(data = NULL, sim_args = sim_args)[['age_knot']])), 2)
 })

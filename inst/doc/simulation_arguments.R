@@ -74,6 +74,35 @@ ggplot(fixed_data, aes(x = weight)) +
   geom_density() + 
   theme_bw()
 
+## ----knot-args----------------------------------------------------------------
+sim_args <- list(
+    formula = y ~ 1  + age + age_knot,
+    fixed = list(age = list(var_type = 'ordinal', levels = 30:60)),
+    knot = list(age_knot = list(variable = 'age', 
+                                knot_locations = 50)),
+    sample_size = 500,
+    error = list(variance = 10),
+    reg_weights = c(2, .5, 1.5)
+  )
+
+## ----knot-sim-----------------------------------------------------------------
+simulate_fixed(data = NULL, sim_args = sim_args) %>%
+  head()
+
+## ----knot-args-int------------------------------------------------------------
+sim_args <- list(
+    formula = y ~ 1  + age + age_knot + age:age_knot,
+    fixed = list(age = list(var_type = 'ordinal', levels = 30:60)),
+    knot = list(age_knot = list(variable = 'age', 
+                                knot_locations = 50)),
+    sample_size = 500,
+    error = list(variance = 1000),
+    reg_weights = c(2, .5, 1.5, 10)
+  )
+
+simulate_fixed(data = NULL, sim_args = sim_args) %>% 
+  head()
+
 ## ----random_error-------------------------------------------------------------
 set.seed(321) 
 
@@ -226,6 +255,58 @@ sim_arguments <- list(
 
 random_data <- simulate_randomeffect(data = NULL, sim_arguments)
 head(random_data, n = 20)
+
+## ----correlate-fixed----------------------------------------------------------
+sim_args <- list(formula = y ~ 1 + act + gpa + commute_time, 
+                 fixed = list(act = list(var_type = 'ordinal',
+                                         levels = 15:36),
+                              gpa = list(var_type = 'continuous',
+                                         mean = 2, 
+                                         sd = .5),
+                              commute_time = list(var_type = 'continuous',
+                                         mean = 15, 
+                                         sd = 6)),
+                 correlate = list(fixed = data.frame(x = c('act', 'act', 'gpa'), 
+                                                     y = c('gpa', 'commute_time', 'commute_time'), 
+                                                     corr = c(0.5, .6, .2))),
+                 sample_size = 1000)
+
+correlate_attribute <- simulate_fixed(data = NULL, sim_args) %>%
+  correlate_variables(sim_args)
+
+head(correlate_attribute)
+
+## ----correlate-fixed-values---------------------------------------------------
+select(correlate_attribute, -X.Intercept., -level1_id) %>%
+  cor(.)
+
+## ----random-correlate---------------------------------------------------------
+sim_args <- list(formula = y ~ 1 + act + gpa + sat + (1 + act | id), 
+                 fixed = list(act = list(var_type = 'continuous',
+                                         mean = 20, 
+                                         sd = 4),
+                              gpa = list(var_type = 'continuous',
+                                         mean = 2, 
+                                         sd = .5),
+                              sat = list(var_type = 'continuous',
+                                         mean = 500, 
+                                         sd = 100)),
+                 
+                 randomeffect = list(int_id = list(variance = 8, var_level = 2),
+                                     act_id = list(variance = 3, var_level = 2)),
+                 sample_size = list(level1 = 100, level2 = 5000),
+                 correlate = list(random = data.frame(x = 'int_id', y = 'act_id',
+                                                      corr = .3))
+                 )
+
+random_correlate <- simulate_randomeffect(data = NULL, sim_args) %>%
+  correlate_variables(sim_args)
+
+head(random_correlate)
+
+## ----random-correlate-values--------------------------------------------------
+select(random_correlate, -level1_id, -id) %>%
+  cor(.)
 
 ## ----missing_random-----------------------------------------------------------
 set.seed(321) 
@@ -407,41 +488,41 @@ simulate_fixed(data = NULL, sim_arguments) %>%
   generate_response(sim_arguments) %>%
   model_fit(sim_arguments) %>% .$family
 
-## ----gee----------------------------------------------------------------------
-set.seed(321) 
-
-# To-DO: Add knot variable and debug
-
-sim_arguments <- list(
-  formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
-  fixed = list(time = list(var_type = 'time',
-                           time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
-               weight = list(var_type = 'continuous', mean = 0, sd = 30),
-               age = list(var_type = 'ordinal', levels = 0:30, var_level = 2),
-               treat = list(var_type = 'factor', 
-                            levels = c('Treatment', 'Control'),
-                            var_level = 2)),
-  reg_weights = c(0.4, 0.2, -0.5, 1, -0.6),
-  randomeffect = list(int_id = list(variance = 8, var_level = 2),
-                time_id = list(variance = 3, var_level = 2)),
-  error = list(variance = 5),
-  outcome_type = 'binary',
-  sample_size = list(level1 = 10, level2 = 20),
-  model_fit = list(
-    model_function = geepack::geeglm,
-    formula = y ~ 1 + time + weight + age + treat,
-    id = 'level1_id',
-    family = binomial,
-    corstr = 'ar1'
-  )
-)
-
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
-  model_fit(sim_arguments) %>%
-  extract_coefficients()
+## ----gee, eval = FALSE--------------------------------------------------------
+#  set.seed(321)
+#  
+#  # To-DO: Add knot variable and debug
+#  
+#  sim_arguments <- list(
+#    formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+#    fixed = list(time = list(var_type = 'time',
+#                             time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
+#                 weight = list(var_type = 'continuous', mean = 0, sd = 30),
+#                 age = list(var_type = 'ordinal', levels = 0:30, var_level = 2),
+#                 treat = list(var_type = 'factor',
+#                              levels = c('Treatment', 'Control'),
+#                              var_level = 2)),
+#    reg_weights = c(0.4, 0.2, -0.5, 1, -0.6),
+#    randomeffect = list(int_id = list(variance = 8, var_level = 2),
+#                  time_id = list(variance = 3, var_level = 2)),
+#    error = list(variance = 5),
+#    outcome_type = 'binary',
+#    sample_size = list(level1 = 10, level2 = 20),
+#    model_fit = list(
+#      model_function = geepack::geeglm,
+#      formula = y ~ 1 + time + weight + age + treat,
+#      id = 'level1_id',
+#      family = binomial,
+#      corstr = 'ar1'
+#    )
+#  )
+#  
+#  simulate_fixed(data = NULL, sim_arguments) %>%
+#    simulate_error(sim_arguments) %>%
+#    simulate_randomeffect(sim_arguments) %>%
+#    generate_response(sim_arguments) %>%
+#    model_fit(sim_arguments) %>%
+#    extract_coefficients()
 
 ## ----vary_simulation----------------------------------------------------------
 library(future)

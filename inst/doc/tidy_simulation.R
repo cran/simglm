@@ -14,8 +14,10 @@ set.seed(321)
 
 sim_arguments <- list(
   formula = y ~ 1 + x1 + x2,
-  fixed = list(x1 = list(var_type = 'continuous', mean = 180, sd = 30),
-               x2 = list(var_type = 'continuous', mean = 40, sd = 5)),
+  fixed = list(x1 = list(var_type = 'continuous', 
+                         mean = 180, sd = 30),
+               x2 = list(var_type = 'continuous', 
+                         mean = 40, sd = 5)),
   sample_size = 10
 )
 
@@ -103,6 +105,78 @@ sim_arguments <- list(
 simulate_fixed(data = NULL, sim_arguments) %>%
   simulate_error(sim_arguments) %>%
   generate_response(sim_arguments)
+
+## ----generate_3_categories----------------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + age + sex + grade,
+  fixed = list(weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60),
+               sex = list(var_type = 'factor', 
+                          levels = c('male', 'female')),
+               grade = list(var_type = 'factor', 
+                            levels = c('freshman', 'sophomore',
+                                       'junior', 'senior'))),
+  error = list(variance = 25),
+  sample_size = 100
+)
+
+simulate_fixed(data = NULL, sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  count(grade)
+
+## ----generate_3_categories_prob-----------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + age + sex + grade,
+  fixed = list(weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60),
+               sex = list(var_type = 'factor', 
+                          levels = c('male', 'female')),
+               grade = list(var_type = 'factor', 
+                            levels = c('freshman', 'sophomore',
+                                       'junior', 'senior'),
+                            prob = c(.05, .3, .45, .2))),
+  error = list(variance = 25),
+  sample_size = 100
+)
+
+simulate_fixed(data = NULL, sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  count(grade)
+
+## ----indicator----------------------------------------------------------------
+data.frame(
+  grade = sample(c('freshman', 'sophomore', 'junior', 'senior'),
+                 size = 10, replace = TRUE)
+) %>% 
+  mutate(sophomore = ifelse(grade == 'sophomore', 1, 0),
+         junior = ifelse(grade == 'junior', 1, 0), 
+         senior = ifelse(grade == 'senior', 1, 0))
+
+## ----generate_3_categories_resp-----------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + age + sex + grade,
+  fixed = list(weight = list(var_type = 'continuous', mean = 180, sd = 30),
+               age = list(var_type = 'ordinal', levels = 30:60),
+               sex = list(var_type = 'factor', 
+                          levels = c('male', 'female')),
+               grade = list(var_type = 'factor', 
+                            levels = c('freshman', 'sophomore',
+                                       'junior', 'senior'))),
+  error = list(variance = 25),
+  sample_size = 10000,
+  reg_weights = c(2, .1, .55, 1.5, .75, 1.8, 2.5)
+)
+
+simulate_fixed(data = NULL, sim_arguments) %>%
+  simulate_error(sim_arguments) %>%
+  generate_response(sim_arguments) %>% 
+  head()
 
 ## ----binary-------------------------------------------------------------------
 set.seed(321) 
