@@ -11,11 +11,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2021-08-09" />
+<meta name="date" content="2022-02-06" />
 
 <title>Simulation Argument Details for simglm</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -126,7 +138,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -138,15 +330,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<h1 class="title toc-ignore">Simulation Argument Details for <code>simglm</code></h1>
-<h4 class="date">2021-08-09</h4>
+<h1 class="title toc-ignore">Simulation Argument Details for
+<code>simglm</code></h1>
+<h4 class="date">2022-02-06</h4>
 
 
 
-<p>The tidy simulation framework uses simulation arguments as the basis for specifying the models to be simulated. The goal of this vignette is to document more thoroughly the various arguments that are possible within each function. It is recommended that new users start with the “Tidy Simulation with <code>simglm</code>” vignette prior to working through this vignette.</p>
+<p>The tidy simulation framework uses simulation arguments as the basis
+for specifying the models to be simulated. The goal of this vignette is
+to document more thoroughly the various arguments that are possible
+within each function. It is recommended that new users start with the
+“Tidy Simulation with <code>simglm</code>” vignette prior to working
+through this vignette.</p>
 <div id="fixed-arguments" class="section level1">
 <h1>Fixed Arguments</h1>
-<p>Arguments associated with the fixed portion of the model are needed for each fixed variable that needs to be simulated. The fixed variables specified come from the formula argument. Interactions or the intercept are not included in the fixed arguments as these are generated automatically. Let’s start with an example.</p>
+<p>Arguments associated with the fixed portion of the model are needed
+for each fixed variable that needs to be simulated. The fixed variables
+specified come from the formula argument. Interactions or the intercept
+are not included in the fixed arguments as these are generated
+automatically. Let’s start with an example.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simglm)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
@@ -187,20 +389,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 18            1    7 192.6100  30       0 Control         8  2
 ## 19            1    8 197.3275  30       0 Control         9  2
 ## 20            1    9 193.3907  30       0 Control        10  2</code></pre>
-<p>The following example shows the five types of variables that can be generated. These types are specified with the <code>var_type</code> argument and can be one of the following five types:</p>
+<p>The following example shows the five types of variables that can be
+generated. These types are specified with the <code>var_type</code>
+argument and can be one of the following five types:</p>
 <ul>
-<li>‘time’: This type of variable is used for a time metric variable</li>
-<li>‘continuous’: This is a continuous distribution, default is to use the <code>rnorm</code> distribution function for generation.</li>
-<li>‘ordinal’: This generates ordinal data and is generated using the <code>sample</code> function.</li>
-<li>‘factor’: This is a categorical or factor variable specification representing groups or categories.</li>
-<li>‘knot’: This type of variable is generated based on another variable and represents a knot category variable.</li>
+<li>‘time’: This type of variable is used for a time metric
+variable</li>
+<li>‘continuous’: This is a continuous distribution, default is to use
+the <code>rnorm</code> distribution function for generation.</li>
+<li>‘ordinal’: This generates ordinal data and is generated using the
+<code>sample</code> function.</li>
+<li>‘factor’: This is a categorical or factor variable specification
+representing groups or categories.</li>
+<li>‘knot’: This type of variable is generated based on another variable
+and represents a knot category variable.</li>
 </ul>
 <p>Each variable type will be explored in more detail.</p>
-<p>Finally, another common argument for all fixed variable types is the argument <code>var_level</code>. This defaults to <code>var_level = 1</code> which would be a variable defined at the level 1 of the model (i.e. unique value for each row in the data). These can be changed to reflect the data level that is desired. For example, <code>var_level = 2</code> would repeat values for each level 2 cluster found in the data and <code>var_level = 3</code> would do the same for each level 3 cluster. Therefore for variables that are at level 2 or level 3, there will be fewer unique values in the data compared to level 1 variables.</p>
+<p>Finally, another common argument for all fixed variable types is the
+argument <code>var_level</code>. This defaults to <code>var_level =
+1</code> which would be a variable defined at the level 1 of the model
+(i.e. unique value for each row in the data). These can be changed to
+reflect the data level that is desired. For example, <code>var_level =
+2</code> would repeat values for each level 2 cluster found in the data
+and <code>var_level = 3</code> would do the same for each level 3
+cluster. Therefore for variables that are at level 2 or level 3, there
+will be fewer unique values in the data compared to level 1
+variables.</p>
 <div id="time-variable" class="section level2">
 <h2>Time Variable</h2>
-<p>For time variables used in longitudinal or repeated measures designs, the default metric is 0 to level1 sample size minus 1. This can be seen above in the output. To change the time variable metric the <code>time_levels</code> argument can be used. A vector of values to specify for the time variable can be given directly. For example, the following could be passed to alter the metric of the time variable: <code>time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)</code> where now the time variable would increment in 0.5 units for the first 7 measurements and 1 unit increments for the last three measurements. This could represent a case when the measurements are collected every 6 months for the first 7 measurements and yearly after that.</p>
-<p>Below is the output including the manual time variable specification. The only requirement is that the length of the <code>time_levels</code> argument must match the level1 sample size.</p>
+<p>For time variables used in longitudinal or repeated measures designs,
+the default metric is 0 to level1 sample size minus 1. This can be seen
+above in the output. To change the time variable metric the
+<code>time_levels</code> argument can be used. A vector of values to
+specify for the time variable can be given directly. For example, the
+following could be passed to alter the metric of the time variable:
+<code>time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)</code> where
+now the time variable would increment in 0.5 units for the first 7
+measurements and 1 unit increments for the last three measurements. This
+could represent a case when the measurements are collected every 6
+months for the first 7 measurements and yearly after that.</p>
+<p>Below is the output including the manual time variable specification.
+The only requirement is that the length of the <code>time_levels</code>
+argument must match the level1 sample size.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To-DO: Add knot variable and debug</span></span>
@@ -243,7 +473,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="continuous-variable" class="section level2">
 <h2>Continuous Variable</h2>
-<p>Continuous variables are generating using distribution functions (i.e. <code>rnorm</code>). Any distribution function found within R, or user written distribution functions can be used, however the default used in <code>rnorm</code>. To change the distribution function used, the argument <code>dist</code> can be specified. For example, if the Gamma distribution is desired for the weight variable, the following code would achieve this:</p>
+<p>Continuous variables are generating using distribution functions
+(i.e. <code>rnorm</code>). Any distribution function found within R, or
+user written distribution functions can be used, however the default
+used in <code>rnorm</code>. To change the distribution function used,
+the argument <code>dist</code> can be specified. For example, if the
+Gamma distribution is desired for the weight variable, the following
+code would achieve this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -282,7 +518,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 18            1  4.0 2.333586  52       0   Control         8  2
 ## 19            1  5.0 1.900442  52       0   Control         9  2
 ## 20            1  6.0 1.445119  52       0   Control        10  2</code></pre>
-<p>This would be the resulting distribution of the weight variable generated.</p>
+<p>This would be the resulting distribution of the weight variable
+generated.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fixed_data, <span class="fu">aes</span>(<span class="at">x =</span> weight)) <span class="sc">+</span> </span>
@@ -292,20 +529,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="ordinal-variable" class="section level2">
 <h2>Ordinal Variable</h2>
-<p>Ordinal variable specification uses the <code>sample</code> function within R to generate ordinal variables that are whole integers. The required argument for these types of variables is <code>levels</code>. The <code>levels</code> argument takes a range or vector of integer values to be passed to the <code>sample</code> function within R. For example, these three specifications for the <code>levels</code> argument are valid: <code>3:60</code>, <code>seq(4, 60, 2)</code>, <code>c(3, 10, 18, 24, 54, 60)</code>.</p>
-<p>An additional optional argument is <code>replace</code>. The <code>replace</code> argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set <code>replace = FALSE</code>. See <code>sample</code> for more details on this argument.</p>
-<p>Finally, the probability of selecting each value specified to the <code>levels</code> argument is also able to be specified through the <code>prob</code> argument. If <code>prob</code> is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with <code>levels</code> to be equally likely to be sampled.</p>
+<p>Ordinal variable specification uses the <code>sample</code> function
+within R to generate ordinal variables that are whole integers. The
+required argument for these types of variables is <code>levels</code>.
+The <code>levels</code> argument takes a range or vector of integer
+values to be passed to the <code>sample</code> function within R. For
+example, these three specifications for the <code>levels</code> argument
+are valid: <code>3:60</code>, <code>seq(4, 60, 2)</code>, <code>c(3, 10,
+18, 24, 54, 60)</code>.</p>
+<p>An additional optional argument is <code>replace</code>. The
+<code>replace</code> argument specified whether the sampling is done
+with or without replacement. The default behavior is to do sampling with
+replacement. If sampling without replacement is desired set
+<code>replace = FALSE</code>. See <code>sample</code> for more details
+on this argument.</p>
+<p>Finally, the probability of selecting each value specified to the
+<code>levels</code> argument is also able to be specified through the
+<code>prob</code> argument. If <code>prob</code> is specified, it takes
+a vector of probabilities that must be the same length as the levels
+argument. The default behavior is for each value specified with
+<code>levels</code> to be equally likely to be sampled.</p>
 </div>
 <div id="factor-variable" class="section level2">
 <h2>Factor Variable</h2>
-<p>Factor variables are generated similarly to ordinal variables with the <code>sample</code> function, however factor variables allow the generation of text or categorical variables in addition to numeric grouping variables. Therefore the only needed argument for factor variables is a vector of numeric or text strings representing the different groups to be generated. For example, both of these specifications are equivalent: <code>c(1, 2, 3, 4)</code> and <code>c(&#39;Freshman&#39;, &#39;Sophomore&#39;, &#39;Junior&#39;, &#39;Senior&#39;)</code>. Both of these specifications would generate data for these four groups, the difference is that the text labels will be used when text strings are specified.</p>
-<p>An additional optional argument is <code>replace</code>. The <code>replace</code> argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set <code>replace = FALSE</code>. See <code>sample</code> for more details on this argument.</p>
-<p>Finally, the probability of selecting each value specified to the <code>levels</code> argument is also able to be specified through the <code>prob</code> argument. If <code>prob</code> is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with <code>levels</code> to be equally likely to be sampled.</p>
+<p>Factor variables are generated similarly to ordinal variables with
+the <code>sample</code> function, however factor variables allow the
+generation of text or categorical variables in addition to numeric
+grouping variables. Therefore the only needed argument for factor
+variables is a vector of numeric or text strings representing the
+different groups to be generated. For example, both of these
+specifications are equivalent: <code>c(1, 2, 3, 4)</code> and
+<code>c(&#39;Freshman&#39;, &#39;Sophomore&#39;, &#39;Junior&#39;, &#39;Senior&#39;)</code>. Both of
+these specifications would generate data for these four groups, the
+difference is that the text labels will be used when text strings are
+specified.</p>
+<p>An additional optional argument is <code>replace</code>. The
+<code>replace</code> argument specified whether the sampling is done
+with or without replacement. The default behavior is to do sampling with
+replacement. If sampling without replacement is desired set
+<code>replace = FALSE</code>. See <code>sample</code> for more details
+on this argument.</p>
+<p>Finally, the probability of selecting each value specified to the
+<code>levels</code> argument is also able to be specified through the
+<code>prob</code> argument. If <code>prob</code> is specified, it takes
+a vector of probabilities that must be the same length as the levels
+argument. The default behavior is for each value specified with
+<code>levels</code> to be equally likely to be sampled.</p>
 </div>
 <div id="knot-variables" class="section level2">
 <h2>Knot Variables</h2>
-<p>Knot variables are defined as those that are a prominent point based on a specific spot of another variable. A common example of these types of variables would occur in interrupted time series data, where there is a place in time where the treatment is given after a series of baselines. The place where the treatment is given is the knot location.</p>
-<p>In simglm, knots are specified within the formula, it is made particularly explicit below with the name: <code>age_knot</code>. Adding <code>_knot</code> at the end of a knot variable is not needed, but is used here to be more illustrative. When specifying knot attributes, the specific behavior of these attributes are controlled through the <code>knot</code> named element of the simulation arguments. See the example below with the simulation arguments for the variable, <code>age_knot</code>.</p>
+<p>Knot variables are defined as those that are a prominent point based
+on a specific spot of another variable. A common example of these types
+of variables would occur in interrupted time series data, where there is
+a place in time where the treatment is given after a series of
+baselines. The place where the treatment is given is the knot
+location.</p>
+<p>In simglm, knots are specified within the formula, it is made
+particularly explicit below with the name: <code>age_knot</code>. Adding
+<code>_knot</code> at the end of a knot variable is not needed, but is
+used here to be more illustrative. When specifying knot attributes, the
+specific behavior of these attributes are controlled through the
+<code>knot</code> named element of the simulation arguments. See the
+example below with the simulation arguments for the variable,
+<code>age_knot</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sim_args <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> <span class="dv">1</span>  <span class="sc">+</span> age <span class="sc">+</span> age_knot,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">list</span>(<span class="at">age =</span> <span class="fu">list</span>(<span class="at">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="at">levels =</span> <span class="dv">30</span><span class="sc">:</span><span class="dv">60</span>)),</span>
@@ -315,8 +601,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="fu">list</span>(<span class="at">variance =</span> <span class="dv">10</span>),</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">reg_weights =</span> <span class="fu">c</span>(<span class="dv">2</span>, .<span class="dv">5</span>, <span class="fl">1.5</span>)</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p>The required elements to simulate a knot variable is the variable to base the knot location on. This is specified with, <code>variable = &#39;age&#39;</code> above. The second required element is the argument, <code>knot_locations</code> which specifies the location where the knot is placed. The knot variable itself is a variable that takes on the number of knot locations plus one, therefore in this example, the <code>age_knot</code> variable takes on two values. This would be similar to an indicator or dummy variable used in a linear regression model.</p>
-<p>Similar to above, the <code>simulate_fixed()</code> function does the simulation of this fixed effect term.</p>
+<p>The required elements to simulate a knot variable is the variable to
+base the knot location on. This is specified with, <code>variable =
+&#39;age&#39;</code> above. The second required element is the argument,
+<code>knot_locations</code> which specifies the location where the knot
+is placed. The knot variable itself is a variable that takes on the
+number of knot locations plus one, therefore in this example, the
+<code>age_knot</code> variable takes on two values. This would be
+similar to an indicator or dummy variable used in a linear regression
+model.</p>
+<p>Similar to above, the <code>simulate_fixed()</code> function does the
+simulation of this fixed effect term.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">simulate_fixed</span>(<span class="at">data =</span> <span class="cn">NULL</span>, <span class="at">sim_args =</span> sim_args) <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>##   X.Intercept. age age_knot level1_id
@@ -326,7 +621,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4            1  38        0         4
 ## 5            1  33        0         5
 ## 6            1  42        0         6</code></pre>
-<p>As specified, this term would represent a change in the intercept for those that are larger than the knot location, above this was specified as 50 years. More complicated structures can be obtained. One example shown here is that an interaction between the knot variable and the age variable can be made. This term would then represent a change in slope for those that are older than 50. The only change needed is to add this term to the specification within the formula and also add another term to the <code>reg_weights</code> argument to specify on average the magnitude of the slope change.</p>
+<p>As specified, this term would represent a change in the intercept for
+those that are larger than the knot location, above this was specified
+as 50 years. More complicated structures can be obtained. One example
+shown here is that an interaction between the knot variable and the age
+variable can be made. This term would then represent a change in slope
+for those that are older than 50. The only change needed is to add this
+term to the specification within the formula and also add another term
+to the <code>reg_weights</code> argument to specify on average the
+magnitude of the slope change.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sim_args <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> <span class="dv">1</span>  <span class="sc">+</span> age <span class="sc">+</span> age_knot <span class="sc">+</span> age<span class="sc">:</span>age_knot,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="fu">list</span>(<span class="at">age =</span> <span class="fu">list</span>(<span class="at">var_type =</span> <span class="st">&#39;ordinal&#39;</span>, <span class="at">levels =</span> <span class="dv">30</span><span class="sc">:</span><span class="dv">60</span>)),</span>
@@ -350,7 +653,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="random-error-arguments" class="section level1">
 <h1>Random Error Arguments</h1>
-<p>By default, the random error is generated as random normal with a mean of 0 and standard deviation of 1. If this is the desired behavior, no additional simulation arguments need to be specified in the simulation arguments. For example, the code below generates random error using the fixed arguments already shown above.</p>
+<p>By default, the random error is generated as random normal with a
+mean of 0 and standard deviation of 1. If this is the desired behavior,
+no additional simulation arguments need to be specified in the
+simulation arguments. For example, the code below generates random error
+using the fixed arguments already shown above.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -389,7 +696,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 20  0.4463561        10  2</code></pre>
 <div id="optional-arguments-for-random-error" class="section level2">
 <h2>Optional Arguments for Random Error</h2>
-<p>The two main optional arguments for the random error component include a <code>dist</code> and <code>variance</code> that represent the error generating function and variance of the random error respectively. For example, if a t-distribution is desired for simulation of random error, <code>dist = &#39;rt&#39;</code> can be used to specify the t-distribution as the generating distribution. When distributions other than random normal are specified, it is common that additional arguments will need to be specified for the generating distribution function (i.e. <code>rt</code>). In the <code>rt</code> example, the <code>df</code> argument is needed to specify the degrees of freedom for the t-distribution. Below is an example using a t-distribution.</p>
+<p>The two main optional arguments for the random error component
+include a <code>dist</code> and <code>variance</code> that represent the
+error generating function and variance of the random error respectively.
+For example, if a t-distribution is desired for simulation of random
+error, <code>dist = &#39;rt&#39;</code> can be used to specify the
+t-distribution as the generating distribution. When distributions other
+than random normal are specified, it is common that additional arguments
+will need to be specified for the generating distribution function
+(i.e. <code>rt</code>). In the <code>rt</code> example, the
+<code>df</code> argument is needed to specify the degrees of freedom for
+the t-distribution. Below is an example using a t-distribution.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -427,7 +744,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 18  0.8104919         8  2
 ## 19  0.2150117         9  2
 ## 20  2.1937363        10  2</code></pre>
-<p>Finally, the variance of the random error can also be specified to be something other than the default 1. For example, if the variance is desired to be 10, then the argument <code>variance = 10</code> will set this variance. This variance works with any distribution function. For example, the following will generate data as a t-distribution with a variance of 10.</p>
+<p>Finally, the variance of the random error can also be specified to be
+something other than the default 1. For example, if the variance is
+desired to be 10, then the argument <code>variance = 10</code> will set
+this variance. This variance works with any distribution function. For
+example, the following will generate data as a t-distribution with a
+variance of 10.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -445,7 +767,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>error_data <span class="ot">&lt;-</span> <span class="fu">simulate_error</span>(<span class="at">data =</span> <span class="cn">NULL</span>, sim_arguments)</span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(error_data<span class="sc">$</span>error)</span></code></pre></div>
 <pre><code>## [1] 19.36487</code></pre>
-<p>Note that the variance does not actually equal 10 here. This is due to the generating distribution specified (i.e. t-distribution with 4 degrees of freedom) has a theoretical variance of 2. In cases when the random error has a variance other than 1, the variable needs to be standardized prior to converting to the desired variance value. The standardization can be done in two ways. One, an empirical mean and standard deviation of the generating distribution can be obtained by setting the argument <code>ther_sim = TRUE</code>. For example:</p>
+<p>Note that the variance does not actually equal 10 here. This is due
+to the generating distribution specified (i.e. t-distribution with 4
+degrees of freedom) has a theoretical variance of 2. In cases when the
+random error has a variance other than 1, the variable needs to be
+standardized prior to converting to the desired variance value. The
+standardization can be done in two ways. One, an empirical mean and
+standard deviation of the generating distribution can be obtained by
+setting the argument <code>ther_sim = TRUE</code>. For example:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -463,7 +792,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>error_data <span class="ot">&lt;-</span> <span class="fu">simulate_error</span>(<span class="at">data =</span> <span class="cn">NULL</span>, sim_arguments)</span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(error_data<span class="sc">$</span>error)</span></code></pre></div>
 <pre><code>## [1] 6.893405</code></pre>
-<p>This simulation takes longer to run as the generated empirical mean and standard deviation for the standardization draws a large number of random values from the specified distribution. To speed up this process, the theoretical values can be specified directly within the <code>ther_val</code> argument as a vector with the mean specified first followed by the standard deviation. This is shown below:</p>
+<p>This simulation takes longer to run as the generated empirical mean
+and standard deviation for the standardization draws a large number of
+random values from the specified distribution. To speed up this process,
+the theoretical values can be specified directly within the
+<code>ther_val</code> argument as a vector with the mean specified first
+followed by the standard deviation. This is shown below:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -484,7 +818,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="heterogeneity-of-variance" class="section level2">
 <h2>Heterogeneity of Variance</h2>
-<p>It is also possible to generate heterogeneity of variance for the random error.</p>
+<p>It is also possible to generate heterogeneity of variance for the
+random error.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>simulation_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> group,</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fixed =</span> <span class="fu">list</span>(<span class="at">group =</span> <span class="fu">list</span>(<span class="at">var_type =</span> <span class="st">&#39;factor&#39;</span>, </span>
@@ -512,9 +847,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="random-effect-arguments" class="section level1">
 <h1>Random Effect Arguments</h1>
-<p>The random effect arguments are passed through a named element of the list to the simulation arguments called ‘randomeffect’. Within this element, each random effect specified in the formula must be specified as a named list. The named list allows the user to specify the names that will be used in the data simulation for the random effects. The default behavior of these random effects is to be simulated from a random normal distribution with mean 0 and variance of 1.</p>
-<p>Many of the same arguments that have been discussed with the error simulation are possible for the random effect simulation arguments. These include: <code>dist</code>, <code>variance</code>, <code>ther_sim</code>, <code>ther_val</code> and other arguments that are needed to pass on the data generating function. In addition, the argument <code>var_level</code> first introduced with the fixed effects are present here indicating which level of the data structure the random effect should be generated at. These arguments will not be discussed in more detail here, but readers can see examples of these arguments within the fixed effects and random error sections above.</p>
-<p>Below is an example that simulated two random effects in a two-level nested model and specifies the variance of 8 and 3 for the two random effects respectively. Finally, you will notice in the final output, the names of the random effect columns are specified by the names included in the list associated with the “randomeffect” portion of the simulation arguments.</p>
+<p>The random effect arguments are passed through a named element of the
+list to the simulation arguments called ‘randomeffect’. Within this
+element, each random effect specified in the formula must be specified
+as a named list. The named list allows the user to specify the names
+that will be used in the data simulation for the random effects. The
+default behavior of these random effects is to be simulated from a
+random normal distribution with mean 0 and variance of 1.</p>
+<p>Many of the same arguments that have been discussed with the error
+simulation are possible for the random effect simulation arguments.
+These include: <code>dist</code>, <code>variance</code>,
+<code>ther_sim</code>, <code>ther_val</code> and other arguments that
+are needed to pass on the data generating function. In addition, the
+argument <code>var_level</code> first introduced with the fixed effects
+are present here indicating which level of the data structure the random
+effect should be generated at. These arguments will not be discussed in
+more detail here, but readers can see examples of these arguments within
+the fixed effects and random error sections above.</p>
+<p>Below is an example that simulated two random effects in a two-level
+nested model and specifies the variance of 8 and 3 for the two random
+effects respectively. Finally, you will notice in the final output, the
+names of the random effect columns are specified by the names included
+in the list associated with the “randomeffect” portion of the simulation
+arguments.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -555,7 +910,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 20 -2.013949 -0.185436        10  2</code></pre>
 <div id="cross-classified-random-effects" class="section level2">
 <h2>Cross-Classified Random Effects</h2>
-<p>If cross-classified random effects are desired, these can be specified directly within the formula syntax as you would with lme4. For example, <code>y ~ 1 + time + weight + age + treat + (1 + time| id) + (1 | neighborhood_id)</code>. When documenting the simulation arguments for the additional cross-classified random effect (i.e. <code>(1 | neighborhood_id)</code>), specifying <code>cross_class = TRUE</code> with that random effect to identify that this is indeed a cross-classified random effect. Secondly, you can also specify directly the number of clusters that are associated with this cross-classified factor, this can be different than those specified in the <code>sample_size</code> argument. This can be done with the <code>num_ids</code> argument. Below is an example with a single cross-classified random effect representing neighborhoods individuals belong in</p>
+<p>If cross-classified random effects are desired, these can be
+specified directly within the formula syntax as you would with lme4. For
+example, <code>y ~ 1 + time + weight + age + treat + (1 + time| id) + (1
+| neighborhood_id)</code>. When documenting the simulation arguments for
+the additional cross-classified random effect (i.e. <code>(1 |
+neighborhood_id)</code>), specifying <code>cross_class = TRUE</code>
+with that random effect to identify that this is indeed a
+cross-classified random effect. Secondly, you can also specify directly
+the number of clusters that are associated with this cross-classified
+factor, this can be different than those specified in the
+<code>sample_size</code> argument. This can be done with the
+<code>num_ids</code> argument. Below is an example with a single
+cross-classified random effect representing neighborhoods individuals
+belong in</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -602,7 +970,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="correlated-fixed-and-random-effects" class="section level1">
 <h1>Correlated Fixed and Random Effects</h1>
-<p>Data attributes are often correlated, therefore, in order to really mimic real-world data, simulated data that are correlated would be desired. This can be done with <code>simglm</code> by using the function <code>correlated_variables()</code>. This function processes a new set of simulation arguments specified with the named <code>correlate</code>. In what follows, discussion of correlating fixed effects will be explored first, followed by correlating random effects next.</p>
+<p>Data attributes are often correlated, therefore, in order to really
+mimic real-world data, simulated data that are correlated would be
+desired. This can be done with <code>simglm</code> by using the function
+<code>correlated_variables()</code>. This function processes a new set
+of simulation arguments specified with the named <code>correlate</code>.
+In what follows, discussion of correlating fixed effects will be
+explored first, followed by correlating random effects next.</p>
 <div id="fixed-effect-correlation" class="section level2">
 <h2>Fixed Effect Correlation</h2>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sim_args <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">formula =</span> y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> act <span class="sc">+</span> gpa <span class="sc">+</span> commute_time, </span>
@@ -624,37 +998,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(correlate_attribute)</span></code></pre></div>
 <pre><code>##   X.Intercept. act_old  gpa_old commute_time_old level1_id act_corr      gpa
-## 1            1      31 2.542058         19.84992         1 33.34939 2.007960
-## 2            1      30 1.094168         11.30912         2 24.89321 2.123880
-## 3            1      31 1.824700         13.73815         3 29.60763 2.215003
-## 4            1      16 1.573188         15.26606         4 14.56133 1.552374
-## 5            1      20 1.344491         19.25067         5 17.05369 1.321968
-## 6            1      16 1.389140         15.84091         6 13.60838 1.452813
+## 1            1      31 2.542058         19.84992         1 22.84891 1.646131
+## 2            1      30 1.094168         11.30912         2 16.22560 1.825208
+## 3            1      31 1.824700         13.73815         3 19.10715 1.853173
+## 4            1      16 1.573188         15.26606         4 31.55381 2.137908
+## 5            1      20 1.344491         19.25067         5 26.71471 1.654872
+## 6            1      16 1.389140         15.84091         6 30.60086 2.038347
 ##   commute_time act
-## 1     16.40195  33
-## 2     24.17105  25
-## 3     20.65193  30
-## 4     10.05897  15
-## 5     14.62946  17
-## 6     11.14732  15</code></pre>
+## 1     7.174773  23
+## 2    16.554488  16
+## 3    11.424758  19
+## 4    24.990913  32
+## 5    23.118977  27
+## 6    26.079270  31</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(correlate_attribute, <span class="sc">-</span>X.Intercept., <span class="sc">-</span>level1_id) <span class="sc">%&gt;%</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(.)</span></code></pre></div>
-<pre><code>##                     act_old     gpa_old commute_time_old  act_corr        gpa
-## act_old          1.00000000  0.04962541       0.04835660 0.9188642  0.3863944
-## gpa_old          0.04962541  1.00000000      -0.04152076 0.4396757  0.3779704
-## commute_time_old 0.04835660 -0.04152076       1.00000000 0.0300287 -0.8447945
-## act_corr         0.91886422  0.43967570       0.03002870 1.0000000  0.4942777
-## gpa              0.38639439  0.37797036      -0.84479447 0.4942777  1.0000000
-## commute_time     0.86267143 -0.46233028       0.06300074 0.5931195  0.1524556
-## act              0.92275601  0.41973540       0.03151538 0.9956235  0.4881891
-##                  commute_time        act
-## act_old            0.86267143 0.92275601
-## gpa_old           -0.46233028 0.41973540
-## commute_time_old   0.06300074 0.03151538
-## act_corr           0.59311946 0.99562355
-## gpa                0.15245559 0.48818907
-## commute_time       1.00000000 0.60667173
-## act                0.60667173 1.00000000</code></pre>
+<pre><code>##                      act_old     gpa_old commute_time_old    act_corr
+## act_old           1.00000000  0.04962541       0.04835660 -0.91236220
+## gpa_old           0.04962541  1.00000000      -0.04152076  0.36359176
+## commute_time_old  0.04835660 -0.04152076       1.00000000 -0.05906384
+## act_corr         -0.91236220  0.36359176      -0.05906384  1.00000000
+## gpa              -0.42797012  0.33034468      -0.86681668  0.53201958
+## commute_time     -0.87475571 -0.52737640      -0.02190753  0.59972433
+## act              -0.91589813  0.34370587      -0.06320982  0.99513233
+##                         gpa commute_time         act
+## act_old          -0.4279701  -0.87475571 -0.91589813
+## gpa_old           0.3303447  -0.52737640  0.34370587
+## commute_time_old -0.8668167  -0.02190753 -0.06320982
+## act_corr          0.5320196   0.59972433  0.99513233
+## gpa               1.0000000   0.20455897  0.53062581
+## commute_time      0.2045590   1.00000000  0.61238459
+## act               0.5306258   0.61238459  1.00000000</code></pre>
 </div>
 <div id="random-effect-correlation" class="section level2">
 <h2>Random Effect Correlation</h2>
@@ -698,11 +1072,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="missing-data-arguments" class="section level1">
 <h1>Missing Data Arguments</h1>
-<p>Missing data is the standard rather than the exception in real world data. Therefore, generating data that include missing is important for generating data that are representative of real world data. In the power analysis context, most power analyses do not include missing data in the power computations (particularly if these are closed form solutions), but power can be negatively affected by missing data.</p>
-<p>Fortunatly, the simglm package contains many useful frameworks for generating missing data. To generate missing data, the <code>generate_missing</code> function can be used for this. This function is called after the complete data are generated. This means that the complete data and missing data will be generated. Currently three types of missing data are supported, dropout, random, and mar (missing at random). The specification of missing data arguments is done using a named element to the simulation argument list called “missing_data”.</p>
+<p>Missing data is the standard rather than the exception in real world
+data. Therefore, generating data that include missing is important for
+generating data that are representative of real world data. In the power
+analysis context, most power analyses do not include missing data in the
+power computations (particularly if these are closed form solutions),
+but power can be negatively affected by missing data.</p>
+<p>Fortunatly, the simglm package contains many useful frameworks for
+generating missing data. To generate missing data, the
+<code>generate_missing</code> function can be used for this. This
+function is called after the complete data are generated. This means
+that the complete data and missing data will be generated. Currently
+three types of missing data are supported, dropout, random, and mar
+(missing at random). The specification of missing data arguments is done
+using a named element to the simulation argument list called
+“missing_data”.</p>
 <div id="random-missing-data" class="section level2">
 <h2>Random Missing Data</h2>
-<p>First, lets explore random missing data. This structure is equivalent to the missing completely at random framework if you are familiar with Rubin’s missing data classifications. To generate random missing data the <code>type = &#39;random&#39;</code> is specified. Two additional arguments are needed to generate the missing data, first the missing proportion needs to be specified with <code>miss_prop</code> and the name of the new response variable with missing data needs to be specified with <code>new_outcome</code>. Below is an example generating data with random missing data.</p>
+<p>First, lets explore random missing data. This structure is equivalent
+to the missing completely at random framework if you are familiar with
+Rubin’s missing data classifications. To generate random missing data
+the <code>type = &#39;random&#39;</code> is specified. Two additional arguments
+are needed to generate the missing data, first the missing proportion
+needs to be specified with <code>miss_prop</code> and the name of the
+new response variable with missing data needs to be specified with
+<code>new_outcome</code>. Below is an example generating data with
+random missing data.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -840,7 +1235,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="dropout-missing-data" class="section level2">
 <h2>Dropout Missing Data</h2>
-<p>Dropout missing data is possible when simulating data from a longitudinal design. When requesting dropout missing data, observations are removed after a specific point in the time cycle. For example, perhaps an individual stops being a part of the study after the third measurement. To request this type of missing data, the <code>type = &#39;dropout&#39;</code> can be specified. In addition, one new argument is needed, <code>clust_var</code>. This argument represents the id associated with the clusters with longitudinal data. Below is an example:</p>
+<p>Dropout missing data is possible when simulating data from a
+longitudinal design. When requesting dropout missing data, observations
+are removed after a specific point in the time cycle. For example,
+perhaps an individual stops being a part of the study after the third
+measurement. To request this type of missing data, the <code>type =
+&#39;dropout&#39;</code> can be specified. In addition, one new argument is
+needed, <code>clust_var</code>. This argument represents the id
+associated with the clusters with longitudinal data. Below is an
+example:</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -905,7 +1308,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## FALSE  TRUE 
 ##  0.74  0.26</code></pre>
-<p>We can also look now at the amount of missing by the time variable.</p>
+<p>We can also look now at the amount of missing by the time
+variable.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">is.na</span>(data_w_missing<span class="sc">$</span>y_missing), data_w_missing<span class="sc">$</span>time))</span></code></pre></div>
 <pre><code>##        
 ##            0    1    2    3    4    5    6    7    8    9
@@ -913,7 +1317,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   TRUE  0.00 0.00 0.00 0.00 0.00 0.01 0.03 0.04 0.08 0.10</code></pre>
 <div id="specify-location-of-dropout" class="section level3">
 <h3>Specify location of dropout</h3>
-<p>If additional control is desired, specifying the location of the dropout is possible. In this situation, a vector is passed to <code>dropout_location</code> that specifies for each individual (more generally each level 2 unit) where the dropout occurs. Below is an example of this.</p>
+<p>If additional control is desired, specifying the location of the
+dropout is possible. In this situation, a vector is passed to
+<code>dropout_location</code> that specifies for each individual (more
+generally each level 2 unit) where the dropout occurs. Below is an
+example of this.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -980,7 +1388,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## FALSE  TRUE 
 ##  0.58  0.42</code></pre>
-<p>We can also look now at the amount of missing by the time variable.</p>
+<p>We can also look now at the amount of missing by the time
+variable.</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">is.na</span>(data_w_missing<span class="sc">$</span>y_missing), data_w_missing<span class="sc">$</span>time))</span></code></pre></div>
 <pre><code>##        
 ##             0     1     2     3     4     5     6     7     8     9
@@ -991,11 +1400,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="model-fit-arguments" class="section level1">
 <h1>Model Fit Arguments</h1>
-<p>The default behavior when fitting models to the generated data is to fit a model with the same formula as the generated data (i.e. <code>formula</code> simulation arguments). Secondly, the default model functions are <code>lm</code>/<code>glm</code> for single level simulation and <code>lmer</code>/<code>glmer</code> for multilevel simulation. Finally, the default regression weights specified in <code>reg_weights</code> are to compute statistics for power, type I error rates, and precision.</p>
-<p>These defaults can be overriden by specifying simulation arguments through the named list called <code>model_fit</code>. Some examples were given in the Tidy Simulation vignette and the options that are able to be specified will depend on the model fitting function specified. A few examples are given for various model types, however, the user is directed to the documentation of the modeling functions specified through the <code>model_function</code> argument.</p>
+<p>The default behavior when fitting models to the generated data is to
+fit a model with the same formula as the generated data
+(i.e. <code>formula</code> simulation arguments). Secondly, the default
+model functions are <code>lm</code>/<code>glm</code> for single level
+simulation and <code>lmer</code>/<code>glmer</code> for multilevel
+simulation. Finally, the default regression weights specified in
+<code>reg_weights</code> are to compute statistics for power, type I
+error rates, and precision.</p>
+<p>These defaults can be overriden by specifying simulation arguments
+through the named list called <code>model_fit</code>. Some examples were
+given in the Tidy Simulation vignette and the options that are able to
+be specified will depend on the model fitting function specified. A few
+examples are given for various model types, however, the user is
+directed to the documentation of the modeling functions specified
+through the <code>model_function</code> argument.</p>
 <div id="changing-family-argument" class="section level2">
 <h2>Changing Family Argument</h2>
-<p>For GLM models, users may wish to directly specify the family argument or change the link function within a specific family. For example, when generating data with a binary dependent variable, the logistic or probit links could be used when specifying the binomial family. Below is an example of using the binomial family with a logit link (the default link function).</p>
+<p>For GLM models, users may wish to directly specify the family
+argument or change the link function within a specific family. For
+example, when generating data with a binary dependent variable, the
+logistic or probit links could be used when specifying the binomial
+family. Below is an example of using the binomial family with a logit
+link (the default link function).</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -1020,7 +1447,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## 
 ## Family: binomial 
 ## Link function: logit</code></pre>
-<p>The link function could then be changed to a probit link function with the following code:</p>
+<p>The link function could then be changed to a probit link function
+with the following code:</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>sim_arguments <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
@@ -1048,12 +1476,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="adding-serial-correlation" class="section level2">
 <h2>Adding Serial Correlation</h2>
-<p>Serial correlation can be added to longitudinal designs and fitted using the nlme R package. Below is an example of implementing this functionality in the data generation and model fitting.</p>
+<p>Serial correlation can be added to longitudinal designs and fitted
+using the nlme R package. Below is an example of implementing this
+functionality in the data generation and model fitting.</p>
 <p>To come…</p>
 </div>
 <div id="marginal-models" class="section level2">
 <h2>Marginal Models</h2>
-<p>It is also possible to change the default model fitting functions. For example, an alternative model approach to mixed models is generalized estimating equations (GEE) or marginal models. One implementation of these models in R is the geepack package. Below is the code to fit a marginal model in a longitudinal context. The code is not evaluated, so no coefficients are shown, but if you have the <code>geepack</code> package installed, this code should run as written.</p>
+<p>It is also possible to change the default model fitting functions.
+For example, an alternative model approach to mixed models is
+generalized estimating equations (GEE) or marginal models. One
+implementation of these models in R is the geepack package. Below is the
+code to fit a marginal model in a longitudinal context. The code is not
+evaluated, so no coefficients are shown, but if you have the
+<code>geepack</code> package installed, this code should run as
+written.</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>) </span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To-DO: Add knot variable and debug</span></span>
@@ -1095,8 +1532,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="vary-simulation-arguments" class="section level1">
 <h1>Vary Simulation Arguments</h1>
-<p>The <code>replicate_simulation</code> function first shown in the “tidy_simulation” vignette, can directly allow for the varying of simulation arguments. In order to vary simulation arguments, an additional named list called <code>vary_arguments</code> can be added to the simulation arguments passed to the functions. The <code>vary_arguments</code> elements of the simulation arguments is a nested named list. Within the named list, the arguments that are wished to be varied are specified by name. For example, a common argument varied is sample size. The following example varies the sample size to return multiple simulated data sets with different sample sizes.</p>
-<p>Note: A user would likely want to change <code>plan(sequential)</code> to something like <code>plan(mutisession)</code> or <code>plan(multicore)</code> to run these in parallel. <code>plan(sequential)</code> is used here for vignette processing.</p>
+<p>The <code>replicate_simulation</code> function first shown in the
+“tidy_simulation” vignette, can directly allow for the varying of
+simulation arguments. In order to vary simulation arguments, an
+additional named list called <code>vary_arguments</code> can be added to
+the simulation arguments passed to the functions. The
+<code>vary_arguments</code> elements of the simulation arguments is a
+nested named list. Within the named list, the arguments that are wished
+to be varied are specified by name. For example, a common argument
+varied is sample size. The following example varies the sample size to
+return multiple simulated data sets with different sample sizes.</p>
+<p>Note: A user would likely want to change
+<code>plan(sequential)</code> to something like
+<code>plan(mutisession)</code> or <code>plan(multicore)</code> to run
+these in parallel. <code>plan(sequential)</code> is used here for
+vignette processing.</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
