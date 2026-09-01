@@ -52,11 +52,17 @@ generate_missing <- function(data, sim_args) {
   
   resp_var <- parse_formula(sim_args)[['outcome']]
   
-  purrr::invoke("missing_data",
-                sim_args[['missing_data']],
+  purrr::exec(missing_data,
+                !!!sim_args[['missing_data']],
                 sim_data = data,
                 resp_var = resp_var,
                 within_id = 'level1_id')
+  
+  # purrr::invoke("missing_data",
+  #               sim_args[['missing_data']],
+  #               sim_data = data,
+  #               resp_var = resp_var,
+  #               within_id = 'level1_id')
 }
 
 
@@ -90,41 +96,58 @@ dropout_missing <- function(sim_data, resp_var = 'sim_data',
                        sim_data[, clust_var], 
                        length)
   
-  num_obs <- nrow(sim_data)
+  num_obs <- length(unique(sim_data[, clust_var]))
   
-  if(!is.null(miss_prop)) {
+  if(is.null(dropout_location)) {
     if(miss_prop > 1) {
       miss_prop <- miss_prop / 100
     }
-    total_missing <- num_obs * miss_prop
-    missing_range <- round((total_missing *.98):(total_missing * 1.02))
     n_groups <- length(unique(sim_data[, clust_var]))
+    drop_missing <- data.frame(clust_var = seq_len(n_groups))
+    colnames(drop_missing) <- clust_var
+    drop_missing['missing_clust'] <- ifelse(runif(n_groups) < miss_prop, 1, 0)
     
-    lim <- prop_limits(miss_prop)
+    len_groups_people_missing <- len_groups[drop_missing[drop_missing[['missing_clust']] == 1,'id']]
     
-    num_missing <- 0
-    while(sum(num_missing) %ni% missing_range) {
-      num_missing <- round(len_groups * round(runif(n_groups, lim[1], 
-                                                    lim[2]), 2))
-    }
-    
-  } 
-  if(!is.null(dropout_location)) {
-    num_missing <- round(len_groups - dropout_location, 0)
+    dropout_location <- unlist(lapply(seq_along(drop_missing[['missing_clust']]), function(xx) 
+      dropout_helper(drop_missing[['missing_clust']][xx], len_groups[xx]))
+    )
   }
     
-  missing_obs <- lapply(1:length(num_missing), function(xx) 
-    (len_groups[xx] - num_missing[xx] + 1):len_groups[xx])
+  num_missing <- round(len_groups - dropout_location, 0)
+
+    
+  missing_obs <- lapply(seq_along(num_missing), function(xx) 
+    (len_groups[xx] - num_missing[xx]):len_groups[xx])
   
   data_split <- split(sim_data, sim_data[, clust_var])
   
-  sim_data['missing'] <- do.call("c", lapply(1:length(missing_obs), function(xx)
-    ifelse(data_split[[xx]][, within_id] %in% missing_obs[[xx]], 1, 0)))
+  sim_data['missing'] <- do.call("c", lapply(seq_along(missing_obs), function(xx)
+    dropout_locator(missing_number = num_missing[[xx]],
+                    num_obs = len_groups[[xx]], missing_time = missing_obs[[xx]])
+    )
+    )
   
   sim_data[new_outcome] <- sim_data[resp_var]
   sim_data[sim_data['missing'] == 1, new_outcome] <- NA
   
   sim_data
+}
+
+dropout_helper <- function(data, num_obs) {
+  if(data == 0) {
+    num_obs
+  } else {
+    round(runif(1, min = 2, max = num_obs), 0)
+  }
+}
+
+dropout_locator <- function(missing_number, num_obs, missing_time) {
+  miss <- rep(0, num_obs)
+  if(missing_number != 0) {
+    miss[missing_time] <- 1
+  }
+  miss
 }
 
 
@@ -147,7 +170,7 @@ random_missing <- function(sim_data, resp_var = 'sim_data',
   
   sim_data <- data.frame(sim_data)
 
-  if(is.null(clust_var)){
+  if(is.null(clust_var)) {
     sim_data['miss_prob'] <- round(runif(nrow(sim_data)), 3)
     sim_data['missing'] <- ifelse(sim_data['miss_prob'] < miss_prop, 1, 0)
     sim_data[new_outcome] <- sim_data[resp_var]
@@ -205,7 +228,7 @@ random_missing <- function(sim_data, resp_var = 'sim_data',
 #' @param miss_cov Covariate that the missing values are based on.
 #' @param mar_prop Proportion of missing data for each unique value 
 #'   specified in the miss_cov argument.
-#' @importFrom dplyr count select slice left_join mutate
+#' @importFrom dplyr count select left_join mutate
 #' @export 
 #' @rdname missing
 mar_missing <- function(sim_data, resp_var = 'sim_data', 
@@ -226,17 +249,19 @@ mar_missing <- function(sim_data, resp_var = 'sim_data',
   uniq_vals <- dplyr::count(sim_data, !!var_enq)
   
   if(nrow(uniq_vals) != length(mar_prop)) {
-    stop(paste('mar_prop argument must be the same length as 
-               unique values in', miss_cov))
+    uniq_vals[['group']] <- cut(uniq_vals[[miss_cov]], breaks = length(mar_prop), labels = FALSE)
+    missing_prop <- data.frame(group = 1:length(mar_prop),
+                               miss_prop = mar_prop)
+    miss_per <- left_join(dplyr::select(uniq_vals, !!var_enq, group),
+                      missing_prop, 
+                      by = 'group')
+  } else {
+    miss_per <- cbind(dplyr::select(uniq_vals, !!var_enq), 
+                      miss_prop = mar_prop)
   }
-  
-  num <- uniq_vals[['n']]
-  miss_per <- cbind(dplyr::select(uniq_vals, !!var_enq), miss_prop = mar_prop)
-  miss_per <- dplyr::slice(miss_per, rep(1:dplyr::n(), times = num))
-  miss_per <- dplyr::mutate(miss_per, miss_prob = runif(nrow(miss_per)))
-  
   sim_data <- dplyr::left_join(sim_data, miss_per, by = miss_cov)
-  sim_data <- mutate(sim_data, missing = ifelse(miss_prob < miss_prop, 1, 0))
+  sim_data <- dplyr::mutate(sim_data, miss_prob = runif(nrow(sim_data)),
+                            missing = ifelse(miss_prob < miss_prop, 1, 0))
   
   sim_data[new_outcome] <- sim_data[resp_var]
   sim_data[sim_data['missing'] == 1, new_outcome] <- NA

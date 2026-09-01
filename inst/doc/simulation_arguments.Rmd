@@ -121,6 +121,29 @@ ggplot(fixed_data, aes(x = weight)) +
   theme_bw()
 ```
 
+### Floor or Ceiling Effects
+
+It is also possible to simulate floor or ceiling effects for continuous attributes. This may be of interest in a situation when data are simulated that would be distributed a specific way, but through the measurement process, the scores are truncated by a floor or ceiling value. One common example for the presence of a floor effect is for age, which would start at 0. Ceiling effects could be possible for very easy exams where many individuals may achieve a perfect score, so the ceiling effect would impose this constraint. 
+
+To impose floor or ceiling effects, there are optional arguments when specifying a continuous attribute named, `floor` and `ceiling` respectively that would impose floor and/or ceiling constraints. It is possible to use both for the same attribute as well. Below is an example of specifying these for two continuous attributes. In the following example, 
+
+```{r floor-ceiling, eval = FALSE}
+sim_arguments <- list(
+  formula = y ~ 1 + age + exam,
+  fixed = list(age = list(var_type = 'continuous', 
+                          mean = 6, sd = 1, 
+                          floor = 5),
+               exam = list(var_type = 'continuous',
+                           mean = 90, sd = 6,
+                           ceiling = 100)),
+  sample_size = 50
+)
+
+sim_data <- simulate_fixed(data = NULL, sim_arguments)
+summary(sim_data$age)
+summary(sim_data$exam)
+```
+
 ## Ordinal Variable
 
 Ordinal variable specification uses the `sample` function within R to generate ordinal variables that are whole integers. The required argument for these types of variables is `levels`. The `levels` argument takes a range or vector of integer values to be passed to the `sample` function within R. For example, these three specifications for the `levels` argument are valid: `3:60`, `seq(4, 60, 2)`, `c(3, 10, 18, 24, 54, 60)`.
@@ -135,9 +158,78 @@ Factor variables are generated similarly to ordinal variables with the `sample` 
 
 An additional optional argument is `replace`. The `replace` argument specified whether the sampling is done with or without replacement. The default behavior is to do sampling with replacement. If sampling without replacement is desired set `replace = FALSE`. See `sample` for more details on this argument.
 
-Finally, the probability of selecting each value specified to the `levels` argument is also able to be specified through the `prob` argument. If `prob` is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with `levels` to be equally likely to be sampled.
+The probability of selecting each value specified to the `levels` argument is also able to be specified through the `prob` argument. If `prob` is specified, it takes a vector of probabilities that must be the same length as the levels argument. The default behavior is for each value specified with `levels` to be equally likely to be sampled.
 
-## Knot Variables
+### Force Balanced Simulation
+
+It is also possible to simulate data from a balanced factorial design by including the `force_equal = TRUE` argument. This argument will cause the `simulate_fixed()` function to produce a data set with an equal number of observations for each level of the factor variable, instead of randomly sampling from the levels. To see the difference, compare the difference between the two following simulations:
+
+```{r unbalanced}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + treat ,
+  fixed = list(weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3
+                             ),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment A', 'Treatment B', 'Control')
+                            )
+               ),
+  sample_size = 33
+)
+
+unbalanced_data <- simulate_fixed(data = NULL, sim_arguments)
+dplyr::count(unbalanced_data, treat) # unequal number of control and treatment observations
+```
+
+```{r balanced}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + treat ,
+  fixed = list(weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3
+                             ),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment A', 'Treatment B', 'Control'),
+                            force_equal = TRUE
+                            )
+               ),
+  sample_size = 33
+)
+
+balanced_data <- simulate_fixed(data = NULL, sim_arguments)
+dplyr::count(balanced_data, treat) # equal number of control and treatment observations
+```
+
+Note that the `force_equal = TRUE` argument is incompatible with the `replace = FALSE` option. The `force_equal = TRUE` argument supersedes the `prob` argument - in other words, specifying `force_equal = TRUE` as well as specifying specific sampling probabilities will not cause an error, but doesn't make conceptual sense, and those sampling probabilities will not be reflected in the simulated data.
+
+It is also possible to specify `force_equal = TRUE` when groups are not explicitly equal. In this situation it will get as close to equal as it possibly can, usually within one or two observations of each other. Note, that this will not explicitly retain group size across replications, but they will be within one or two across replications. This behavior would likely be similar across replications than the default approach that would imply the probabilities being equal in the long run. 
+
+The following code adjusts the sample size to be 35, which is not equally dividable by 3, the group size. As such, the resulting count of the number of observations within each group is close to being equal. 
+
+```{r almost-balanced}
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + treat ,
+  fixed = list(weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3
+                             ),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment A', 'Treatment B', 'Control'),
+                            force_equal = TRUE
+                            )
+               ),
+  sample_size = 35
+)
+
+balanced_data <- simulate_fixed(data = NULL, sim_arguments)
+dplyr::count(balanced_data, treat) # equal number of control and treatment observations
+```
+
+## Knot Variables 
 
 Knot variables are defined as those that are a prominent point based on a specific spot of another variable. A common example of these types of variables would occur in interrupted time series data, where there is a place in time where the treatment is given after a series of baselines. The place where the treatment is given is the knot location.
 
@@ -160,7 +252,7 @@ The required elements to simulate a knot variable is the variable to base the kn
 Similar to above, the `simulate_fixed()` function does the simulation of this fixed effect term.
 
 ```{r knot-sim}
-simulate_fixed(data = NULL, sim_args = sim_args) %>%
+simulate_fixed(data = NULL, sim_args = sim_args) |>
   head()
 ```
 
@@ -177,7 +269,7 @@ sim_args <- list(
     reg_weights = c(2, .5, 1.5, 10)
   )
 
-simulate_fixed(data = NULL, sim_args = sim_args) %>% 
+simulate_fixed(data = NULL, sim_args = sim_args) |> 
   head()
 ```
 
@@ -305,14 +397,14 @@ simulation_arguments <- list(
   reg_weights = c(0, .15)
 )
 
-hetero_data <- simulate_fixed(data = NULL, simulation_arguments) %>%
-  simulate_error(simulation_arguments) %>%
+hetero_data <- simulate_fixed(data = NULL, simulation_arguments) |>
+  simulate_error(simulation_arguments) |>
   simulate_heterogeneity(simulation_arguments)
 ```
 
 ```{r heterogeneity-var}
-hetero_data %>% 
-  group_by(group) %>% 
+hetero_data |> 
+  group_by(group) |> 
   summarise(var_error = var(error), 
             var_o_error = var(orig_error))
 ```
@@ -345,9 +437,9 @@ random_data <- simulate_randomeffect(data = NULL, sim_arguments)
 head(random_data, n = 20)
 ```
 
-## Cross-Classified Random Effects
+## Multiple Membership Random Effects
 
-If cross-classified random effects are desired, these can be specified directly within the formula syntax as you would with lme4. For example, `y ~ 1 + time + weight + age + treat + (1 + time| id) + (1 | neighborhood_id)`. When documenting the simulation arguments for the additional cross-classified random effect (i.e. `(1 | neighborhood_id)`), specifying `cross_class = TRUE` with that random effect to identify that this is indeed a cross-classified random effect. Secondly, you can also specify directly the number of clusters that are associated with this cross-classified factor, this can be different than those specified in the `sample_size` argument. This can be done with the `num_ids` argument. Below is an example with a single cross-classified random effect representing neighborhoods individuals belong in
+If multiple membership random effects are desired, these can be specified directly within the formula syntax as you would with lme4. For example, `y ~ 1 + time + weight + age + treat + (1 + time| id) + (1 | neighborhood_id)`. When documenting the simulation arguments for the additional multiple membership random effect (i.e. `(1 | neighborhood_id)`), specifying `multiple_member = TRUE` with that random effect to identify that this is indeed a multiple membership random effect. Secondly, you can also specify directly the number of clusters that are associated with this multiple membership factor, this can be different than those specified in the `sample_size` argument. This can be done with the `num_ids` argument. Below is an example with a single multiple membership random effect representing neighborhoods individuals belong in
 
 ```{r cross-class}
 set.seed(321) 
@@ -364,7 +456,7 @@ sim_arguments <- list(
   randomeffect = list(int_id = list(variance = 8, var_level = 2),
                 time_id = list(variance = 3, var_level = 2),
                 int_nid = list(variance = 5, var_level = 2,
-                               cross_class = TRUE,
+                               multiple_member = TRUE,
                                num_ids = 12)),
   sample_size = list(level1 = 10, level2 = 20)
 )
@@ -394,15 +486,15 @@ sim_args <- list(formula = y ~ 1 + act + gpa + commute_time,
                                                      corr = c(0.5, .6, .2))),
                  sample_size = 1000)
 
-correlate_attribute <- simulate_fixed(data = NULL, sim_args) %>%
+correlate_attribute <- simulate_fixed(data = NULL, sim_args) |>
   correlate_variables(sim_args)
 
 head(correlate_attribute)
 ```
 
 ```{r correlate-fixed-values}
-select(correlate_attribute, -X.Intercept., -level1_id) %>%
-  cor(.)
+select(correlate_attribute, -X.Intercept., -level1_id) |>
+  cor()
 ```
 
 ## Random Effect Correlation
@@ -426,16 +518,108 @@ sim_args <- list(formula = y ~ 1 + act + gpa + sat + (1 + act | id),
                                                       corr = .3))
                  )
 
-random_correlate <- simulate_randomeffect(data = NULL, sim_args) %>%
+random_correlate <- simulate_randomeffect(data = NULL, sim_args) |>
   correlate_variables(sim_args)
 
 head(random_correlate)
 ```
 
 ```{r random-correlate-values}
-select(random_correlate, -level1_id, -id) %>%
-  cor(.)
+select(random_correlate, -level1_id, -id) |>
+  cor()
 ```
+
+# Unbalanced level 2 and 3 designs
+
+Often it is of interest to not have the same number of observations within each cluster when simulated data that are clustered. For example, imagine a situation within education where there are students nested in classrooms which are nested in schools. You could build this example further, but for this example, suppose this is the hierarchy that is of interest to model. In most situations, the number of classrooms and the number of students within those classrooms would not be the same. Instead, it is most likely that the number of classrooms would vary across schools and the number of students would vary across classrooms within the same school. 
+
+To be very explicit, one school may have 15 classrooms, another may have 35 classrooms, and another could have 100 classrooms. Within the school with 15 classrooms, the classrooms may average 20 students in each, but may vary between 15 to 25 students across all 15 classrooms. This is important to simulate to mimic real world data that would be collected. 
+
+## Unbalanced Level 2 Example
+
+Suppose only students and classrooms are focused on first. To generate realistic situations, it is of interest to vary the number of students within each classroom. To do this, the `runif()` function can be used to generate random numbers between specified minimum and maximum classroom sizes. A user can also specify the values directly in a vector of samples sizes that are the same size as the number of level 2 units (classrooms here). 
+
+```{r level-2-unbal}
+set.seed(38)
+
+level1_ss <- runif(15, min = 14, max = 30) |> 
+  round(0)
+level1_ss
+```
+
+The "level1_ss" vector are whole integers representing the sample size for each classroom. Below, these data are simulated. Notice that the "level1_ss" object is passed as an element of the level one sample size. Finally, a count of the number of observations in each classroom are shown, notice how these are the same as the values in the "level1_ss" object. 
+
+```{r sim-level1-unbal}
+sim_arguments <- list(
+  formula = test_scores ~ 1 + gpa + (1 | classroom),
+  fixed = list(
+    gpa = list(var_type = 'continuous', mean = 3, sd = 0.5,
+               ceiling = 4, floor = 0)
+  ),
+  random = list(
+    classroom_int = list(variance = 2, var_level = 2)
+  ),
+  error = list(variance = 5),
+  reg_weights = c(50, 0.5),
+  sample_size = list(
+    level1 = level1_ss,
+    level2 = 15
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) |> 
+  dplyr::count(classroom)
+```
+
+## Unbalanced Level 3 Example
+
+This can be further specified to work with the full level 3 example discussed above with students nested within classrooms which are nested in schools. Suppose there are 25 schools that are included in the sample frame. Within these 25 schools, suppose there are between 8 and 50 classrooms. 
+
+```{r unbal-level2-23}
+set.seed(34)
+
+level2_ss <- runif(25, min = 8, max = 50) |> 
+  round(0)
+level2_ss
+```
+
+Each number for the level 2 sample size object represents the number of classrooms that are in each of the 25 schools. For example, the first number above, `r level2_ss[1]`, is the number of classrooms in the first school. Once the unbalanced level 2 sample size is specified, then, the level 1 sample size for each classroom can be generated. To generate the level 1 sample size, we need the **sum** of the level 2 sample sizes. That is, we need to generate a sample size for **each** of the `r level2_ss[1]` classrooms for the first school and so on. Therefore, a total of `r sum(level2_ss)` sample sizes will need to be generated as that is the total number of classrooms simulated across all 25 schools. Suppose that each classroom ranges from 12 to 28 students. 
+
+```{r unbal-level1-23}
+level1_ss <- runif(sum(level2_ss), min = 12, max = 28) |> 
+  round(0)
+head(level1_ss)
+```
+
+The sample size for the first six classrooms are shown. These could now be specified within the simulation arguments to extend the code generated in the level 2 example. 
+
+```{r unbalanced-level23}
+sim_arguments <- list(
+  formula = test_scores ~ 1 + gpa + (1 | classroom) + (1 | school),
+  fixed = list(
+    gpa = list(var_type = 'continuous', mean = 3, sd = 0.5,
+               ceiling = 4, floor = 0)
+  ),
+  randomeffect = list(
+    classroom_int = list(variance = 2, var_level = 2),
+    school_int = list(variance = 0.5, var_level = 3)
+  ),
+  error = list(variance = 5),
+  reg_weights = c(50, 0.5),
+  sample_size = list(
+    level1 = level1_ss,
+    level2 = level2_ss,
+    level3 = 25
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) |> 
+  dplyr::count(school, classroom) |> 
+  head()
+```
+
+The sample sizes for the first 6 classrooms for the first school are shown. These values will match the level1_ss object shown above. 
+
 
 # Missing Data Arguments
 
@@ -466,11 +650,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -507,11 +690,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -546,11 +728,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -593,11 +774,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -643,10 +823,11 @@ sim_arguments <- list(
   )
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
-  model_fit(sim_arguments) %>% .$family
+tmp_data <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
+  model_fit(sim_arguments)
+tmp_data$family
 ```
 
 The link function could then be changed to a probit link function with the following code:
@@ -669,10 +850,11 @@ sim_arguments <- list(
   )
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
-  model_fit(sim_arguments) %>% .$family
+tmp_data <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
+  model_fit(sim_arguments)
+tmp_data$family
 ```
 
 ## Adding Serial Correlation
@@ -714,11 +896,11 @@ sim_arguments <- list(
   )
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
-  model_fit(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  generate_response(sim_arguments) |>
+  model_fit(sim_arguments) |>
   extract_coefficients()
 ```
 

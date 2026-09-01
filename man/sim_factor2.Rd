@@ -2,26 +2,29 @@
 % Please edit documentation in R/fixef_sim.r
 \name{sim_factor2}
 \alias{sim_factor2}
-\title{Simulate categorical, factor, or discrete variables}
+\title{Simulate categorical or factor variables}
 \usage{
-sim_factor2(n, levels, var_level = 1, replace = TRUE, ...)
+sim_factor2(n, levels, var_level = 1, replace = TRUE, force_equal = FALSE, ...)
 }
 \arguments{
 \item{n}{A list of sample sizes.}
 
-\item{levels}{Scalar indicating the number of levels for categorical, 
-factor, or discrete variable. Can also specify levels as a character vector.}
+\item{levels}{Scalar indicating the number of levels for categorical or
+factor variable. Can also specify levels as a character vector.}
 
-\item{var_level}{The level the variable should be simulated at. This can either 
-be 1, 2, or 3 specifying a level 1, level 2, or level 3 variable 
+\item{var_level}{The level the variable should be simulated at. This can either
+be 1, 2, or 3 specifying a level 1, level 2, or level 3 variable
 respectively.}
 
-\item{replace}{TRUE/FALSE indicating whether levels should be sampled with 
+\item{replace}{TRUE/FALSE indicating whether levels should be sampled with
 replacement. Default is TRUE.}
+
+\item{force_equal}{TRUE/FALSE indicating if the sample size should be forced
+to be equal. Should not be used with the `replace = FALSE` argument.}
 
 \item{...}{Additional parameters passed to the sample function.}
 }
 \description{
-Function that simulates discrete, factor, or categorical variables.  
+Function that simulates factor or categorical variables.
 Is essentially a wrapper around the sample function from base R.
 }

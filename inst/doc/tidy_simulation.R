@@ -102,8 +102,8 @@ sim_arguments <- list(
   reg_weights = c(2, 0.3, -0.1, 0.5)
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
   generate_response(sim_arguments)
 
 ## ----generate_3_categories----------------------------------------------------
@@ -122,8 +122,8 @@ sim_arguments <- list(
   sample_size = 100
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
   count(grade)
 
 ## ----generate_3_categories_prob-----------------------------------------------
@@ -143,15 +143,15 @@ sim_arguments <- list(
   sample_size = 100
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
   count(grade)
 
 ## ----indicator----------------------------------------------------------------
 data.frame(
   grade = sample(c('freshman', 'sophomore', 'junior', 'senior'),
                  size = 10, replace = TRUE)
-) %>% 
+) |> 
   mutate(sophomore = ifelse(grade == 'sophomore', 1, 0),
          junior = ifelse(grade == 'junior', 1, 0), 
          senior = ifelse(grade == 'senior', 1, 0))
@@ -173,9 +173,9 @@ sim_arguments <- list(
   reg_weights = c(2, .1, .55, 1.5, .75, 1.8, 2.5)
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>% 
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |> 
   head()
 
 ## ----binary-------------------------------------------------------------------
@@ -192,8 +192,8 @@ sim_arguments <- list(
   outcome_type = 'binary'
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
   generate_response(sim_arguments)
 
 ## ----count--------------------------------------------------------------------
@@ -209,8 +209,8 @@ sim_arguments <- list(
   outcome_type = 'count'
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
   generate_response(sim_arguments)
 
 ## ----model_extract_coefficients-----------------------------------------------
@@ -226,10 +226,10 @@ sim_arguments <- list(
   reg_weights = c(2, 0.3, -0.1, 0.5)
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>% 
-  model_fit(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |> 
+  model_fit(sim_arguments) |>
   extract_coefficients()
 
 ## ----model_fit_manual---------------------------------------------------------
@@ -248,10 +248,10 @@ sim_arguments <- list(
   reg_weights_model = c(2, -0.1, 0.5)
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>% 
-  model_fit(sim_arguments) %>%
+simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |> 
+  model_fit(sim_arguments) |>
   extract_coefficients()
 
 ## ----replicate_simulation-----------------------------------------------------
@@ -266,14 +266,15 @@ sim_arguments <- list(
   sample_size = 10,
   reg_weights = c(2, 0.3, -0.1, 0.5),
   model_fit = list(formula = y ~ 1 + age + sex,
-                   model_function = 'lm'),
-  reg_weights_model = c(2, -0.1, 0.5),
+                   model_function = 'lm',
+                   reg_weights_model = c(2, -0.1, 0.5)),
   replications = 10,
   extract_coefficients = TRUE
 )
 
-replicate_simulation(sim_arguments) %>%
-  compute_statistics(sim_arguments)
+replicate_simulation(sim_arguments) |>
+  compute_statistics(sim_arguments, alternative_power = FALSE, 
+                     type_1_error = FALSE)
 
 ## ----replicate_simulation_power_values----------------------------------------
 set.seed(321) 
@@ -290,8 +291,8 @@ sim_arguments <- list(
   sample_size = 50,
   reg_weights = c(2, 0.3, -0.1, 0.5),
   model_fit = list(formula = y ~ 1 + age + sex,
-                   model_function = 'lm'),
-  reg_weights_model = c(2, -0.1, 0.5),
+                   model_function = 'lm',
+                   reg_weights_model = c(2, -0.1, 0.5)),
   replications = 1000,
   power = list(
     dist = 'qt',
@@ -301,8 +302,9 @@ sim_arguments <- list(
   extract_coefficients = TRUE
 )
 
-replicate_simulation(sim_arguments) %>%
-  compute_statistics(sim_arguments)
+replicate_simulation(sim_arguments) |>
+  compute_statistics(sim_arguments, alternative_power = FALSE, 
+                     type_1_error = FALSE)
 
 ## ----nested-------------------------------------------------------------------
 set.seed(321) 
@@ -317,10 +319,9 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-nested_data <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
+nested_data <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
   generate_response(sim_arguments)
 
 head(nested_data, n = 10)

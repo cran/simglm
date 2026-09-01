@@ -1,0 +1,401 @@
+## ----setup, include=FALSE-----------------------------------------------------
+library(knitr)
+library(dplyr)
+library(simglm)
+knit_print.data.frame = function(x, ...) {
+  res = paste(c('', '', kable(x, output = FALSE)), collapse = '\n')
+  asis_output(res)
+}
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, 0.15),
+        outcome_type = 'binary'
+    )
+)
+
+prop_data <- simulate_propensity(sim_arguments)
+
+# prop_data |> ggformula::gf_density(~ ses, fill = ~factor(trt))
+# prop_data |> ggformula::gf_density(~ age, fill = ~factor(trt))
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+    simulate_error(sim_args = sim_arguments) |>
+    generate_response(sim_arguments)
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    ),
+    model_fit = list(formula = achievement ~ 1 + motivation + trt + age + ses,
+                   model_function = 'lm'),
+    propensity_model = list(
+        formula = trt ~ 1 + age + ses,
+        propensity_type = 'covariate'
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+  simulate_error(sim_args = sim_arguments) |>
+  generate_response(sim_arguments)|> 
+  fit_propensity(sim_arguments) |>
+  model_fit(sim_arguments) |>
+  extract_coefficients()
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    ),
+    propensity_model = list(
+        formula = trt ~ 1 + age + ses,
+        propensity_type = 'ipw'
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+  simulate_error(sim_args = sim_arguments) |>
+  generate_response(sim_arguments)|> 
+  fit_propensity(sim_arguments) |>
+  model_fit(sim_arguments) |>
+  extract_coefficients()
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    ),
+    propensity_model = list(
+        formula = trt ~ 1 + age + ses,
+        propensity_type = 'sbw'
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+  simulate_error(sim_args = sim_arguments) |>
+  generate_response(sim_arguments)|> 
+  fit_propensity(sim_arguments) |>
+  model_fit(sim_arguments) |>
+  extract_coefficients()
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    ),
+    model_fit = list(formula = achievement ~ 1 + motivation + trt + age + ses,
+                   model_function = 'lm'),
+    propensity_model = list(
+        formula = trt ~ 1 + age + ses,
+        propensity_type = 'covariate'
+    ),
+    replications = 20,
+    extract_coefficients = TRUE
+)
+replicate_simulation(sim_arguments) |>
+  compute_statistics(sim_arguments, alternative_power = FALSE, 
+                     type_1_error = FALSE)
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    ),
+    model_fit = list(formula = achievement ~ 1 + motivation + trt + age + ses,
+                   model_function = 'lm'),
+    propensity_model = list(
+        formula = trt ~ 1 + age + ses,
+        propensity_type = 'ipw',
+        model_function = stats::glm,
+    propensity_model_args = list(
+      family = binomial()
+    )
+    ),
+    replications = 500,
+    extract_coefficients = TRUE
+)
+replicate_simulation(sim_arguments) |>
+  compute_statistics(sim_arguments, alternative_power = FALSE, 
+                     type_1_error = FALSE)
+
+## -----------------------------------------------------------------------------
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses,
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = 1000,
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    propensity = list(
+        formula = trt ~ 1 + age + ses,
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5)),
+        sample_size = 1000,
+        error = list(variance = 5),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    ),
+    model_fit = list(formula = achievement ~ 1 + motivation + trt + age + ses,
+                   model_function = 'lm'),
+    propensity_model = list(
+        formula = trt ~ 1 + age + ses,
+        propensity_type = 'sbw',
+        model_function = stats::glm,
+    propensity_model_args = list(
+      family = binomial()
+    )
+    ),
+    replications = 500,
+    extract_coefficients = TRUE
+)
+replicate_simulation(sim_arguments) |>
+  compute_statistics(sim_arguments, alternative_power = FALSE, 
+                     type_1_error = FALSE)
+
+## -----------------------------------------------------------------------------
+level1_samp <- sample(15:25, size = 50, replace = TRUE)
+
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses + (1 | classroom),
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = list(level1 = level1_samp, level2 = 50),
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    randomeffect = list(int_classroom = list(variance = 5, var_level = 2)),
+    propensity = list(
+        formula = trt ~ 1 + age + ses + (1 | classroom),
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5, 
+                         var_level = 2)),
+        sample_size = list(level1 = level1_samp, level2 = 50),
+        error = list(variance = 5),
+        randomeffect = list(int_classroom = list(variance = 5, var_level = 2)),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary'
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+    simulate_error(sim_args = sim_arguments) |>
+    simulate_randomeffect(sim_args = sim_arguments) |>
+    generate_response(sim_arguments)
+
+## -----------------------------------------------------------------------------
+level1_samp <- sample(15:25, size = 50, replace = TRUE)
+
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses + (1 | classroom),
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = list(level1 = level1_samp, level2 = 50),
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    randomeffect = list(int_classroom = list(variance = 5, var_level = 2)),
+    propensity = list(
+        formula = trt ~ 1 + age + ses + (1 | classroom),
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5, 
+                         var_level = 2)),
+        sample_size = list(level1 = level1_samp, level2 = 50),
+        error = list(variance = 5),
+        randomeffect = list(int_classroom = list(variance = 5, var_level = 2)),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary',
+        outcome_level = 2
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+    simulate_error(sim_args = sim_arguments) |>
+    simulate_randomeffect(sim_args = sim_arguments) |>
+    generate_response(sim_arguments)
+
+## -----------------------------------------------------------------------------
+level1_samp <- sample(15:25, size = 150, replace = TRUE)
+
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses + (1 | classroom) + (1 | district),
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = list(level1 = level1_samp, level2 = 10, level3 = 15),
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    randomeffect = list(int_classroom = list(variance = 5, var_level = 2),
+    int_district = list(variance = 2, var_level = 3)),
+    propensity = list(
+        formula = trt ~ 1 + age + ses + (1 | classroom) + (1 | district),
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5, 
+                         var_level = 2)),
+        sample_size =  list(level1 = level1_samp, level2 = 10, level3 = 15),
+        error = list(variance = 5),
+        randomeffect = list(int_classroom = list(variance = 5, var_level = 2),
+        int_district = list(variance = 2, var_level = 3)),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary',
+        outcome_level = 2
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+    simulate_error(sim_args = sim_arguments) |>
+    simulate_randomeffect(sim_args = sim_arguments) |>
+    generate_response(sim_arguments)
+
+## -----------------------------------------------------------------------------
+level1_samp <- sample(15:25, size = 150, replace = TRUE)
+
+sim_arguments <- list(
+    formula = achievement ~ 1 + motivation + trt + age + ses + (1 | classroom) + (1 | district),
+    fixed = list(
+        motivation = list(var_type = 'continuous',
+                           mean = 0, sd = 20)
+    ),
+    sample_size = list(level1 = level1_samp, level2 = 10, level3 = 15),
+    error = list(variance = 10),
+    reg_weights = c(50, 0.4, 1.2, 0.1, 0.25),
+    randomeffect = list(int_classroom = list(variance = 5, var_level = 2),
+    int_district = list(variance = 2, var_level = 3)),
+    propensity = list(
+        formula = trt ~ 1 + age + ses + (1 | classroom) + (1 | district),
+        fixed = list(age = list(var_type = 'ordinal', 
+                         levels = -7:7),
+                     ses = list(var_type = 'continuous', 
+                         mean = 0, sd = 5, 
+                         var_level = 2)),
+        sample_size =  list(level1 = level1_samp, level2 = 10, level3 = 15),
+        error = list(variance = 5),
+        randomeffect = list(int_classroom = list(variance = 5, var_level = 2),
+        int_district = list(variance = 2, var_level = 3)),
+        reg_weights = c(2, 0.3, -0.5),
+        outcome_type = 'binary',
+        outcome_level = 3
+    )
+)
+simulate_fixed(data = NULL, sim_args = sim_arguments) |>
+    simulate_error(sim_args = sim_arguments) |>
+    simulate_randomeffect(sim_args = sim_arguments) |>
+    generate_response(sim_arguments)
+

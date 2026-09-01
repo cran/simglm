@@ -74,6 +74,78 @@ ggplot(fixed_data, aes(x = weight)) +
   geom_density() + 
   theme_bw()
 
+## ----floor-ceiling, eval = FALSE----------------------------------------------
+# sim_arguments <- list(
+#   formula = y ~ 1 + age + exam,
+#   fixed = list(age = list(var_type = 'continuous',
+#                           mean = 6, sd = 1,
+#                           floor = 5),
+#                exam = list(var_type = 'continuous',
+#                            mean = 90, sd = 6,
+#                            ceiling = 100)),
+#   sample_size = 50
+# )
+# 
+# sim_data <- simulate_fixed(data = NULL, sim_arguments)
+# summary(sim_data$age)
+# summary(sim_data$exam)
+
+## ----unbalanced---------------------------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + treat ,
+  fixed = list(weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3
+                             ),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment A', 'Treatment B', 'Control')
+                            )
+               ),
+  sample_size = 33
+)
+
+unbalanced_data <- simulate_fixed(data = NULL, sim_arguments)
+dplyr::count(unbalanced_data, treat) # unequal number of control and treatment observations
+
+## ----balanced-----------------------------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + treat ,
+  fixed = list(weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3
+                             ),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment A', 'Treatment B', 'Control'),
+                            force_equal = TRUE
+                            )
+               ),
+  sample_size = 33
+)
+
+balanced_data <- simulate_fixed(data = NULL, sim_arguments)
+dplyr::count(balanced_data, treat) # equal number of control and treatment observations
+
+## ----almost-balanced----------------------------------------------------------
+set.seed(321) 
+
+sim_arguments <- list(
+  formula = y ~ 1 + weight + treat ,
+  fixed = list(weight = list(var_type = 'continuous', dist = 'rgamma', 
+                             shape = 3
+                             ),
+               treat = list(var_type = 'factor', 
+                            levels = c('Treatment A', 'Treatment B', 'Control'),
+                            force_equal = TRUE
+                            )
+               ),
+  sample_size = 35
+)
+
+balanced_data <- simulate_fixed(data = NULL, sim_arguments)
+dplyr::count(balanced_data, treat) # equal number of control and treatment observations
+
 ## ----knot-args----------------------------------------------------------------
 sim_args <- list(
     formula = y ~ 1  + age + age_knot,
@@ -86,7 +158,7 @@ sim_args <- list(
   )
 
 ## ----knot-sim-----------------------------------------------------------------
-simulate_fixed(data = NULL, sim_args = sim_args) %>%
+simulate_fixed(data = NULL, sim_args = sim_args) |>
   head()
 
 ## ----knot-args-int------------------------------------------------------------
@@ -100,7 +172,7 @@ sim_args <- list(
     reg_weights = c(2, .5, 1.5, 10)
   )
 
-simulate_fixed(data = NULL, sim_args = sim_args) %>% 
+simulate_fixed(data = NULL, sim_args = sim_args) |> 
   head()
 
 ## ----random_error-------------------------------------------------------------
@@ -204,13 +276,13 @@ simulation_arguments <- list(
   reg_weights = c(0, .15)
 )
 
-hetero_data <- simulate_fixed(data = NULL, simulation_arguments) %>%
-  simulate_error(simulation_arguments) %>%
+hetero_data <- simulate_fixed(data = NULL, simulation_arguments) |>
+  simulate_error(simulation_arguments) |>
   simulate_heterogeneity(simulation_arguments)
 
 ## ----heterogeneity-var--------------------------------------------------------
-hetero_data %>% 
-  group_by(group) %>% 
+hetero_data |> 
+  group_by(group) |> 
   summarise(var_error = var(error), 
             var_o_error = var(orig_error))
 
@@ -248,7 +320,7 @@ sim_arguments <- list(
   randomeffect = list(int_id = list(variance = 8, var_level = 2),
                 time_id = list(variance = 3, var_level = 2),
                 int_nid = list(variance = 5, var_level = 2,
-                               cross_class = TRUE,
+                               multiple_member = TRUE,
                                num_ids = 12)),
   sample_size = list(level1 = 10, level2 = 20)
 )
@@ -271,14 +343,14 @@ sim_args <- list(formula = y ~ 1 + act + gpa + commute_time,
                                                      corr = c(0.5, .6, .2))),
                  sample_size = 1000)
 
-correlate_attribute <- simulate_fixed(data = NULL, sim_args) %>%
+correlate_attribute <- simulate_fixed(data = NULL, sim_args) |>
   correlate_variables(sim_args)
 
 head(correlate_attribute)
 
 ## ----correlate-fixed-values---------------------------------------------------
-select(correlate_attribute, -X.Intercept., -level1_id) %>%
-  cor(.)
+select(correlate_attribute, -X.Intercept., -level1_id) |>
+  cor()
 
 ## ----random-correlate---------------------------------------------------------
 sim_args <- list(formula = y ~ 1 + act + gpa + sat + (1 + act | id), 
@@ -299,14 +371,78 @@ sim_args <- list(formula = y ~ 1 + act + gpa + sat + (1 + act | id),
                                                       corr = .3))
                  )
 
-random_correlate <- simulate_randomeffect(data = NULL, sim_args) %>%
+random_correlate <- simulate_randomeffect(data = NULL, sim_args) |>
   correlate_variables(sim_args)
 
 head(random_correlate)
 
 ## ----random-correlate-values--------------------------------------------------
-select(random_correlate, -level1_id, -id) %>%
-  cor(.)
+select(random_correlate, -level1_id, -id) |>
+  cor()
+
+## ----level-2-unbal------------------------------------------------------------
+set.seed(38)
+
+level1_ss <- runif(15, min = 14, max = 30) |> 
+  round(0)
+level1_ss
+
+## ----sim-level1-unbal---------------------------------------------------------
+sim_arguments <- list(
+  formula = test_scores ~ 1 + gpa + (1 | classroom),
+  fixed = list(
+    gpa = list(var_type = 'continuous', mean = 3, sd = 0.5,
+               ceiling = 4, floor = 0)
+  ),
+  random = list(
+    classroom_int = list(variance = 2, var_level = 2)
+  ),
+  error = list(variance = 5),
+  reg_weights = c(50, 0.5),
+  sample_size = list(
+    level1 = level1_ss,
+    level2 = 15
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) |> 
+  dplyr::count(classroom)
+
+## ----unbal-level2-23----------------------------------------------------------
+set.seed(34)
+
+level2_ss <- runif(25, min = 8, max = 50) |> 
+  round(0)
+level2_ss
+
+## ----unbal-level1-23----------------------------------------------------------
+level1_ss <- runif(sum(level2_ss), min = 12, max = 28) |> 
+  round(0)
+head(level1_ss)
+
+## ----unbalanced-level23-------------------------------------------------------
+sim_arguments <- list(
+  formula = test_scores ~ 1 + gpa + (1 | classroom) + (1 | school),
+  fixed = list(
+    gpa = list(var_type = 'continuous', mean = 3, sd = 0.5,
+               ceiling = 4, floor = 0)
+  ),
+  randomeffect = list(
+    classroom_int = list(variance = 2, var_level = 2),
+    school_int = list(variance = 0.5, var_level = 3)
+  ),
+  error = list(variance = 5),
+  reg_weights = c(50, 0.5),
+  sample_size = list(
+    level1 = level1_ss,
+    level2 = level2_ss,
+    level3 = 25
+  )
+)
+
+simulate_fixed(data = NULL, sim_arguments) |> 
+  dplyr::count(school, classroom) |> 
+  head()
 
 ## ----missing_random-----------------------------------------------------------
 set.seed(321) 
@@ -327,11 +463,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -360,11 +495,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -391,11 +525,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -427,11 +560,10 @@ sim_arguments <- list(
   sample_size = list(level1 = 10, level2 = 20)
 )
 
-data_w_missing <- sim_arguments %>%
-  simulate_fixed(data = NULL, .) %>%
-  simulate_randomeffect(sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
+data_w_missing <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_randomeffect(sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
   generate_missing(sim_arguments)
 
 head(data_w_missing, n = 10)
@@ -460,10 +592,11 @@ sim_arguments <- list(
   )
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
-  model_fit(sim_arguments) %>% .$family
+tmp_data <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
+  model_fit(sim_arguments)
+tmp_data$family
 
 ## ----binomial_probit----------------------------------------------------------
 set.seed(321) 
@@ -483,46 +616,47 @@ sim_arguments <- list(
   )
 )
 
-simulate_fixed(data = NULL, sim_arguments) %>%
-  simulate_error(sim_arguments) %>%
-  generate_response(sim_arguments) %>%
-  model_fit(sim_arguments) %>% .$family
+tmp_data <- simulate_fixed(data = NULL, sim_arguments) |>
+  simulate_error(sim_arguments) |>
+  generate_response(sim_arguments) |>
+  model_fit(sim_arguments)
+tmp_data$family
 
 ## ----gee, eval = FALSE--------------------------------------------------------
-#  set.seed(321)
-#  
-#  # To-DO: Add knot variable and debug
-#  
-#  sim_arguments <- list(
-#    formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
-#    fixed = list(time = list(var_type = 'time',
-#                             time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
-#                 weight = list(var_type = 'continuous', mean = 0, sd = 30),
-#                 age = list(var_type = 'ordinal', levels = 0:30, var_level = 2),
-#                 treat = list(var_type = 'factor',
-#                              levels = c('Treatment', 'Control'),
-#                              var_level = 2)),
-#    reg_weights = c(0.4, 0.2, -0.5, 1, -0.6),
-#    randomeffect = list(int_id = list(variance = 8, var_level = 2),
-#                  time_id = list(variance = 3, var_level = 2)),
-#    error = list(variance = 5),
-#    outcome_type = 'binary',
-#    sample_size = list(level1 = 10, level2 = 20),
-#    model_fit = list(
-#      model_function = geepack::geeglm,
-#      formula = y ~ 1 + time + weight + age + treat,
-#      id = 'level1_id',
-#      family = binomial,
-#      corstr = 'ar1'
-#    )
-#  )
-#  
-#  simulate_fixed(data = NULL, sim_arguments) %>%
-#    simulate_error(sim_arguments) %>%
-#    simulate_randomeffect(sim_arguments) %>%
-#    generate_response(sim_arguments) %>%
-#    model_fit(sim_arguments) %>%
-#    extract_coefficients()
+# set.seed(321)
+# 
+# # To-DO: Add knot variable and debug
+# 
+# sim_arguments <- list(
+#   formula = y ~ 1 + time + weight + age + treat + (1 + time| id),
+#   fixed = list(time = list(var_type = 'time',
+#                            time_levels = c(0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6)),
+#                weight = list(var_type = 'continuous', mean = 0, sd = 30),
+#                age = list(var_type = 'ordinal', levels = 0:30, var_level = 2),
+#                treat = list(var_type = 'factor',
+#                             levels = c('Treatment', 'Control'),
+#                             var_level = 2)),
+#   reg_weights = c(0.4, 0.2, -0.5, 1, -0.6),
+#   randomeffect = list(int_id = list(variance = 8, var_level = 2),
+#                 time_id = list(variance = 3, var_level = 2)),
+#   error = list(variance = 5),
+#   outcome_type = 'binary',
+#   sample_size = list(level1 = 10, level2 = 20),
+#   model_fit = list(
+#     model_function = geepack::geeglm,
+#     formula = y ~ 1 + time + weight + age + treat,
+#     id = 'level1_id',
+#     family = binomial,
+#     corstr = 'ar1'
+#   )
+# )
+# 
+# simulate_fixed(data = NULL, sim_arguments) |>
+#   simulate_error(sim_arguments) |>
+#   simulate_randomeffect(sim_arguments) |>
+#   generate_response(sim_arguments) |>
+#   model_fit(sim_arguments) |>
+#   extract_coefficients()
 
 ## ----vary_simulation----------------------------------------------------------
 library(future)

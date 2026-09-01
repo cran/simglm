@@ -1,22 +1,95 @@
 #' Transform response variable
-#' 
+#'
 #' @param outcome The outcome variable to transform.
 #' @param type Type of transformation to apply.
+#' @param categories A vector of named categories for multinomial sim
 #' @param ... Additional arguments passed to distribution functions.
-#' 
+#'
+#' @importFrom stats rmultinom
 #' @export
-transform_outcome <- function(outcome, type, ...) {
-  
-  if(type %in% c('logistic', 'binary')) {
-    probability <- exp(outcome) / (1 + exp(outcome))
-    rbinom(length(outcome), size = 1, 
-           prob = probability)
+transform_outcome <- function(outcome, type, categories = NULL, ...) {
+  if (type %in% c('logistic', 'binary')) {
+    probability <- convert_probability(outcome)
+    rbinom(length(outcome), size = 1, prob = probability)
+  } else if (type %in% c('count', 'poisson')) {
+    rpois(length(outcome), lambda = exp(outcome))
+  } else if (type == 'multinomial') {
+    probability <- cbind(
+      1,
+      do.call(
+        "cbind",
+        lapply(seq_len(ncol(outcome)), function(xx) exp(outcome[, xx]))
+      )
+    )
+    generate_multinomial_category(probability, categories)
+  } else if (type == 'ordinal') {
+    probability <- do.call(
+      'cbind',
+      lapply(seq_len(ncol(outcome)), function(xx) {
+        convert_probability(outcome[, xx])
+      })
+    )
+    prob_categories <- probability_restructure(probability)
+    do.call(
+      "rbind",
+      lapply(seq_len(nrow(prob_categories)), function(xx) {
+        sample(
+          x = seq_len(ncol(prob_categories)),
+          size = 1,
+          prob = prob_categories[xx, ]
+        )
+      })
+    )
   } else {
-    if(type %in% c('count', 'poisson')) {
-      rpois(length(outcome), lambda = exp(outcome))
+    purrr::map()
+  }
+}
+convert_probability <- function(logit) {
+  exp(logit) / (1 + exp(logit))
+}
+probability_restructure <- function(probability) {
+  group_probs <- data.frame(matrix(
+    nrow = nrow(probability),
+    ncol = ncol(probability) + 1
+  ))
+  names(group_probs) <- paste0('prob', 1:(ncol(probability) + 1))
+  for (ii in seq_len(ncol(probability) + 1)) {
+    if (ii == 1) {
+      group_probs[, ii] <- 1 - probability[, ii]
+    } else if (ii == ncol(group_probs)) {
+      group_probs[, ii] <- probability[, ii - 1]
     } else {
-      purrr::map()
+      group_probs[, ii] <- probability[, ii - 1] - probability[, ii]
     }
-  } 
+  }
+  group_probs
 }
 
+generate_multinomial_category <- function(probability, categories = NULL) {
+  outcome <- lapply(seq_len(nrow(probability)), function(xx) {
+    rmultinom(n = 1, size = 1, prob = probability[xx, ])
+  })
+
+  outcome_num <- do.call('c', lapply(outcome, detect_one))
+
+  if (!is.null(categories)) {
+    outcome_category <- data.frame(
+      outcome_num = rep(seq_along(categories)),
+      outcome_category = categories
+    )
+    outcome_comb <- merge(
+      data.frame(ID = seq_along(outcome), outcome_num = outcome_num),
+      outcome_category,
+      by = 'outcome_num',
+      all.x = TRUE
+    )
+    outcome_comb <- outcome_comb[order(outcome_comb$ID), ]
+    outcome_comb <- subset(outcome_comb, select = -ID)
+  } else {
+    outcome_comb <- data.frame(outcome_num = outcome_num, outcome_category = NA)
+  }
+  outcome_comb
+}
+detect_one <- function(outcome) {
+  which(outcome == 1)
+}
